@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="./">README</a></li>
+<li><a href="license.html">LICENSE</a></li>
+<li><a href="install.html">INSTALL</a></li>
+<li><a href="changes.html">CHANGES</a></li>
+<li><a href="scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>CL-js - A vanilla JavaScript library for Caltech Library projects</h1>
+
+<p>This repository provides a vanilla JavaScript library
+used across a number of Caltech Library projects including
+<a href="https://feeds.library.caltech.edu">feeds.library.caltech.edu</a>
+and the <a href="https://github.com/caltechlibrary/andor">And/Or</a> prototype.</p>
+
+<p><a href="https://choosealicense.com/licenses/bsd-3-clause"><img src="https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square" alt="License" /></a>
+<a href="http://shields.io"><img src="https://img.shields.io/badge/Latest_release-1.1.0-b44e88.svg?style=flat-square" alt="Latest release" /></a></p>
+
+<h2>Table of contents</h2>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#known-issues-and-limitations">Known issues and limitations</a></li>
+<li><a href="#getting-help">Getting help</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#authors-and-history">Authors and history</a></li>
+<li><a href="#authors-and-acknowledgments">Acknowledgments</a></li>
+</ul>
+
+<h2>Introduction</h2>
+
+<p>CL-js provides a lightweight JavaScript library used across several
+Caltech Library projects. All functionality is bound to a common CL
+object.  This allows it to be used with 3rd party JavaScript libraries
+(e.g. handlebarjs, jQuery) without stepping on their toes.
+The core CL object is defined in <code>CL-core.js</code>. Optional features
+are privided in their own files (e.g. <code>CL-feeds.js</code>,
+<code>CL-feeds-ui.js</code>, <code>CL-fields.js</code>). A concatenated version of all
+the <code>CL-*.js</code> files is provided as <code>CL.js</code>.</p>
+
+<h2>Installation</h2>
+
+<ol>
+<li>Clone the <strong>cl-js</strong> repository</li>
+<li>Change to the repository directory</li>
+<li>Download Handlebars and save as <code>scripts/handlerbar.js</code></li>
+<li>Copy <a href="scripts/">scripts</a> to your website document root</li>
+</ol>
+
+<p>NOTE: <code>CL-fields.js</code> uses <a href="http://handlebarsjs.com/installation.html">Handlerbars</a> which is a 3rd Party JavaScript library.</p>
+
+<p>Here is an example of installing <strong>cl-js</strong> and
+Handlebars in <code>/var/www/htdocs</code> directory.</p>
+
+<pre><code class="language-bash">    git clone https://github.com/caltechlibrary/cl-js
+    cd cl-js
+    curl -o scripts/handlebars.js &quot;http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.1.2.js&quot;
+    cp -vR cl-js/scripts /var/www/htdocs/
+</code></pre>
+
+<h2>Usage</h2>
+
+<p>The CL JavaScript library is targetting evergreen web browser
+without requiring build tools beyond possibly concatentation of
+files. Non-UI elements may run in headless environments like NodeJS
+but they is not enforced. UI elements require a DOM so will only
+run in your web browser unless you are willing to jump through some
+hurles.</p>
+
+<p>In your web browser you&rsquo;ll use a script elements like</p>
+
+<pre><code class="language-html">    &lt;script src=&quot;/scripts/cl-core.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/scripts/cl-fields.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/scripts/cl-feeds.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/scripts/cl-feeds-ui.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p>Or if you use the concatenated version</p>
+
+<pre><code class="language-html">    &lt;script src=&quot;/scripts/cl.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<h2>Known issues and limitations</h2>
+
+<p>The <code>CL-*.js</code> library is limited to web browser environment
+running on evergreen web browser. If you&rsquo;re using the
+functions defined in <code>CL-fields.js</code> You&rsquo;ll need to have
+Handlebars available.</p>
+
+<h2>Getting help</h2>
+
+<p>If you run into a problem use the <a href="https://github.com/caltechlibrary/cl-js/issues">GitHub</a> issue tracker for
+reports and contact.</p>
+
+<h2>Contributing</h2>
+
+<p>For information about contributing see <a href="contributing.html">CONTRIBUTING.md</a>
+and <a href="code-of-conduct.html">CODE_OF_CONDUCT.md</a> in this repository.</p>
+
+<h2>License</h2>
+
+<p>Software produced by the Caltech Library is Copyright &copy; 2019, Caltech.  This software is freely distributed under a BSD/MIT type license.  Please see the <a href="LICENSE">LICENSE</a> file for more information.</p>
+
+<h2>Authors and history</h2>
+
+<p>The CL JavaScript object evolved out of our <a href="https://feeds.library.caltech.edu">feeds.library.caltech.edu</a> aggregation project. As enhanced vanilla
+JavaScript functions were needed in other projects, some of which
+included content from feeds the CL object was extended. It was split
+into its own repository during the prototyping of <a href="https://github.com/caltechlibrary/andor">And/Or</a> in Summer 2019.</p>
+
+<h2>Acknowledgments</h2>
+
+<p>This work was funded by the California Institute of Technology Library.</p>
+
+<p>(If this work was also supported by other organizations, acknowledge them here.  In addition, if your work relies on software libraries, or was inspired by looking at other work, it is appropriate to acknowledge this intellectual debt too.)</p>
+
+<div align="center">
+  <br>
+  <a href="https://www.caltech.edu">
+    <img width="100" height="100" src="/assets/caltech-round.svg">
+  </a>
+</div>
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2018 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+</body>
+</html>

@@ -79,3 +79,8 @@ __pycache__
 
 # Project-specific things to ignore:
 # .............................................................................
+
+# Ignore NodeJS stuff and specific libraries
+node_modules
+scripts/handlebars.js
+

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="../">README</a></li>
+<li><a href="../license.html">LICENSE</a></li>
+<li><a href="../install.html">INSTALL</a></li>
+<li><a href="../changes.html">CHANGES</a></li>
+<li><a href="../scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>CL-fields.js test</h1>
+
+<p>This is a test file for putting CL-fields.js through its paces and
+to confirm we have a working <code>CL</code> object.</p>
+
+<p><style>
+#status {
+    font-size: 1em;
+}
+</style>
+<code><pre id="status"></pre></code></p>
+
+<!-- We need to have handlerjs available for tests -->
+
+<script src="handlebars.js"></script>
+
+<!-- START: test sequence for CL-feeds.js -->
+
+<script src="CL-core.js"></script>
+<script src="CL-fields.js"></script>
+<script>
+
+(function (document, window) {
+'use strict';
+let cl = Object.assign({}, window.CL),
+    status = document.getElementById('status');
+
+function println(...s) {
+    s.forEach(function(s) {
+        console.log(s);
+        status.append(s + "\n");
+    });
+}
+
+/*
+ * Run the following test sequences
+ */
+println("\nRunning tests in a pipeline\n");
+
+function testTitleField(tests, err) {
+    let self = this;
+    if (err !== "") {
+        println("FAILED: error", err, tests);
+        return;
+    }
+    tests.count++;
+    println("Testing testTitleField()");
+    let field = CL.field({"title": "Hello World"}, 
+        '<label>Title:</label> <input name="title" value="{title}" placeholder="Title goes here">',
+        function(obj) {
+            if ('title' in obj) {
+                if (obj.title.length > 0) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    if ('title' in field) {
+        if (field.title !== "Hello World") {
+            tests.errors++;
+            println("FAILED, expected title of 'Hello World', got "+field.json());
+        }
+    } else {
+        tests.errors++;
+        println("FAILED: field is missing title attribute");
+        self.nextCallbackFn(tests, err);
+        return;
+    }
+    tests.success++;
+    println("Testing testTitleField() OK");
+    self.nextCallbackFn(tests, err);
+}
+
+function testCreatorField(tests, err) {
+    let self = this;
+    if (err !== "") {
+        println("FAILED: error", err, tests);
+        return;
+    }
+    tests.count++;
+    println("Testing testCreatorField()");
+    let last_name = "Doiel",
+        first_name = "Robert",
+        orcid = "0000-0003-0900-6903",
+        field = CL.field({
+            "last_name": last_name,
+            "first_name": first_name,
+            "orcid": orcid
+        }, 
+        '<label>Last Name:</label> <input name="last_name" value="{{last_name}}"><br><label>First Name:</label> <input name="first_name" value="{{first_name}}"><br><label>ORCID: </label> <input name="orcid" value="{{orcid}}"><p>',
+        function () {
+            let obj = this;
+            if (! 'last_name' in obj ||  obj.last_name.length === 0) {
+                return false;
+            }
+            if (! 'first_name' in obj || obj.first_name.length === 0) {
+                return false;
+            }
+            if (! 'orcid' in obj || obj.orcid.length === 0) {
+                return false;
+            }
+            return true;
+        });
+
+    if ('validate' in field) {
+        if (field.validate() !== true) {
+            tests.errors++;
+            println('FAILED: expected validate() return true, got false');
+        }
+    } else {
+        tests.errors++;
+        println('FAILED: expected validate function in field');
+    }
+    let val = field.get('orcid');
+    if (val !== orcid) {
+        tests.errors++;
+        println("FAILED: expected "+orcid+", got "+val);
+    }
+    val = field.get('last_name');
+    if (val !== last_name) {
+        tests.errors++;
+        println("FAILED: expected "+last_name+", got "+val);
+    }
+    val = field.get('first_name');
+    if (val !== first_name) {
+        tests.errors++;
+        println("FAILED: expected "+first_name+", got "+val);
+    }
+    val = field.html();
+    let expected = '<label>Last Name:</label> <input name="last_name" value="Doiel"><br><label>First Name:</label> <input name="first_name" value="Robert"><br><label>ORCID: </label> <input name="orcid" value="0000-0003-0900-6903"><p>';
+    if (val !== expected) {
+        tests.errors++;
+        println("FAILED: expected\n"+expected+"\n, got\n"+val);
+    }
+    let o = JSON.parse(field.json());
+    if (o === undefined) {
+        tests.errors++;
+        println("FAILED: expected an object, got undefined for field");
+        self.nextCallbackFn(tests, err);
+    }
+    if (! 'orcid' in o) {
+        tests.errors++;
+        println("FAILED: expected orcid attribute, got ", o);
+    }
+    if (! 'last_name' in o) {
+        tests.errors++;
+        println("FAILED: expected last_name attribute, got ", o);
+    }
+    if (! 'first_name' in o) {
+        tests.errors++;
+        println("FAILED: expected first_name attribute, got ", o);
+    }
+    println("Testing testCreatorField() OK");
+    tests.success++;
+    self.nextCallbackFn(tests, err);
+}
+
+function testSummary(tests, err) {
+    let self = this;
+    if (err !== "") {
+        println("FAILED: error", err, tests);
+        return;
+    }
+    println("\nFailures: " + tests.errors);
+    println("Warnings: " + tests.warnings);
+    println("Successful: " + tests.success + "/" + tests.count);
+}
+
+/* Run the rest of the tests in a pipeline */
+let tests = {
+        "success": 0,
+        "warnings": 0,
+        "errors": 0,
+        "count": 0
+    };
+
+cl.pipeline(tests, "", 
+    testTitleField,
+    testCreatorField,
+    testSummary);
+}(document, window));
+
+</script>
+
+<!--   END: test sequence for CL-feeds.js -->
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2018 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+</body>
+</html>
