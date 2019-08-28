@@ -25,7 +25,7 @@
 <h1>CL-js - A vanilla JavaScript library for Caltech Library projects</h1>
 
 <p>This repository provides a vanilla JavaScript library
-used across a number of Caltech Library projects including
+used across some of Caltech Library projects including
 <a href="https://feeds.library.caltech.edu">feeds.library.caltech.edu</a>
 and the <a href="https://github.com/caltechlibrary/andor">And/Or</a> prototype.</p>
 
@@ -50,8 +50,8 @@ and the <a href="https://github.com/caltechlibrary/andor">And/Or</a> prototype.<
 
 <p>CL-js provides a lightweight JavaScript library used across several
 Caltech Library projects. All functionality is bound to a common CL
-object.  This allows it to be used with 3rd party JavaScript libraries
-(e.g. handlebarjs, jQuery) without stepping on their toes.
+object.  This allows it to be used with 3rd party JavaScript
+libraries (e.g. handlebarjs, jQuery) without stepping on their toes.
 The core CL object is defined in <code>CL-core.js</code>. Optional features
 are privided in their own files (e.g. <code>CL-feeds.js</code>,
 <code>CL-feeds-ui.js</code>, <code>CL-fields.js</code>). A concatenated version of all
@@ -62,34 +62,30 @@ the <code>CL-*.js</code> files is provided as <code>CL.js</code>.</p>
 <ol>
 <li>Clone the <strong>cl-js</strong> repository</li>
 <li>Change to the repository directory</li>
-<li>Download Handlebars and save as <code>scripts/handlerbar.js</code></li>
 <li>Copy <a href="scripts/">scripts</a> to your website document root</li>
 </ol>
-
-<p>NOTE: <code>CL-fields.js</code> uses <a href="http://handlebarsjs.com/installation.html">Handlerbars</a> which is a 3rd Party JavaScript library.</p>
 
 <p>Here is an example of installing <strong>cl-js</strong> and
 Handlebars in <code>/var/www/htdocs</code> directory.</p>
 
 <pre><code class="language-bash">    git clone https://github.com/caltechlibrary/cl-js
     cd cl-js
-    curl -o scripts/handlebars.js &quot;http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.1.2.js&quot;
     cp -vR cl-js/scripts /var/www/htdocs/
 </code></pre>
 
 <h2>Usage</h2>
 
-<p>The CL JavaScript library is targetting evergreen web browser
-without requiring build tools beyond possibly concatentation of
-files. Non-UI elements may run in headless environments like NodeJS
-but they is not enforced. UI elements require a DOM so will only
-run in your web browser unless you are willing to jump through some
-hurles.</p>
+<p>The CL-js JavaScript library is targetting evergreen web browser
+without requiring build tools beyond simple concatentation and make.
+Non-UI elements may run in headless environments like NodeJS
+but they is not guaranteed. UI elements require a DOM so will only
+run in your web browser unless you are willing to jump some
+hurdles.</p>
 
 <p>In your web browser you&rsquo;ll use a script elements like</p>
 
 <pre><code class="language-html">    &lt;script src=&quot;/scripts/cl-core.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;/scripts/cl-fields.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;/scripts/cl-ui.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;/scripts/cl-feeds.js&quot;&gt;&lt;/script&gt;
     &lt;script src=&quot;/scripts/cl-feeds-ui.js&quot;&gt;&lt;/script&gt;
 </code></pre>
@@ -102,9 +98,7 @@ hurles.</p>
 <h2>Known issues and limitations</h2>
 
 <p>The <code>CL-*.js</code> library is limited to web browser environment
-running on evergreen web browser. If you&rsquo;re using the
-functions defined in <code>CL-fields.js</code> You&rsquo;ll need to have
-Handlebars available.</p>
+running on evergreen web browser.</p>
 
 <h2>Getting help</h2>
 

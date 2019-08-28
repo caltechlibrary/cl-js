@@ -28,17 +28,14 @@
 
 <ul>
 <li>Forked CL-core.js, CL-ui.js, CL-BuilderWidget.js and CL-SearchWidget.js out from feeds.library.caltech.edu</li>
-<li>Moved feeds.library.caltech.edu specific features out of CL-core.js and CL-ui.js into CL-feeds.js</li>
-<li>Added CL-fields.js for simplify form building in And/Or prototype</li>
-<li>JavaScript API Changes
+<li>Moved feeds.library.caltech.edu specific features out of CL-core.js and CL-ui.js into CL-feeds.js and CL-feeds-ui.js</li>
+<li>Added new CL-ui.js to simplify form building in And/Or prototype</li>
+<li>JavaScript API Changes for CL object
 
 <ul>
 <li><code>CL.FeedsBaseURL</code> has been added for fetching feeds content in <code>CL-feeds.js</code></li>
-<li><code>CL.get()</code> renamed <code>CL.httpGet()</code>
-
-<ul>
-<li>If <code>CL.BaseURL</code> exists and you pass a root relative URL <code>CL.BaseURL</code> will be prefixed before making the httpGet() call.</li>
-</ul></li>
+<li><code>CL.get()</code> renamed <code>CL.httpGet()</code></li>
+<li><code>CL.BaseURL</code> is a fallback prefix in  <code>CL.httpGet()</code></li>
 </ul></li>
 </ul>
 

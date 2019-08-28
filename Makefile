@@ -11,18 +11,15 @@ BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 build: scripts/CL.js 
 
 scripts/CL.js: .FORCE
-	cat scripts/CL-core.js scripts/CL-feeds.js scripts/CL-feeds-ui.js \
-		scripts/CL-fields.js > scripts/CL.js
+	cat scripts/CL-core.js scripts/CL-ui.js scripts/CL-feeds.js scripts/CL-feeds-ui.js > scripts/CL.js
 	./mk-website.py
 
 lint:
 	jshint scripts/CL-core.js
+	jshint scripts/CL-ui.js
 	jshint scripts/CL-feeds.js
 	jshint scripts/CL-feeds-ui.js
-	jshint scripts/CL-fields.js
 
-handlebars: .FORCE
-	curl -o scripts/handlebars.js "http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.1.2.js"
 
 status:
 	git status
@@ -35,7 +32,7 @@ clean:
 	if [ -f scripts/CL.js ]; then rm scripts/CL.js; fi
 	if [ -d dist ]; then rm -fR dist; fi
 
-dist/webbrowser:
+dist/webbrowser: build
 	mkdir -p dist
 	cp -vR scripts dist/
 	cd dist && zip -r $(PROJECT)-$(VERSION)-webbrowser.zip *.md scripts/* examples/*
