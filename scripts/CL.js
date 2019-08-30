@@ -383,6 +383,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     CL.assembleFields = function(element, ...field_list) {
         let fields = field_list;
 
+        element.innerHTML = "";
         for (let key in fields) {
             element.innerHTML += fields[key].html();
         }

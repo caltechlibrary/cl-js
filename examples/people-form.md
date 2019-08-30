@@ -1,13 +1,15 @@
 
 # Example form for People info
 
+In this example we'll create a people object for Richard Feynman
+and populate a form with this object's attributes. 
+
 <div id="example-output">
 Form will go here.
 </div>
 
 <!-- START: Example People Info Form built with CL-ui.js -->
-<script src="../scripts/CL-core.js"></script>
-<script src="../scripts/CL-ui.js"></script>
+<script src="../scripts/CL.js"></script>
 <script>
 (function (document, window) {
 'use strict';

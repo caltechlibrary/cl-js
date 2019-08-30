@@ -257,14 +257,13 @@ function testAssembleFields(tests, err) {
             "title": "Short Reign of Pippen IV",
             "description": "A novella length satire set in post-war Paris", 
             "creators": [ steinbeck ]
-        }, 
-        '<div class="book">' +
-        '   <h3 class="title">{{title}}</h3>' +
-        '   <div class="creators">By {{creators}}</div>' + 
-        '   <div class="description">{{description}}</div>' +
-        '</div>',
-        undefined, 
-        '; ');
+        }, `
+<div class="book">
+    <h3 class="title">{{title}}</h3>
+    <div class="creators">By {{creators}}</div>
+    <div class="description">{{description}}</div>
+<div>
+`, undefined, '; ');
     books.push(book);
      
     pratchett = CL.field(pratchett, 

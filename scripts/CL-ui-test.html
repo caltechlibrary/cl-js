@@ -14,7 +14,7 @@
 <li><a href="../">README</a></li>
 <li><a href="../license.html">LICENSE</a></li>
 <li><a href="../install.html">INSTALL</a></li>
-<li><a href="../changes.html">CHANGES</a></li>
+<li><a href="../examples/">Examples</a></li>
 <li><a href="../scripts/testing.html">Tests</a></li>
 <li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
 </ul>
@@ -280,14 +280,13 @@ function testAssembleFields(tests, err) {
             "title": "Short Reign of Pippen IV",
             "description": "A novella length satire set in post-war Paris", 
             "creators": [ steinbeck ]
-        }, 
-        '<div class="book">' +
-        '   <h3 class="title">{{title}}</h3>' +
-        '   <div class="creators">By {{creators}}</div>' + 
-        '   <div class="description">{{description}}</div>' +
-        '</div>',
-        undefined, 
-        '; ');
+        }, `
+<div class="book">
+    <h3 class="title">{{title}}</h3>
+    <div class="creators">By {{creators}}</div>
+    <div class="description">{{description}}</div>
+<div>
+`, undefined, '; ');
     books.push(book);
      
     pratchett = CL.field(pratchett, 
