@@ -31,14 +31,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     /**
      * __template processes a Python-like template string, 
      * containing object attribute names with 
-     * prefixes of `${` and suffixes of `}` and replaces
+     * prefixes of `{{` and suffixes of `}}` and replaces
      * them with the attributes's value. The processed string
      * is then returned by the function.
      */ 
     function __template(tmpl, obj, sep = "") {
         let out = tmpl;
         for (let key in obj) {
-            let re = new RegExp('\\${' + key + '}', 'g');
+            let re = new RegExp('{{' + key + '}}', 'g');
             if (Array.isArray(obj[key])) {
                 let a = [];
                 for (let i in obj[key]) {

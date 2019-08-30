@@ -68,7 +68,7 @@ function testTitleField(tests, err) {
     tests.count++;
     println("Testing testTitleField()");
     let field = CL.field({"title": "Hello World"}, 
-        '<label>Title:</label> <input name="title" value="${title}" placeholder="Title goes here">',
+        '<label>Title:</label> <input name="title" value="{{title}}" placeholder="Title goes here">',
         function(obj) {
             if ('title' in obj) {
                 if (obj.title.length > 0) {
@@ -114,7 +114,7 @@ function testCreatorField(tests, err) {
             "first_name": first_name,
             "orcid": orcid
         }, 
-        '<label>Last Name:</label> <input name="last_name" value="${last_name}"><br><label>First Name:</label> <input name="first_name" value="${first_name}"><br><label>ORCID: </label> <input name="orcid" value="${orcid}"><p>',
+        '<label>Last Name:</label> <input name="last_name" value="{{last_name}}"><br><label>First Name:</label> <input name="first_name" value="{{first_name}}"><br><label>ORCID: </label> <input name="orcid" value="{{orcid}}"><p>',
         function () {
             let obj = this;
             if (! 'last_name' in obj ||  obj.last_name.length === 0) {
@@ -219,9 +219,9 @@ function testCreatorList(tests, err) {
     });
 
     for (let i in creators) {
-        items[i] = CL.field(creators[i], '<li><span class="display_name">${last_name}, ${first_name}</span></li>');
+        items[i] = CL.field(creators[i], '<li><span class="display_name">{{last_name}}, {{first_name}}</span></li>');
     }
-    list_object = CL.field({"items": items}, "<ul>${items}</ul>");
+    list_object = CL.field({"items": items}, "<ul>{{items}}</ul>");
     if (list_object === undefined) {
         tests.errors++;
         println("FAILED: expected list object, got undefined");
@@ -273,8 +273,8 @@ function testAssembleFields(tests, err) {
         };
      
     steinbeck = CL.field(steinbeck, 
-        '<span class="last_name">${last_name}</span>, ' +
-        '<span class="first_name">${first_name}</span>');
+        '<span class="last_name">{{last_name}}</span>, ' +
+        '<span class="first_name">{{first_name}}</span>');
      
     book = CL.field({
             "title": "Short Reign of Pippen IV",
@@ -282,21 +282,21 @@ function testAssembleFields(tests, err) {
             "creators": [ steinbeck ]
         }, 
         '<div class="book">' +
-        '   <h3 class="title">${title}</h3>' +
-        '   <div class="creators">By ${creators}</div>' + 
-        '   <div class="description">${description}</div>' +
+        '   <h3 class="title">{{title}}</h3>' +
+        '   <div class="creators">By {{creators}}</div>' + 
+        '   <div class="description">{{description}}</div>' +
         '</div>',
         undefined, 
         '; ');
     books.push(book);
      
     pratchett = CL.field(pratchett, 
-        '<span class="last_name">${last_name}</span>, ' +
-        '<span class="first_name">${first_name}</span>');
+        '<span class="last_name">{{last_name}}</span>, ' +
+        '<span class="first_name">{{first_name}}</span>');
      
     gaiman = CL.field(gaiman, 
-        '<span class="last_name">${last_name}</span>, ' +
-        '<span class="first_name">${first_name}</span>');
+        '<span class="last_name">{{last_name}}</span>, ' +
+        '<span class="first_name">{{first_name}}</span>');
      
     book = CL.field({
             "title": "Good Omens",
@@ -304,9 +304,9 @@ function testAssembleFields(tests, err) {
             "creators": [ pratchett, gaiman ]
         }, 
         '<div class="book">' +
-        '   <h3 class="title">${title}</h3>' +
-        '   <div class="creators">By ${creators}</div>' + 
-        '   <div class="description">${description}</div>' +
+        '   <h3 class="title">{{title}}</h3>' +
+        '   <div class="creators">By {{creators}}</div>' + 
+        '   <div class="description">{{description}}</div>' +
         '</div>',
         undefined, 
         '; ');

@@ -32,7 +32,7 @@
 <dt><a href="CL-core.js">CL-core.js</a></dt>
 <dd>forms the first part of the CL.js library. Core focuses on the low level plumbing of retrieving and pipelining data for processing.</dd>
 <dt><a href="CL-ui.js">CL-ui.js</a></dt>
-<dd>provides functions for generating ui elements as well as a simple python-like template substitution scheme for describing HTML elements. E.g. a template string of <code>&quot;&lt;input value=&quot;${catname}&quot;&gt;</code> which is given an object like <code>{&quot;catname&quot;: &quot;fred&quot;}</code> would be rendered <code>&lt;input value=&quot;fred&quot;&gt;</code>. The substituion happens at function envocation.</dd>
+<dd>provides functions for generating ui elements as well as a simple handlebars-like template substitution scheme for describing HTML elements. E.g. a template string of <code>&quot;&lt;input value=&quot;{{catname}}&quot;&gt;</code> which is given an object like <code>{&quot;catname&quot;: &quot;fred&quot;}</code> would be rendered <code>&lt;input value=&quot;fred&quot;&gt;</code>. The substituion happens at function envocation.</dd>
 <dt><a href="CL-feeds.js">CL-feeds.js</a></dt>
 <dd>provides the low level content retrieval functions needed to integration content from <a href="https://feeds.library.caltech.edu">https://feeds.library.caltech.edu</a>.  If you are reading the source to understand how to integrate content from feeds.library.caltech.edu in other languages (e.g. Go, Python, PHP, R or Julia) this is the place to look.</dd>
 <dt><a href="CL-feeds-ui.js">CL-feeds-ui.js</a></dt>

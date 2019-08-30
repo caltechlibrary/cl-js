@@ -9,7 +9,7 @@ Below are the javascript files that form **cl-js** library.
 : forms the first part of the CL.js library. Core focuses on the low level plumbing of retrieving and pipelining data for processing. 
 
 [CL-ui.js](CL-ui.js)
-: provides functions for generating ui elements as well as a simple python-like template substitution scheme for describing HTML elements. E.g. a template string of `"<input value="${catname}">` which is given an object like `{"catname": "fred"}` would be rendered `<input value="fred">`. The substituion happens at function envocation.
+: provides functions for generating ui elements as well as a simple handlebars-like template substitution scheme for describing HTML elements. E.g. a template string of `"<input value="{{catname}}">` which is given an object like `{"catname": "fred"}` would be rendered `<input value="fred">`. The substituion happens at function envocation.
 
 [CL-feeds.js](CL-feeds.js) 
 : provides the low level content retrieval functions needed to integration content from https://feeds.library.caltech.edu.  If you are reading the source to understand how to integrate content from feeds.library.caltech.edu in other languages (e.g. Go, Python, PHP, R or Julia) this is the place to look.
