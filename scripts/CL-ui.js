@@ -1,5 +1,5 @@
 /**
- * CL-fields.js provides browser side JavaScript form building
+ * CL-ui.js provides browser side JavaScript form building
  * functions for Caltech Library resources (e.g. feeds.library.caltech.edu).
  *
  * @author R. S. Doiel
@@ -35,7 +35,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * them with the attributes's value. The processed string
      * is then returned by the function.
      */ 
-    function __template(tmpl, obj, sep = "") {
+    function __template(tmpl, obj, sep = "", useChecked = true) {
         let out = tmpl;
         for (let key in obj) {
             let re = new RegExp('{{' + key + '}}', 'g');
@@ -47,6 +47,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     }
                 }
                 out = out.replace(re, a.join(sep));
+            } else if (obj[key] === true && useChecked == true) {
+                //NOTE: we treat boolean true as checkbox's checked value
+                out = out.replace(re, "checked");
+            } else if (obj[key] === false && useChecked === true) {
+                //NOTE: we treat boolean false as checkbox's checked 
+                // as empty string
+                out = out.replace(re, "");
             } else if (obj[key].html !== undefined) {
                 out = out.replace(re, obj[key].html())
             } else {
@@ -91,7 +98,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *     // Render as HTML
      *     element.innerHTML = creator.html();
      */
-    CL.field = function(attributes, template_string, validate_function = undefined, sep = "") {
+    CL.field = function(attributes, template_string, validate_function = undefined, sep = "", useChecked = true) {
         let obj = new Object();
         // Shallow copy of object attributes
         for (let key in attributes) {
@@ -121,7 +128,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
         obj.html = function() {
             let obj = this;
-            return __template(template_string, obj);
+            return __template(template_string, obj, sep, useChecked);
         }
         obj.json = function() {
             let self = this;
@@ -154,11 +161,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *         };
      *
      *     steinbeck = CL.field(steinbeck, 
-     *         '<span class="last_name">${last_name}</span>, ' +
-     *         '<span class="first_name">${first_name}</span>');
+     *         '<span class="last_name">{{last_name}}</span>, ' +
+     *         '<span class="first_name">{{first_name}}</span>');
      *
      *     creators = CL.field({"creators": [ steinbeck ]},
-     *         '<div class="creators">By ${creators}</div>',
+     *         '<div class="creators">By {{creators}}</div>',
      *         sep = '; ');
      *
      *     book = CL.field({
@@ -167,23 +174,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *          "creators": creators
      *         }, 
      *         '<div class="book">' +
-     *         '   <div class="title">${title}</div>' +
-     *         '   <div class="creators">By ${creators}</div>' + 
-     *         '   <div class="description">${description}</div>' +
+     *         '   <div class="title">{{title}}</div>' +
+     *         '   <div class="creators">By {{creators}}</div>' + 
+     *         '   <div class="description">{{description}}</div>' +
      *         '</div>'
      *         undefined, '; ');
      *     books.push(book);
      *
      *     pratchett = CL.field(pratchett, 
-     *         '<span class="last_name">${last_name}</span>, ' +
-     *         '<span class="first_name">${first_name}</span>');
+     *         '<span class="last_name">{{last_name}}</span>, ' +
+     *         '<span class="first_name">{{first_name}}</span>');
      *
      *     gaimen = CL.field(gaimen, 
-     *         '<span class="last_name">${last_name}</span>, ' +
-     *         '<span class="first_name">${first_name}</span>');
+     *         '<span class="last_name">{{last_name}}</span>, ' +
+     *         '<span class="first_name">{{first_name}}</span>');
      *
      *     creators = CL.field({"creators": [ pratchett, gaimen ]},
-     *         '<div class="creators">By ${creators}</div>',
+     *         '<div class="creators">By {{creators}}</div>',
      *         sep = '; ');
      *
      *     book = CL.field({
@@ -192,9 +199,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *          "creators": creators
      *         }, 
      *         '<div class="book">' +
-     *         '   <div class="title">${title}</div>' +
-     *         '   <div class="creators">By ${creators}</div>' + 
-     *         '   <div class="description">${description}</div>' +
+     *         '   <div class="title">{{title}}</div>' +
+     *         '   <div class="creators">By {{creators}}</div>' + 
+     *         '   <div class="description">{{description}}</div>' +
      *         '</div>'
      *         undefined, '; ');
      *     books.push(book);
