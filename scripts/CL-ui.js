@@ -35,7 +35,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * them with the attributes's value. The processed string
      * is then returned by the function.
      */ 
-    function __template(tmpl, obj, sep = "", useChecked = true) {
+    function __template(tmpl, obj, sep = "") {
         let out = tmpl;
         for (let key in obj) {
             let re = new RegExp('{{' + key + '}}', 'g');
@@ -47,13 +47,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     }
                 }
                 out = out.replace(re, a.join(sep));
-            } else if (obj[key] === true && useChecked == true) {
-                //NOTE: we treat boolean true as checkbox's checked value
-                out = out.replace(re, "checked");
-            } else if (obj[key] === false && useChecked === true) {
-                //NOTE: we treat boolean false as checkbox's checked 
-                // as empty string
-                out = out.replace(re, "");
             } else if (obj[key].html !== undefined) {
                 out = out.replace(re, obj[key].html())
             } else {
@@ -65,50 +58,54 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
     /**
      * field takes a default_attributes object, a template
-     * string and an optional validation function. It returns 
-     * an object that has the following functions - get(), set(), 
+     * string and an optional init function. It returns 
+     * an object that has the following functions - init(), get(), set(), 
      * html(), and json().
      *
      * Example:
      *
      *      creator = CL.field({
-     *          last_name: "",
-     *          first_name: "",
-     *          orcid: ""
+     *          last_name: "Jones",
+     *          first_name: "Henry",
+     *          birth_date: "July 1, 1899"
      *          },
      *          '<div>' +
      *          '   <label>Last Name:</label>' +
-     *          '   <input name="last_name" value="${last_name}">' +
+     *          '   <input name="last_name" value="{{last_name}}">' +
      *          '</div>' +
      *          '<div>' +
      *          '  <label>First Name:</label>' +
-     *          '  <input name="first_name" value="${first_name}">' +
+     *          '  <input name="first_name" value="{{first_name}}">' +
      *          '</div>' +
      *          '<div>' +
-     *          '  <label>ORCID:</label>' +
-     *          '  <input name="orcid" value="${orcid}">' +
+     *          '  <label>Birth Date:</label>' +
+     *          '  <input name="birth_date" value="{{birth_date}}">' +
      *          '</div>',
      *          function(obj) {
-     *             if ('orcid' in obj) {
-     *                return validate_orcid(obj.orcid);
+     *             // Normalize date before rendering form.
+     *             if (('birth_date' in obj) && obj.birth_date !== "") {
+     *                dt = new Date(obj.birth_date);
+     *                obj.birth_date = dt.toDateString()
      *             }
-     *             return false;
      *          });
      *          
      *     // Render as HTML
      *     element.innerHTML = creator.html();
      */
-    CL.field = function(attributes, template_string, validate_function = undefined, sep = "", useChecked = true) {
+    CL.field = function(attributes, template_string, init_function = undefined, sep = "") {
         let obj = new Object();
         // Shallow copy of object attributes
         for (let key in attributes) {
             obj[key] = attributes[key];
         }
-        // Attach our validation_function
-        if (validate_function === undefined) {
-            obj.validate = function () { return true; };
+        // Attach our init function
+        if (init_function === undefined) {
+            //NOTE: Our default init function always succeeds.
+            obj.init = function () { return true };
         } else {
-            obj.validate = validate_function;
+            //NOTE: User supplied init_function should return
+            // true on success, false otherwise.
+            obj.init = init_function;
         }
         // Add our get(), set(), html(), and json functions()
         obj.get = function(key, error_value) {
@@ -128,7 +125,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
         obj.html = function() {
             let obj = this;
-            return __template(template_string, obj, sep, useChecked);
+            return __template(template_string, obj, sep);
         }
         obj.json = function() {
             let self = this;
@@ -193,6 +190,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *         '<div class="creators">By {{creators}}</div>',
      *         sep = '; ');
      *
+     *     // NOTE: We attach normalizeBookData for the init function 
+     *     // which is called by assembleFields initializing the 
+     *     // data before rendering.
      *     book = CL.field({
      *          "title": "Good Omens"
      *          "description": "A book about angels and demons set in London for the most part", 
@@ -203,7 +203,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      *         '   <div class="creators">By {{creators}}</div>' + 
      *         '   <div class="description">{{description}}</div>' +
      *         '</div>'
-     *         undefined, '; ');
+     *         normalizeBook, '; ');
      *     books.push(book);
      *
      *     let element = CL.assembleFields(
@@ -215,7 +215,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         element.innerHTML = "";
         for (let key in fields) {
-            element.innerHTML += fields[key].html();
+            if (fields[key].init() === true) {
+                element.innerHTML += fields[key].html();
+            }
         }
         return element;
     }

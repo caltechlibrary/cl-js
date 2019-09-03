@@ -39,7 +39,7 @@ Form will go here.
 'use strict';
 let cl = Object.assign({}, window.CL),
     div = document.getElementById('example-output');
-cl.useChecked = true;
+
 let people = {
         "family_name": "Feynman",
         "given_name": "Richard",
@@ -63,6 +63,38 @@ let people = {
         "notes": ""
     },
     field = CL.field(people, `
+<style>
+div.form-example {
+    width: auto;
+    height: auto;
+    margin: 1.24em;
+    padding: 1.24em;
+}
+div.form-example > div {
+    padding-bottom: 0.72em;
+}
+div.form-example > div > input {
+    min-width: 30em;
+}
+div.form-example > div > textarea {
+    min-width: 40em;
+}
+div.form-example > div > label {
+    display: block; 
+}
+div.form-example > div > label.inline {
+    display: inline-block; 
+    width: 4em;
+    padding-right:0;
+    margin-right: 0;
+}
+div.form-example > div > input[type=checkbox] {
+    min-width: 1em;
+    padding-left: 1em;
+    margin-left: 1em;
+}
+</style>
+<div class="form-example">
 <div>
     <label for="family_name">Family Name:</label>
     <input type="text" id="family_name" name="family_name" value="{{family_name}}">
@@ -72,7 +104,7 @@ let people = {
     <input type="text" id="given_name" name="given_name" value="{{given_name}}">
 </div>
 <div>
-    <label for="cl_people_id">CL ID:</label>
+    <label for="cl_people_id">CL PEOPLE ID:</label>
     <input type="text" id="cl_people_id" name="cl_people_id" value="{{cl_people_id}}">
     <a id="cl_people_url"></a>
 </div>
@@ -87,17 +119,17 @@ let people = {
     <a id="authors_url"></a>
 </div>
 <div>
-    <label for="archivesspace_id">ArchivesSpace ID</label>
+    <label for="archivesspace_id">ArchivesSpace ID:</label>
     <input type="text" id="archivesspace_id" name="archivesspace_id" value="{{archivesspace_id}}">
     <a id="archivesspace_url"></a>
 </div>
 <div>
-    <label for="directory_id">Directory ID</label>
+    <label for="directory_id">Directory ID:</label>
     <input type="text" id="directory_id" name="directory_id" value="{{directory_id}}">
     <a id="directory_url"></a>
 </div>
 <div>
-    <label for="viaf">VIAF ID</label>
+    <label for="viaf">VIAF ID:</label>
     <input type="text" id="viaf" name="viaf" value="{{viaf}}">
     <a id="viaf_url"></a>
 </div>
@@ -133,38 +165,43 @@ let people = {
     <textarea id="educated_at" name="educated_at">{{educated_at}}</textarea>
 </div>
 <div>
-    <label for="caltech">Caltech:</label>
+    <label class="inline" for="caltech">Caltech:</label>
     <input type="checkbox" id="caltech" name="caltech" {{caltech}}>
 </div>
 <div>
-    <label for="jpl">JPL:</label>
+    <label class="inline" for="jpl">JPL:</label>
     <input type="checkbox" id="jpl" name="jpl" {{jpl}}>
 </div>
 <div>
-    <label for="faculty">Faculty:</label>
+    <label class="inline" for="faculty">Faculty:</label>
     <input type="checkbox" id="faculty" name="faculty" {{faculty}}>
 </div>
 <div>
-    <label for="alumn">Alumn:</label>
+    <label class="inline" for="alumn">Alumn:</label>
     <input type="checkbox" id="alumn" name="alumn" {{alumn}}>
 </div>
 <div>
     <label for="notes">Notes:</label>
     <textarea id="notes" name="notes">{{notes}}</textarea>
 </div>
+</div><!-- END: div.form-example -->
 `,
-        function(obj) {
-            // Make sure no fields are empty...
+        function() {
+            let obj = this;
+            // NOTE: Convert bool true to 'checked' and
+            // false to empty string for using in 
+            // checkbox input.
             for (let key in obj) {
-                if (obj[key].trim().length == 0) {
-                    return false;
+                if (obj[key] === true) {
+                    obj[key] = "checked";
+                } else if (obj[key] === false) {
+                    obj[key] = "";
                 }
             }
             return true;
         });
 div.innerHTML = "";
-let form = CL.assembleFields(
-        div, field);
+let form = CL.assembleFields(div, field);
 }(document, window));
 
 </script>

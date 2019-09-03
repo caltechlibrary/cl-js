@@ -115,8 +115,11 @@ function testCreatorField(tests, err) {
             "orcid": orcid
         }, 
         '<label>Last Name:</label> <input name="last_name" value="{{last_name}}"><br><label>First Name:</label> <input name="first_name" value="{{first_name}}"><br><label>ORCID: </label> <input name="orcid" value="{{orcid}}"><p>',
-        function () {
-            let obj = this;
+        function (obj) {
+            // NOTE: This initialization is validating data only.
+            // You could actually translate the data to something
+            // useful for rendering in your HTML, e.g. true/false
+            // to "checked" attribute in a checkbox.
             if (! 'last_name' in obj ||  obj.last_name.length === 0) {
                 return false;
             }
@@ -129,14 +132,14 @@ function testCreatorField(tests, err) {
             return true;
         });
 
-    if ('validate' in field) {
-        if (field.validate() !== true) {
+    if ('init' in field) {
+        if (field.init() !== true) {
             tests.errors++;
-            println('FAILED: expected validate() return true, got false');
+            println('FAILED: expected init() return true, got false');
         }
     } else {
         tests.errors++;
-        println('FAILED: expected validate function in field');
+        println('FAILED: expected init() function in field');
     }
     let val = field.get('orcid');
     if (val !== orcid) {

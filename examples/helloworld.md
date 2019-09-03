@@ -40,14 +40,9 @@ let name_element = document.getElementById('name');
 name_element.addEventListener("change", 
     function(evt) {
         field.set("name", name_element.value);
-        // Normally we'd run validate and if it returns true
-        // then we'd use CL.httpGet() or CL.httpPost() to transmit
+        // Normally we'd run some validation and if it returns 
+        // true we'd use CL.httpGet() or CL.httpPost() to transmit
         // our results.
-        if (field.validate()) {
-            // Send form stuff
-        } else {
-            // Help solve validation error
-        }
     });
 }(document, window));
 </script>
