@@ -125,10 +125,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * @param callbackFn - an function to handle the callback, 
      *        function takes two args data (an object) and 
      *        error (a string)
-     * @param (optional) asAsync - defaults to true, opens the
-     *        POST as asynchronous if true, synchronous if false
      */
-    CL.httpGet = function (url, contentType, callbackFn, asAsync = true) {
+    CL.httpGet = function (url, contentType, callbackFn) {
         let self = this,
             xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -152,7 +150,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
 
         /* we always want JSON data */
-        xhr.open('GET', url, asAsync);
+        xhr.open('GET', url);
         if (url.includes(".json.gz") || url.includes(".js.gz")) {
             xhr.setRequestHeader('Content-Encoding', 'gzip');
         }
@@ -185,10 +183,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * @param callbackFn - an function to handle the callback, 
      *        function takes two args data (an object) and 
      *        error (a string)
-     * @param (optional) asAsync - defaults to true, opens the
-     *        POST as asynchronous if true, synchronous if false
      */
-    CL.httpPost = function (url, contentType, payload, callbackFn, asAsync = true) {
+    CL.httpPost = function (url, contentType, payload, callbackFn) {
         let self = this,
             xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
@@ -212,7 +208,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
 
         /* we always want JSON data */
-        xhr.open('POST', url, asAsync);
+        xhr.open('POST', url);
         if (contentType !== "" ) {
             xhr.setRequestHeader('Content-Type', contentType);
         }

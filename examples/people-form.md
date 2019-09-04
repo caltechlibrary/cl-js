@@ -160,6 +160,7 @@ div.form-example > div > input[type=checkbox] {
     <label for="notes">Notes:</label>
     <textarea id="notes" name="notes">{{notes}}</textarea>
 </div>
+<div><button id="save">Save</button></div>
 </div><!-- END: div.form-example -->
 `,
         function() {
@@ -181,15 +182,13 @@ div.form-example > div > input[type=checkbox] {
         save = document.getElementById('save');
 
     save.addEventListener('click', function(evt) {
-        //FIXME: this is where you'd do something like CL.httpPost( ... )
-        CL.httpPost('/demo-post', 'application/javascript', JSON.stringify(people), false, function(data, err) {
-            if (err) {
-                console.log("ERROR:", err);
-                return;
-            }
-                console.log("Success! ", data);
-                return;
-        });
+        //NOTE: this is where you'd do something like CL.httpPost( ... )
+        CL.httpPost('/', 'application/javascript', JSON.stringify(people), function(data, err) {
+            //NOTE: This is a dummy post error handler since this is a demo ...
+            console.log("DEBUG You SHOULD see an error since / shouldn't accept POSTs");
+            console.log("ERROR: ", err);
+            console.log("DATA: ", data);
+        }, false);
     });
 
 }(document, window));
