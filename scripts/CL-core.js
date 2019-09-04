@@ -129,7 +129,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     CL.httpGet = function (url, contentType, callbackFn) {
         let self = this,
             xhr = new XMLHttpRequest(),
-            page_url = new URL(window.location.href);
+            page_url = new URL(window.location.href),
+            username = page_url.username || '',
+            password = page_url.password || '';
         console.log("DEBUG page_url ->", page_url);
         xhr.onreadystatechange = function () {
             // process response
@@ -149,6 +151,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         /* Check to see if we should be using a default prefix for host */
         if (url.startsWith("/") && self.BaseURL !== undefined) {
             url = self.BaseURL + url;
+        }
+        if (page_url.username !== undefined && url.username === undefined) {
+            url.username = page_url.username;
+        }
+        if (page_url.password !== undefined && url.password == undefined) {
+            url.password = page_url.password;
         }
 
         /* we always want JSON data */
@@ -208,7 +216,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         /* Check to see if we should be using a default prefix for host */
         if (url.startsWith("/") && self.BaseURL !== undefined) {
-            url = self.BaseURL + url;
+            url = new URL(self.BaseURL + url);
+        }
+        if (page_url.username !== undefined && url.username === undefined) {
+            url.username = page_url.username;
+        }
+        if (page_url.password !== undefined && url.password == undefined) {
+            url.password = page_url.password;
         }
 
         /* we always want JSON data */
