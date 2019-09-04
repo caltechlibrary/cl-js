@@ -128,7 +128,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      */
     CL.httpGet = function (url, contentType, callbackFn) {
         let self = this,
-            xhr = new XMLHttpRequest();
+            xhr = new XMLHttpRequest(),
+            page_url = new URL(window.location.href);
+        console.log("DEBUG page_url ->", page_url);
         xhr.onreadystatechange = function () {
             // process response
             if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -186,7 +188,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      */
     CL.httpPost = function (url, contentType, payload, callbackFn) {
         let self = this,
-            xhr = new XMLHttpRequest();
+            xhr = new XMLHttpRequest(),
+            page_url = new URL(window.location.href);
+        console.log("DEBUG page_url ->", page_url);
         xhr.onreadystatechange = function () {
             // process response
             if (xhr.readyState === XMLHttpRequest.DONE) {
