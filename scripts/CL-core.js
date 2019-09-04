@@ -119,7 +119,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * CL.httpGet() - makes an HTTP get request and returns the results 
      * via callbackFn.
      *
-     * @param url (string) the assembled URL (including any GET args)
+     * @param url (a URL object) the assembled URL (including any GET args)
      * @param contentType - string of indicating mime type 
      *        (e.g. text/html, text/plain, application/json)
      * @param callbackFn - an function to handle the callback, 
@@ -148,10 +148,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
         };
 
-        /* Check to see if we should be using a default prefix for host */
-        if (url.startsWith("/") && self.BaseURL !== undefined) {
-            url = self.BaseURL + url;
-        }
+        /* NOTE: Check to see if we should turn a string version of URL 
+         * into a URL object. Handle case of applying a BaseURL prefix
+         * if protocol/host is missing */
+        if (typeof url === "string") {
+            if (url.startsWith("/") && self.BaseURL !== undefined) {
+                url = new (self.BaseURL + url);
+            } else {
+                url = new URL(url);
+            }
+        } 
         if (page_url.username !== undefined && url.username === undefined) {
             url.username = page_url.username;
         }
@@ -161,7 +167,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         /* we always want JSON data */
         xhr.open('GET', url, true);
-        if (url.includes(".json.gz") || url.includes(".js.gz")) {
+        if (url.pathname.includes(".json.gz") || url.pathname.includes(".js.gz")) {
             xhr.setRequestHeader('Content-Encoding', 'gzip');
         }
         if (contentType !== "" ) {
@@ -214,9 +220,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
         };
 
-        /* Check to see if we should be using a default prefix for host */
-        if (url.startsWith("/") && self.BaseURL !== undefined) {
-            url = new URL(self.BaseURL + url);
+        /* NOTE: Check to see if we should turn a string version of URL 
+         * into a URL object. Handle case of applying a BaseURL prefix
+         * if protocol/host is missing */
+        if (typeof url == "string") {
+            if ( url.startsWith("/") && self.BaseURL !== undefined) {
+                url = new URL(self.BaseURL + url);
+            } else {
+                url = new URL(url);
+            }
         }
         if (page_url.username !== undefined && url.username === undefined) {
             url.username = page_url.username;
