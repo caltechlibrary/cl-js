@@ -129,10 +129,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     CL.httpGet = function (url, contentType, callbackFn) {
         let self = this,
             xhr = new XMLHttpRequest(),
-            page_url = new URL(window.location.href),
-            username = page_url.username || '',
-            password = page_url.password || '';
-        console.log("DEBUG page_url ->", page_url);
+            page_url = new URL(window.location.href);
         xhr.onreadystatechange = function () {
             // process response
             if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -204,7 +201,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         let self = this,
             xhr = new XMLHttpRequest(),
             page_url = new URL(window.location.href);
-        console.log("DEBUG page_url ->", page_url);
         xhr.onreadystatechange = function () {
             // process response
             if (xhr.readyState === XMLHttpRequest.DONE) {
