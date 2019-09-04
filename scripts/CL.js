@@ -150,7 +150,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
 
         /* we always want JSON data */
-        xhr.open('GET', url);
+        xhr.open('GET', url, true);
         if (url.includes(".json.gz") || url.includes(".js.gz")) {
             xhr.setRequestHeader('Content-Encoding', 'gzip');
         }
@@ -208,7 +208,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
 
         /* we always want JSON data */
-        xhr.open('POST', url);
+        xhr.open('POST', url, true);
         if (contentType !== "" ) {
             xhr.setRequestHeader('Content-Type', contentType);
         }
