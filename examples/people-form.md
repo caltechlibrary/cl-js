@@ -177,7 +177,21 @@ div.form-example > div > input[type=checkbox] {
             return true;
         });
     div.innerHTML = "";
-    let form = CL.assembleFields(div, field);
+    let form = CL.assembleFields(div, field),
+        save = document.getElementById('save');
+
+    save.addEventListener('click', function(evt) {
+        //FIXME: this is where you'd do something like CL.httpPost( ... )
+        CL.httpPost('/demo-post', 'application/javascript', JSON.stringify(people), false, function(data, err) {
+            if (err) {
+                console.log("ERROR:", err);
+                return;
+            }
+                console.log("Success! ", data);
+                return;
+        });
+    });
+
 }(document, window));
 </script>
 
