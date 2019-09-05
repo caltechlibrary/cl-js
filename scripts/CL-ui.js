@@ -39,7 +39,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         let out = tmpl;
         for (let key in obj) {
             let re = new RegExp('{{' + key + '}}', 'g');
-            if (Array.isArray(obj[key])) {
+            if (obj[key] === undefined) {
+                console.log(`ERROR: you have assigned 'undefined' to object attribute, ${key} -> ${obj[key]}`);
+            } else if (Array.isArray(obj[key])) {
                 let a = [];
                 for (let i in obj[key]) {
                     if (obj[key][i].html !== undefined) {
