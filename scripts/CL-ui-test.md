@@ -92,18 +92,19 @@ function testCreatorField(tests, err) {
             "orcid": orcid
         }, 
         '<label>Last Name:</label> <input name="last_name" value="{{last_name}}"><br><label>First Name:</label> <input name="first_name" value="{{first_name}}"><br><label>ORCID: </label> <input name="orcid" value="{{orcid}}"><p>',
-        function (obj) {
+        function () {
+            let obj = this;
             // NOTE: This initialization is validating data only.
             // You could actually translate the data to something
             // useful for rendering in your HTML, e.g. true/false
             // to "checked" attribute in a checkbox.
-            if (! 'last_name' in obj ||  obj.last_name.length === 0) {
+            if (obj.last_name === undefined ||  obj.last_name.length === 0) {
                 return false;
             }
-            if (! 'first_name' in obj || obj.first_name.length === 0) {
+            if (obj.first_name === undefined || obj.first_name.length === 0) {
                 return false;
             }
-            if (! 'orcid' in obj || obj.orcid.length === 0) {
+            if (obj.orcid === undefined || obj.orcid.length === 0) {
                 return false;
             }
             return true;

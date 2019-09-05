@@ -215,8 +215,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         element.innerHTML = "";
         for (let key in fields) {
-            if (fields[key].init() === true) {
-                element.innerHTML += fields[key].html();
+            if (fields[key].init !== undefined && 
+                    fields[key].html !== undefined) {
+                if (fields[key].init() === true) {
+                    element.innerHTML += fields[key].html();
+                }
             }
         }
         return element;
