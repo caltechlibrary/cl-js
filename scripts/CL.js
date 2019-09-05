@@ -206,7 +206,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status == 200) {
                     let data = xhr.responseText;
-                    if (contentType === "application/json") {
+                    console.log(`DEBUG xhr.responseText '${xhr.responseText}'`);
+                    if (contentType === "application/json" && data !== "") {
                         data = JSON.parse(xhr.responseText);
                     }
                     callbackFn(data, "");
