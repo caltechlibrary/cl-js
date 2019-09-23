@@ -43,7 +43,7 @@ distribute_docs:
 	cp -v README.md dist/
 	cp -v LICENSE dist/
 	cp -v CHANGES.md dist/
-	cp -v INSTALL.md dist/
+	if [ -f INSTALL.md ]; then cp -v INSTALL.md dist/; fi
 	cp -v CONTRIBUTING.md dist/
 	cp -v CODE_OF_CONDUCT.md dist/
 	cp -vR examples/* dist/examples/
