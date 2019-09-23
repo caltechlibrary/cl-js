@@ -1,26 +1,27 @@
 {
-  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-  "@type": "SoftwareSourceCode",
-  "description": "Provides a common Caltech Library CL JavaScript object",
-  "name": "cl-js",
-  "codeRepository": "https://github.com/caltechlibrary/cl-js",
-  "issueTracker": "https://github.com/caltechlibrary/cl-js/issues",
-  "license": "https://github.com/caltechlibrary/cl-js/blob/master/LICENSE",
-  "version": "0.1.0",
-  "author": [
-    {
-      "@type": "Person",
-      "givenName": "Robert",
-      "familyName": "Doiel",
-      "affiliation": "California Institute of Technology Library",
-      "email": "rsdoiel@library.caltech.edu",
-      "@id": "https://orcid.org/0000-0003-0900-6903"
-    }],
-  "developmentStatus": "active",
-  "downloadUrl": "https://github.com/caltechlibrary/cl-js/archive/0.1.0.zip",
-  "keywords": [
-    "software",
-    "javascript"
-  ],
-  "maintainer": "https://orcid.org/0000-0003-0900-6903"
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "description": "Provides a common Caltech Library CL JavaScript object",
+    "name": "cl-js",
+    "codeRepository": "https://github.com/caltechlibrary/cl-js",
+    "issueTracker": "https://github.com/caltechlibrary/cl-js/issues",
+    "license": "https://github.com/caltechlibrary/cl-js/blob/master/LICENSE",
+    "version": "0.1.1",
+    "author": [
+        {
+            "@type": "Person",
+            "givenName": "Robert",
+            "familyName": "Doiel",
+            "affiliation": "California Institute of Technology Library",
+            "email": "rsdoiel@library.caltech.edu",
+            "@id": "https://orcid.org/0000-0003-0900-6903"
+        }
+    ],
+    "developmentStatus": "active",
+    "downloadUrl": "https://github.com/caltechlibrary/cl-js/archive/0.1.1.zip",
+    "keywords": [
+        "software",
+        "javascript"
+    ],
+    "maintainer": "https://orcid.org/0000-0003-0900-6903"
 }
