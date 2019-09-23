@@ -11,7 +11,7 @@ BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 build: scripts/CL.js 
 
 scripts/CL.js: .FORCE
-	cat scripts/CL-core.js scripts/CL-ui.js scripts/CL-feeds.js scripts/CL-feeds-ui.js > scripts/CL.js
+	cat scripts/CL-core.js scripts/CL-ui.js scripts/CL-feeds.js scripts/CL-feeds-ui.js scripts/CL-doi-media.js > scripts/CL.js
 	./mk-website.py
 
 lint:
@@ -19,6 +19,7 @@ lint:
 	jshint scripts/CL-ui.js
 	jshint scripts/CL-feeds.js
 	jshint scripts/CL-feeds-ui.js
+	jshint scripts/CL-doi-media.js
 
 
 status:
