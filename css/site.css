@@ -20,12 +20,8 @@ body {
      height: 100%;
      color: black;
      background-color: white;
-     /*
-     color: #FF6E1E;
-     background-color: #AAA99F; /* #76777B;*/
-     */
      font-family: Open Sans, Helvetica, Sans-Serif;
-     font-size: 16px;
+     font-size: 14px;
 }
 
 header {
@@ -140,28 +136,16 @@ nav ul li {
 section {
      position: relative;
      display: inline-block;
-     width: 100%;
-     min-height: 84%;
+     width: auto;
+     max-width: 98%;
+     height: 100%;
      color: black;
      background-color: white;
-     margin-top: 0;
-     margin-left: 0;
-     margin-right: 0;
-     margin-bottom: 3em;
-     padding-top 0;
-     padding-bottom: 3em;
+     margin: 0;
+     padding-top: 0;
+     padding-bottom: 2em;
      padding-left: 1em;
      padding-right: 0;
-}
-
-section p {
-    width: 86%;
-    height: auto;
-}
-
-section pre, section code {
-    font-size: small;
-    line-height: 1;
 }
 
 section h1 {
@@ -170,7 +154,7 @@ section h1 {
 
 section h2 {
     font-size: 1.12em;
-    font-weight: italic;
+    font-style: italic;
 }
 
 section h3 {
@@ -179,33 +163,19 @@ section h3 {
 }
 
 section ul {
-    display: block;
-    list-style: inside;
-    list-style-type: circle;
-    margin: 0;
-    padding-left: 1.24em;
-}
-
-section ul ul {
     list-style-type: disc;
 }
 
-section ul ul ul {
-    list-style-type: square;
+
+section a, section a:link, section a:visited {
+    font-style: italic;
+    font-weight: normal;
 }
 
-section ul ul ul ul {
-    list-style-type: circle;
+section a:active, section a:hover, section a:focus {
+    /* orange: #FF6E1E; */
+    color: #FF6E1E;
 }
-
-section ul ul ul ul ul {
-    list-style-type: disc;
-}
-
-section ul ul ul ul ul ul {
-    list-style-type: square;
-}
-
 
 aside {
      margin: 0;
@@ -242,8 +212,6 @@ aside ul > ul {
 }
 
 footer {
-     margin-top: 2em;
-     padding-top: 1em;
      position: fixed;
      bottom: 0;
      display: block;
@@ -279,3 +247,86 @@ footer a, footer a:link, footer a:visited, footer a:active, footer a:focus, foot
      text-decoration: none;
 }
 
+.announcement {
+    color: black;
+    background-color: yellow;
+    padding: 1em;
+    margin-top: 2em;
+    margin-bottom: 0em;
+    margin-left: 0em;
+    margin-right: 0em;
+    text-overflow: ellipsis;
+    border: 1px solid black;
+}
+
+/*
+.article-result, .publication-result, .book_section-result {
+    margin-bottom: 1.24em;
+}
+*/
+
+
+/*
+ * Search box and results layout
+ */
+.search-box {
+    display: block;
+}
+
+.search-box div {
+    display: block;
+}
+
+.search-box div label {
+    vertical-align: top;
+}
+
+.search-go-button {
+    display: block;
+}
+
+.search-go-button input {
+    text-align: center;
+    margin: 0.24em;
+}
+
+.search-result-pager {
+    padding-top: 1.24em;
+    padding-bottom: 1.24em;
+}
+
+.search-results {
+    margin-top:0;
+    margin-bottom:0;
+    margin-left: 0;
+    margin-right: 1.24em;
+    padding: 0;
+}
+.search-result {
+    padding-top: 0.24em;
+    padding-bottom: 1.24em;
+}
+
+.search-result:nth-child(odd) {
+    background-color: lightgrey;
+}
+
+.field-name, .matched-name, .index-name {
+    display: inline-block;
+    width: 6%;
+    margin-right: 1.24em;
+    text-transform: lowercase;
+    text-align: right;
+    vertical-align: top;
+}
+
+.field-value, .matched-value, .index-value {
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+}
+
+.index-name, .index-value {
+    font-style: italic;
+    font-size: smaller;
+}
