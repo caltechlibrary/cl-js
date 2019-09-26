@@ -40,6 +40,7 @@ println("\nRunning tests in a pipeline\n");
 function testGetFeed(tests,err) {
     let self = this;
 
+    tests.count++;
     println("Testing testGetFeed() ...");
     self.getFeed('https://feeds.library.caltech.edu/people/people_list.json', function(src, err) {
         let data = [];
