@@ -150,7 +150,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
          * if protocol/host is missing */
         if (typeof url === "string") {
             if (url.startsWith("/") && self.BaseURL !== undefined) {
-                url = new (self.BaseURL + url);
+                /* NOTE: combined our BaseURL string with url as 
+                 * root relative pathname, then re-cast to URL object */
+                url = new URL(self.BaseURL + url);
             } else {
                 url = new URL(url);
             }
@@ -1547,10 +1549,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 elem.innerHTML = `Could not render ${doi}, ${err}`;
                 return;
             }
-            elem.innerHTML = `<link href="http://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet">
-<script src="http://vjs.zencdn.net/7.5.5/video.js"></script>
+            elem.innerHTML = `<link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet">
+<script src="https://vjs.zencdn.net/7.5.5/video.js"></script>
 <!-- If you'd like to support IE8 -->
-<script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+<script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 
 <video class="video-js" controls preload="auto" width="640" height="480" data-setup="{}">
     <source src="${obj.media_url}" type='${obj.media_type}'>
