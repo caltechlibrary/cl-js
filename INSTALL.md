@@ -33,6 +33,14 @@ Here are the command line steps I took for version v0.1.2.
 From here I can include the JavaScript in the web pages that need it.
 
 
+The latest releases can always be found at 
+
 >    https://github.com/caltechlibrary/dataset/releases/latest
 
+If you want to use the production version we use at
+Caltech Library you can use the following script element in
+your web page.
 
+```html
+    <script src="https://feeds.library.caltech.edu/scripts/CL.js"></script>
+```
