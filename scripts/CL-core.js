@@ -152,9 +152,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             if (url.startsWith("/") && self.BaseURL !== undefined) {
                 /* NOTE: combined our BaseURL string with url as 
                  * root relative pathname, then re-cast to URL object */
-                u = new (self.BaseURL);
-                u.pathname + url;
-                url = u;
+                url = new URL(self.BaseURL + url);
             } else {
                 url = new URL(url);
             }
