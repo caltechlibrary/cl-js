@@ -31,25 +31,35 @@ CL-js provides a lightweight JavaScript library used across several
 Caltech Library projects. All functionality is bound to a common CL
 object.  This allows it to be used with 3rd party JavaScript 
 libraries (e.g. handlebarjs, jQuery) without stepping on their toes.
-The core CL object is defined in `CL-core.js`. Optional features
-are privided in their own files (e.g. `CL-feeds.js`, 
-`CL-feeds-ui.js`, `CL-fields.js`). A concatenated version of all
-the `CL-*.js` files is provided as `CL.js`.
+The core CL object is defined in `CL-core.js`. Additional features
+are provided in their own files `CL-us.js`, `CL-feeds.js`, 
+`CL-feeds-ui.js`, `CL-fields.js` and `CL-doi-media.js`. 
+If you want to used our JavaScript library you should 
+references the concatenated version of all named `CL.js`.
 
 Installation
 ------------
 
+In your web page include the following script element to access
+the **CL** object.
+
+```html
+    <script src="https://feeds.library.caltech.edu/scripts/CL.js"></script>
+```
+
+If you want a local copy of our library
+
 1. Clone the **cl-js** repository
 2. Change to the repository directory
-3. Copy [scripts](scripts/) to your website document root
+3. Copy [scripts/CL.js](scripts/CL.js) to your website document tree where you store your JavaScript code
 
-Here is an example of installing **cl-js** and 
-Handlebars in `/var/www/htdocs` directory.
+Here is an example of installing **cl-js** 
+in the `/var/www/htdocs/js` directory.
 
 ```bash
     git clone https://github.com/caltechlibrary/cl-js
     cd cl-js
-    cp -vR cl-js/scripts /var/www/htdocs/
+    cp -vR cl-js/scripts/CL.js /var/www/htdocs/js/
 ```
 
 Usage
@@ -62,27 +72,47 @@ but they is not guaranteed. UI elements require a DOM so will only
 run in your web browser unless you are willing to jump some
 hurdles.
 
-In your web browser you'll use a script elements like
+The recommended approach to using CL-js is to point your script
+elements at our production version of `CL.js`.
 
 ```html
-    <script src="/scripts/cl-core.js"></script>
-    <script src="/scripts/cl-ui.js"></script>
-    <script src="/scripts/cl-feeds.js"></script>
-    <script src="/scripts/cl-feeds-ui.js"></script>
+    <script src="https://feeds.library.caltech.edu/scripts/CL.js"></script>
 ```
 
-Or if you use the concatenated version
+If you want to work on a local copy (e.g. you're adapting, enhancing, 
+debugging or customizing our JavaScript library) can also copy the 
+JavaScript files into your local web document root.  The library is 
+contained in a "scripts" folder in our GitHub repository
+for [CL-js](https://github.com/caltechlibrary/cl-js). Copy or symlink
+the "scripts" to your web document root. Then you can easily include
+the content in your HTML pages.
+
+Using the concatenated version
 
 ```html
-    <script src="/scripts/cl.js"></script>
+    <script src="/scripts/CL.js"></script>
+```
+
+Or if you are experimenting, enhancing or 
+exploring the JavaScript library you can include
+the file individually.
+
+```html
+    <script src="/scripts/CL-core.js"></script>
+    <script src="/scripts/CL-ui.js"></script>
+    <script src="/scripts/CL-feeds.js"></script>
+    <script src="/scripts/CL-feeds-ui.js"></script>
+    <script src="/scripts/CL-doi-media.js"></script>
 ```
 
 
 Known issues and limitations
 ----------------------------
 
-The `CL-*.js` library is limited to web browser environment 
-running on evergreen web browser. 
+The `CL-*.js` library is limited to web browser environment
+running on evergreen web browser. Because of DOM usage
+it is not intended to be used from server side environments
+like [NodeJS](https://nodejs.org).
 
 
 Getting help

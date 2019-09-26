@@ -49,14 +49,14 @@ your web page.</p>
 
 <p>In the following steps I&rsquo;m assuming your web directory is
 located at <code>/var/www/htdocs</code> and that you store your JavaScript
-files in <code>/var/www/htdocs/js</code> and you have permission to read/write
+files in <code>/var/www/htdocs/scripts</code> and you have permission to read/write
 files in those directories.</p>
 
 <ol>
 <li>Goto <a href="https://github.com/caltechlibrary/cl-js/releases/latest">https://github.com/caltechlibrary/cl-js/releases/latest</a></li>
 <li>Download the cl-js-VERSION-webbrowser.zip file (VERSION is replaced with the current version number, e.g. v0.1.2)</li>
 <li>Unzip the cl-js-VERSION-webbrowser.zip file</li>
-<li>Copy scripts/CL.js to /var/www/htdocs/js/</li>
+<li>Copy scripts/CL.js to /var/www/htdocs/scripts/</li>
 <li>Update your web page and you&rsquo;re done</li>
 </ol>
 
@@ -64,10 +64,13 @@ files in those directories.</p>
 
 <pre><code class="language-bash">    curl -O https://github.com/caltechlibrary/cl-js/releases/download/v0.1.2/cl-js-v0.1.2-webbrowser.zip
     unzip cl-js-v0.1.2-webbrowser.zip
-    cp scripts/CL.js /var/www/htdocs/js/
+    cp scripts/*.js /var/www/htdocs/scripts/
 </code></pre>
 
 <p>From here I can include the JavaScript in the web pages that need it.</p>
+
+<pre><code class="language-html">    &lt;script src=&quot;/scripts/CL.js&quot;&gt;&lt;/script&gt;
+</code></pre>
 
 </section>
 

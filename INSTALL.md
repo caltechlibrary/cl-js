@@ -26,13 +26,13 @@ The latest releases can always be found at
 
 In the following steps I'm assuming your web directory is
 located at `/var/www/htdocs` and that you store your JavaScript
-files in `/var/www/htdocs/js` and you have permission to read/write
+files in `/var/www/htdocs/scripts` and you have permission to read/write
 files in those directories.
 
 1. Goto https://github.com/caltechlibrary/cl-js/releases/latest 
 2. Download the cl-js-VERSION-webbrowser.zip file (VERSION is replaced with the current version number, e.g. v0.1.2)
 3. Unzip the cl-js-VERSION-webbrowser.zip file
-4. Copy scripts/CL.js to /var/www/htdocs/js/
+4. Copy scripts/CL.js to /var/www/htdocs/scripts/
 5. Update your web page and you're done
 
 Here are the command line steps I took for version v0.1.2.
@@ -41,8 +41,12 @@ Here are the command line steps I took for version v0.1.2.
 ```bash
     curl -O https://github.com/caltechlibrary/cl-js/releases/download/v0.1.2/cl-js-v0.1.2-webbrowser.zip
     unzip cl-js-v0.1.2-webbrowser.zip
-    cp scripts/CL.js /var/www/htdocs/js/
+    cp scripts/*.js /var/www/htdocs/scripts/
 ```
 
 From here I can include the JavaScript in the web pages that need it.
+
+```html
+    <script src="/scripts/CL.js"></script>
+```
 
