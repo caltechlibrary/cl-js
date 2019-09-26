@@ -3,7 +3,7 @@
 + [README](../)
 + [LICENSE](../license.html)
 + [INSTALL](../install.html)
-+ [Examples](../examples/)
++ [Gallery](../gallery/)
 + [Tests](../scripts/testing.html)
 + [Github](https://github.com/caltechlibrary/cl-js)
 

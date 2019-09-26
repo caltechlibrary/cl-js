@@ -14,7 +14,7 @@
 <li><a href="../">README</a></li>
 <li><a href="../license.html">LICENSE</a></li>
 <li><a href="../install.html">INSTALL</a></li>
-<li><a href="./">Examples</a></li>
+<li><a href="../gallery/">Gallery</a></li>
 <li><a href="../scripts/testing.html">Tests</a></li>
 <li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
 </ul>
@@ -22,54 +22,23 @@
 </nav>
 
 <section>
-<h1>Hello World.</h1>
+<h1>Examples</h1>
 
-<p>This is a &ldquo;hello world&rdquo; type of example showing how to bind
-a simple form input element to a object.</p>
+<p>Below are links to examples using the CL-ui.js library.</p>
 
-<div id="example-output">
-Example output goes here.
-</div>
+<ul>
+<li>Form examples
 
-<!-- START: Example using CL-ui.js to build a form field -->
+<ul>
+<li><a href="helloworld.html">Hello World</a></li>
+<li><a href="people-form.html">People Form</a></li>
+</ul></li>
+<li>Media examples
 
-<script src="../scripts/CL.js"></script>
-
-<script>
-(function( document, window) {
-'use strict';
-// Setup an element and objects to receive our simple form.
-let div = document.getElementById('example-output'),
-    person = {"name": ""},
-    field = CL.field(person, `Hello, what is your name? <input id="name" type="text" name="name" value="{{name}}">`, function () {
-        let obj = this,
-            child = document.createElement("div");
-        if (obj.name !== undefined && obj.name.length > 0) {
-
-            child.innerHTML = "Hi " + obj.name;
-        } else {
-            child.innerHTML = "Hello World!";
-        }
-        div.appendChild(child)
-    });
-
-// Create and render our simple form into div.example-output
-CL.assembleFields(div, field);
-
-// From here on we're writing vanilla JavaScript for processing
-// the form and behaviors.
-let name_element = document.getElementById('name');
-name_element.addEventListener("change", 
-    function(evt) {
-        field.set("name", name_element.value);
-        // Normally we'd run some validation and if it returns 
-        // true we'd use CL.httpGet() or CL.httpPost() to transmit
-        // our results.
-    });
-}(document, window));
-</script>
-
-<!--   END: Example using CL-ui.js to build a form field -->
+<ul>
+<li>DOI media elements</li>
+</ul></li>
+</ul>
 
 </section>
 

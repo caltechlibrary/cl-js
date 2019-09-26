@@ -216,13 +216,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         let fields = field_list;
 
         element.innerHTML = "";
-        for (let key in fields) {
-            if (fields[key].init !== undefined && 
-                    fields[key].html !== undefined) {
-                if (fields[key].init() === true) {
+        if (Array.isArray(fields)) {
+            for (let key in fields) {
+                if (fields[key].init !== undefined && 
+                        fields[key].html !== undefined) {
+                    fields[key].init();
                     element.innerHTML += fields[key].html();
                 }
             }
+        } else if (fields.html !== undefined) {
+            element.innerHTML += fields.html();
         }
         return element;
     }

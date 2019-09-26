@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="../">README</a></li>
+<li><a href="../license.html">LICENSE</a></li>
+<li><a href="../install.html">INSTALL</a></li>
+<li><a href="../gallery/">Gallery</a></li>
+<li><a href="../scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>Hello World.</h1>
+
+<p>This is a &ldquo;hello world&rdquo; type of example showing how to bind
+a simple form input element to a object.</p>
+
+<div id="example-output">
+Example output goes here.
+</div>
+
+<!-- START: Example using CL-ui.js to build a form field -->
+
+<script src="../scripts/CL.js"></script>
+
+<script>
+(function( document, window) {
+'use strict';
+// Setup an element and objects to receive our simple form.
+let div = document.getElementById('example-output'),
+    person = {"name": ""},
+    field = CL.field(person, `Hello, what is your name? <input id="name" type="text" name="name" value="{{name}}">`, function () {
+        let obj = this,
+            child = document.createElement("div");
+        child.setAttribute("id", "greetings");
+        if (obj.name !== undefined && obj.name.length > 0) {
+
+            child.innerHTML = "Hi " + obj.name;
+        } else {
+            child.innerHTML = "Hello World!";
+        }
+        div.appendChild(child)
+    });
+    //div.appendChild(field.html());
+
+// Create and render our simple form into div.example-output
+let x = CL.assembleFields(div, field);
+
+// From here on we're writing vanilla JavaScript for processing
+// the form and behaviors.
+let name_element = document.getElementById('name'),
+    greetings = document.getElementById('greetings');;
+name_element.addEventListener("change", 
+    function(evt) {
+        // In this example we update our example-output element.
+        if (name_element.value === "") {
+            greetings.innerHTML = "Hello World!";
+        } else {
+            greetings.innerHTML = "Hi " + name_element.value + "!";
+        } 
+
+        // NOTE: Normally we'd run some validation and if it returns 
+        // true we'd use CL.httpGet() or CL.httpPost() to transmit
+        // our results.
+    });
+}(document, window));
+</script>
+
+<!--   END: Example using CL-ui.js to build a form field -->
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2018 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+<!-- START: PrettyFi from https://github.com/google/code-prettify -->
+<script>
+/* We want to add the class "prettyprint" to all the pre elements */
+var pre_list = document.querySelectorAll("pre");
+
+pre_list.forEach(function(elem) {
+    elem.classList.add("prettyprint");
+    /* elem.classList.add("linenums:1");*/
+});
+</script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<!--  END: PrettyFi from https://github.com/google/code-prettify -->
+</body>
+</html>

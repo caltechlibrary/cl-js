@@ -22,6 +22,7 @@ let div = document.getElementById('example-output'),
     field = CL.field(person, `Hello, what is your name? <input id="name" type="text" name="name" value="{{name}}">`, function () {
         let obj = this,
             child = document.createElement("div");
+        child.setAttribute("id", "greetings");
         if (obj.name !== undefined && obj.name.length > 0) {
 
             child.innerHTML = "Hi " + obj.name;
@@ -30,17 +31,25 @@ let div = document.getElementById('example-output'),
         }
         div.appendChild(child)
     });
+    //div.appendChild(field.html());
 
 // Create and render our simple form into div.example-output
-CL.assembleFields(div, field);
+let x = CL.assembleFields(div, field);
 
 // From here on we're writing vanilla JavaScript for processing
 // the form and behaviors.
-let name_element = document.getElementById('name');
+let name_element = document.getElementById('name'),
+    greetings = document.getElementById('greetings');;
 name_element.addEventListener("change", 
     function(evt) {
-        field.set("name", name_element.value);
-        // Normally we'd run some validation and if it returns 
+        // In this example we update our example-output element.
+        if (name_element.value === "") {
+            greetings.innerHTML = "Hello World!";
+        } else {
+            greetings.innerHTML = "Hi " + name_element.value + "!";
+        } 
+
+        // NOTE: Normally we'd run some validation and if it returns 
         // true we'd use CL.httpGet() or CL.httpPost() to transmit
         // our results.
     });

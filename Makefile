@@ -36,18 +36,18 @@ clean:
 dist/webbrowser: build
 	mkdir -p dist
 	cp -vR scripts dist/
-	cd dist && zip -r $(PROJECT)-$(VERSION)-webbrowser.zip *.md scripts/* examples/*
+	cd dist && zip -r $(PROJECT)-$(VERSION)-webbrowser.zip *.md scripts/* gallery/*
 
 
 distribute_docs:
-	mkdir -p dist/examples
+	mkdir -p dist/gallery
 	cp -v README.md dist/
 	cp -v LICENSE dist/
 	cp -v CHANGES.md dist/
 	if [ -f INSTALL.md ]; then cp -v INSTALL.md dist/; fi
 	cp -v CONTRIBUTING.md dist/
 	cp -v CODE_OF_CONDUCT.md dist/
-	cp -vR examples/* dist/examples/
+	cp -vR gallery/* dist/gallery/
 
 release: clean website distribute_docs dist/webbrowser
 
