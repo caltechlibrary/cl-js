@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="./">README</a></li>
+<li><a href="license.html">LICENSE</a></li>
+<li><a href="install.html">INSTALL</a></li>
+<li><a href="examples/">Examples</a></li>
+<li><a href="scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>Installation</h1>
+
+<p><em>cl-js</em> is a Javascript library for working with Caltech Library
+content.  Installation is usually a matter of unzipping the lastest
+release and copying the <code>CL.js</code> into your web tree where you normally
+place you JavaScript files. Then you reference that location to include
+it in your web pages.</p>
+
+<h2>The basic recipe</h2>
+
+<p>In the following steps I&rsquo;m assuming your web directory is
+located at <code>/var/www/htdocs</code> and that you store your JavaScript
+files in <code>/var/www/htdocs/js</code> and you have permission to read/write
+files in those directories.</p>
+
+<ol>
+<li>Goto <a href="https://github.com/caltechlibrary/cl-js/releases/latest">https://github.com/caltechlibrary/cl-js/releases/latest</a></li>
+<li>Download the cl-js-VERSION-webbrowser.zip file (VERSION is replaced with the current version number, e.g. v0.1.2)</li>
+<li>Unzip the cl-js-VERSION-webbrowser.zip file</li>
+<li>Copy scripts/CL.js to /var/www/htdocs/js/</li>
+<li>Update your web page and you&rsquo;re done</li>
+</ol>
+
+<p>Here are the command line steps I took for version v0.1.2.</p>
+
+<pre><code class="language-bash">    curl -O https://github.com/caltechlibrary/cl-js/releases/download/v0.1.2/cl-js-v0.1.2-webbrowser.zip
+    unzip cl-js-v0.1.2-webbrowser.zip
+    cp scripts/CL.js /var/www/htdocs/js/
+</code></pre>
+
+<p>From here I can include the JavaScript in the web pages that need it.</p>
+
+<blockquote>
+<p><a href="https://github.com/caltechlibrary/dataset/releases/latest">https://github.com/caltechlibrary/dataset/releases/latest</a></p>
+</blockquote>
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2018 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+</body>
+</html>
