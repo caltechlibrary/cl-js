@@ -38,17 +38,44 @@ let func_cnt = 0;
     
 println("\nRunning tests in a pipeline\n");
 
-function testStuff(tests,err) {
+function testGetFeed(tests,err) {
     let self = this;
-    if (err !== "") {
-        println("FAILED: error", err, tests);
-        return;
-    }
-    tests.errors++;
-    println("FAILED: testStuff() not implemented!");
-    // tests.success++;
-    // println("Testing testTitleField() OK");
-    self.nextCallbackFn(tests, err);
+
+    println("Testing testGetFeed() ...");
+    self.getFeed('https://feeds.library.caltech.edu/people/people_list.json', function(src, err) {
+        let data = [];
+
+        if (err !== "") {
+            tests.errors++;
+            println("FAILED: error", err, tests);
+            self.nextCallbackFn(tests, err);
+            return;
+        }
+        try {
+            data = JSON.parse(src)
+        } catch (e) {
+            tests.errors++;
+            println("Expected a JSON response, got", e);
+            self.nextCallbackFn(tests, err);
+            return;
+        }
+            
+        if (Array.isArray(data) !== true) {
+            tests.errors++;
+            println("FAILED: error, expected an array, got", typeof data, JSON.stringify(data), tests);
+            self.nextCallbackFn(tests, err);
+            return;
+        }
+        if (data.length === 0) {
+            tests.errors++;
+            println("FAILED: error, expected a populated array, empty array", tests);
+            self.nextCallbackFn(tests, err);
+            return;
+        }
+        tests.success++;
+        println("Testing testGetFeed() OK");
+        self.nextCallbackFn(tests, err);
+    });
 }
 
 function testSummary(tests, err) {
@@ -70,7 +97,7 @@ let tests = {
         "count": 0
     };
 cl.pipeline(tests, "", 
-    testStuff,
+    testGetFeed,
     testSummary);
 }(document, window));
 
