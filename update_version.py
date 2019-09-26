@@ -44,7 +44,7 @@ def update_codemeta_json(codemeta_json, current_version, next_version):
 def update_project_go(project_go, current_version, next_version):
     with open(project_go, mode = "r", encoding = "utf-8") as f:
         src = f.read()
-    txt = src.replace(f"Version = `v{current_version}`", f"Version = `v{next_version}`")
+    txt = src.replace(f"Version = 'v{current_version}'", f"Version = 'v{next_version}'")
     with open(project_go, mode = "w", encoding = "utf-8") as f:
         f.write(txt)
     print(f"updated {project_go} Version from v{current_version} to v{next_version}")
