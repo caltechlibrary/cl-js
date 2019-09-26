@@ -4,7 +4,6 @@
 This is a test file for putting CL-feeds.js through its paces and to confirm
 we have a working `CL` object. 
 
-FIXME: Need to write the tests!
 
 <style>
 #status {
