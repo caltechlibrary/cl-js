@@ -150,7 +150,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
          * if protocol/host is missing */
         if (typeof url === "string") {
             if (url.startsWith("/") && self.BaseURL !== undefined) {
-                url = new (self.BaseURL + url);
+                /* NOTE: combined our BaseURL string with url as 
+                 * root relative pathname, then re-cast to URL object */
+                u = new (self.BaseURL);
+                u.pathname + url;
+                url = u;
             } else {
                 url = new URL(url);
             }

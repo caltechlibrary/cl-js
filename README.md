@@ -7,7 +7,7 @@ used across some of Caltech Library projects including
 and the [And/Or](https://github.com/caltechlibrary/andor) prototype.
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
-[![Latest release](https://img.shields.io/badge/Latest_release-1.1.0-b44e88.svg?style=flat-square)](http://shields.io)
+[![Latest release](https://img.shields.io/badge/Latest_release-0.1.1-b44e88.svg?style=flat-square)](http://shields.io)
 
 
 Table of contents
