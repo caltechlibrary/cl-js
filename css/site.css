@@ -11,6 +11,8 @@
  * slategrey: #AAA99F
  *
  * Impact Pallete see: http://identity.caltech.edu/web/colors
+ *
+ * TODO: Need to make a small screen friendly version
  */
 body {
      margin: 0;
@@ -142,10 +144,10 @@ section {
      color: black;
      background-color: white;
      margin: 0;
-     padding-top: 0;
+     padding-top: 2em;
      padding-bottom: 2em;
      padding-left: 1em;
-     padding-right: 0;
+     padding-right: 2em;
 }
 
 section h1 {
@@ -159,7 +161,7 @@ section h2 {
 
 section h3 {
     font-size: 1em;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
 }
 
 section ul {
@@ -167,14 +169,24 @@ section ul {
 }
 
 
-section a, section a:link, section a:visited {
+section a, section a:link, section a:visited, section a:active {
     font-style: italic;
     font-weight: normal;
+    text-decoration: underline;
 }
 
-section a:active, section a:hover, section a:focus {
+/* 
+ * We want the links in the output of the Builder widget to pop out
+ * as links.
+ */
+section.widget a, section.widget a:link, section.widget a:visited, section.widget a:active {
+    color: blue;
+}
+
+section a:hover, section a:focus {
     /* orange: #FF6E1E; */
-    color: #FF6E1E;
+    color: #FF6E1E; 
+    text-decoration: none;
 }
 
 aside {
@@ -247,12 +259,48 @@ footer a, footer a:link, footer a:visited, footer a:active, footer a:focus, foot
      text-decoration: none;
 }
 
+/* Form styling */
+/*
+form {
+    display: block;
+    padding: 1em;
+    border-style: solid;
+    border-radius: 0.82em;
+    border-width: 0.18em;
+    border-color: red;
+}
+*/
+
+form div label {
+    display: inline;
+    margin: 0.72em;
+    text-align: right;
+    min-width: 5em;
+}
+
+form div input[type=button] {
+    margin: 1em;
+    border-radius: 82em;
+}
+
+/* Widget is the outer container for either a
+ * BuilderWidget or SearchWidger */
+.widget {
+    display: block;
+    flex-flow: row wrap;
+    padding: 1em;
+    border-style: solid;
+    border-radius: 0.82em;
+    border-width: 0.18em;
+    border-color: red;
+}
+
 .announcement {
-    color: black;
-    background-color: yellow;
+    color: white;
+    background-color: orange;
     padding: 1em;
     margin-top: 2em;
-    margin-bottom: 0em;
+    margin-bottom: 2em;
     margin-left: 0em;
     margin-right: 0em;
     text-overflow: ellipsis;

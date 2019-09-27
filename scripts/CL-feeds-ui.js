@@ -292,6 +292,62 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }).join(" ");
     }
 
+    /**
+     * indexer is a callback used in create LunrJS search indexes based on the data retrieved
+     * from getPeopleJSON() and getGroupJSON().
+     */
+    CL.lunrIndexer = function(data, err) {
+        if (err !== "") {
+            console.log("ERROR: indexer failed", err);
+            return;
+        }
+        let self = this;
+        // NOTE: Create our LunrJS index to be used by our search_box
+        // We have to make sure Lunr is available so whole thing is wrapped in a try.
+        try {
+            let idx = lunr(function() {
+                this.ref('_i');
+                this.field('title');
+                this.field('creators');
+                this.field('description');
+                this.field('pub_date');
+                this.field('collection');
+                this.field('doi');
+                this.field('citation_info');
+                this.field('resource_type');
+
+                for (let i in data) {
+                    let doc = data[i];
+                    doc._i = i;
+                    console.log("DEBUG adding _i", doc._i, doc);
+                    this.add(doc);
+                }
+            });
+            self.setAttribute('lunrIndex', idx);
+        } catch(e) {
+            console.log("ERROR: Can't find Lunrjs library", e);
+        }
+    };
+
+    /**
+     * lunrSearch implements the LunrJS search UI and relieing on
+     * the attritube lunrIndex set by lunrIndexer().
+     */
+    CL.lunrSearch = function(data, err) {
+        let self = this,
+            search_button = document.getElementById("search-button");
+        search_button.addEventListener('click', function(evt) {
+            let search_query = document.getElementById("search-query"), 
+                q = search_query.value,
+                idx = self.getAttribute('lunrIndex');
+                results = [];
+            results = idx.search(q);
+            for (let item in results) {
+                //FIXME: build a new formatted results list then trigger a refreshed view.
+            }
+        }, false);
+    };
+
 
     /**
      * viewer is a callback suitible to be used by functions like getPeopleJSON() and getGroupJSON().
@@ -315,11 +371,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             show_pmcid = false,
             show_doi = false,
             show_description = false,
+            show_search_box = false,
             config = {},
             parent_element,
             __display;
         config = self.getAttribute("viewer");
         /* To be cautious we want to validate our configuration object */
+        if (config.show_search_box !== undefined && config.show_search_box === true) {
+            show_search_box = true;
+        }
         if (config.filters !== undefined && Array.isArray(config.filters)) {
             filters = config.filters;
         }
@@ -385,22 +445,28 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 return;
             }
             let ul = document.createElement("ul"),
+                search_box = document.createElement("div"),
                 feed_count = document.createElement("div"),
                 year_jump_list = document.createElement("div"),
                 year_heading = "";
+            /* Handle showing search box with current search string */
+            if (show_search_box === true) {
+                search_box.innerHTML = `<input id="search-query" class="search-query" name="search" value="" placeholder="Enter search terms here">
+<button id="search-button" class="search-button">Search</button>`;
+                parent_element.append(search_box);
+            }
             /* Handle Managing Year Jump List */
             if (show_year_headings === true) {
                 year_heading = "";
                 parent_element.append(year_jump_list);
-            } else {
-                /* Add our ul to parent_element */
-                parent_element.appendChild(ul);
             }
             /* Handle feed count */
             if (show_feed_count === true) {
                 feed_count.innerHTML = "(" + records.length + " items)";
                 parent_element.append(feed_count);
             }
+            /* Add our ul to parent_element */
+            parent_element.appendChild(ul);
             records.forEach(function(record) {
                 let view = {},
                     current_year = "",

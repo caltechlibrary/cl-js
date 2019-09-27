@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="../">README</a></li>
+<li><a href="../license.html">LICENSE</a></li>
+<li><a href="../install.html">INSTALL</a></li>
+<li><a href="../gallery/">Gallery</a></li>
+<li><a href="../scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>Introducing the Search Widget</h1>
+
+<p>The <a href="https://feeds.library.caltech.edu/widgets/search-widget.html">Search Widget</a> is a tool for embedding a browser side search and result box
+based on feeds hosted at feeds.library.caltech.edu. The widget generates
+CSS, HTML and JavaScript for embedding in your own webpage.
+The embedded search is specific to a group or individual feed. It is
+most useful when the individual or group has published allot of content
+(e.g. hundreds of articles).  The Search Widget lets you choose the
+source of data you want to include (group or person), the type of data
+you want to include in results (e.g. article, book, combined publication
+list or data collections) as well as the number of items and some layout
+options for displaying the listings. The generated JavaScript includes
+building indexes on page load based on settings choosen using the
+search widget.</p>
+
+<!-- START: Search Widget -->
+
+<section id="search-widget" class="widget">
+<!-- This is where "the widget" should display -->
+</section>
+
+<noscript>JavaScript is required to display and use the Search Widget</noscript>
+
+<!-- Required: the LunrJS library is needed to run our search and indexing!!! -->
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<!-- START: DEBUG
+<script src="../scripts/CL.js"></script> 
+END: DEBUG -->
+
+<script src="../scripts/CL-core.js"></script>
+<script src="../scripts/CL-ui.js"></script>
+<script src="../scripts/CL-feeds.js"></script>
+<script src="../scripts/CL-feeds-ui.js"></script>
+
+<script src="../scripts/CL-SearchWidget.js"></script>
+
+<script>
+(function (document, window) {
+    let cl = Object.assign({}, window.CL),
+        widget_element = document.getElementById("search-widget");
+
+    /* NOTE: We want the builder to be hosted
+     * where our code is deployed */
+    cl.BaseURL = "";
+    cl.SearchWidget(widget_element);
+}(document, window));
+</script>
+
+<!--   END: Search Widget -->
+
+<p>The <a href="CL-SearchWidget.js" title="link to source code of Search Widget">Search Widget JavaScript</a> is an example of a JavaScript program based on
+<a href="../scripts/CL.js" title="link to source code for CL.js">CL.js</a>.</p>
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2018 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+<!-- START: PrettyFi from https://github.com/google/code-prettify -->
+<script>
+/* We want to add the class "prettyprint" to all the pre elements */
+var pre_list = document.querySelectorAll("pre");
+
+pre_list.forEach(function(elem) {
+    elem.classList.add("prettyprint");
+    /* elem.classList.add("linenums:1");*/
+});
+</script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<!--  END: PrettyFi from https://github.com/google/code-prettify -->
+</body>
+</html>

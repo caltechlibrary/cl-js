@@ -1,10 +1,11 @@
 /**
  * CL-SearchWidget.js defines the SearchWidget based on CL-core.js
- * and CL-ui.js. It is used to generate Lunrjs based search UI making
- * your JSON feeds searchable.
+ * and CL-ui.js.
  *
- * CL.SearchWidget() creates a feed search widget embedded at element id.
- * @params element id to embed the search widget.
+ * CL.SearchWidget() creates a feed search and results widget embedded in
+ * an element.
+ *
+ * @params element to embed the search widget.
  *
  * CL-core.js provides browser side JavaScript access to 
  * feeds.library.caltech.edu and other Caltech Library resources.
@@ -24,70 +25,68 @@ Redistribution and use in source and binary forms, with or without modification,
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-(function (document, window) {
+/*jshint esversion: 6 */
+(function(document, window) {
     "use strict";
     let CL = {};
     if (window.CL === undefined) {
-        window.CL = {}
+        window.CL = {};
     } else {
         CL = Object.assign(CL, window.CL);
     }
 
     /**
-     * CL.SearchWidget() creates a search widget in the element
+     * CL.SearchWidget() creates a search widget in the elements
      * indicated by element id and error_element_id.
      *
-     * @param element_id the DOM element to render the Search Widget into
-     * @param error_element_id is the DOM element to render errors message into.
+     * @param parent_element_selector the DOM element selector 
+     *                                which wild the widget.
      */
-    CL.SearchWidget = function (element_id, error_element_id) {
+    CL.SearchWidget = function(parent_element) {
+        let self = this;
+
         /* Widget code goes here */
-        let widget_ui = document.getElementById(element_id, error_element_id),
+        let widget_ui = document.createElement("div"),
+            widget_error = document.createElement("div"),
+            css_classname = '',
             form,
             heading,
             div,
+            code,
+            pre,
+            section,
             label,
             input,
             select_aggregation,
             select_feed_id,
-            select_feed_path;
+            select_feed_path,
+            generate_button,
+            preview_button;
 
         /* Widget event handlers */
-        function update_feed_id( evt ) {
+        function update_feed_id(evt) {
             let value = select_aggregation.value,
-                option;
-                select_feed_id.innerHTML = "";
-                option = document.createElement("option");
-                option.innerHTML = "Step 2. pick a feed";
-                select_feed_id.appendChild(option);
-                option = document.createElement("option");
-                option.innerHTML = "Step 3. pick the feed type (e.g. recent/article, combined)";
-                select_feed_path.innerHTML = "";
-                select_feed_path.appendChild(option);
+                option,
+                code_block,
+                select_feed_id,
+                select_feed_path;
+
+            select_feed_id = document.getElementById("feed-id");
+            select_feed_id.innerHTML = "";
+            option = document.createElement("option");
+            option.innerHTML = "Step 2. pick a feed";
+            select_feed_id.appendChild(option);
+            option = document.createElement("option");
+            option.innerHTML = "Step 3. pick the feed type (e.g. recent/article, combined)";
+            select_feed_path = document.getElementById("feed-path");
+            select_feed_path.innerHTML = "";
+            select_feed_path.appendChild(option);
+            code_block = document.getElementById("generated-code");
+            if (code_block !== undefined) {
+                code_block.innerHTML = "";
+            }
             if (value === "people") {
-                CL.getPeopleList(function (people, err) {
-                if (err != "") {
-                    let elem = document.getElementById(error_element_id);
-                    if (elem) {
-                       elem.innerHTML = err;
-                    } else {
-                       console.log("ERROR", err);
-                    }
-                    return;
-                }
-                people.forEach(function( profile, i ) {
-                    let option = document.createElement("option");
-                    option.value = profile.id;
-                    if ("orcid" in profile) {
-                        option.innerHTML = profile.sort_name;
-                    } else {
-                        option.innerHTML = profile.sort_name + "(" + profile.orcid + ")";
-                    }
-                    select_feed_id.appendChild(option);
-                });
-                });
-            } else if (value === "groups") {
-                CL.getGroupsList(function (groups, err) {
+                self.getPeopleList(function(people, err) {
                     if (err != "") {
                         let elem = document.getElementById(error_element_id);
                         if (elem) {
@@ -97,40 +96,75 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         }
                         return;
                     }
-                    groups.forEach(function( group, i ) {
+                    people.forEach(function(profile, i) {
+                        let option = document.createElement("option");
+                        option.value = profile.id;
+                        if ("orcid" in profile) {
+                            option.innerHTML = profile.sort_name + "(" + 
+                                profile.orcid + ")";
+                        } else {
+                            option.innerHTML = profile.sort_name;
+                        }
+                        select_feed_id.appendChild(option);
+                    });
+                });
+            } else if (value === "groups") {
+                self.getGroupsList(function(groups, err) {
+                    if (err != "") {
+                        let elem = document.getElementById(error_element_id);
+                        if (elem) {
+                            elem.innerHTML = err;
+                        } else {
+                            console.log("ERROR", err);
+                        }
+                        return;
+                    }
+                    groups.forEach(function(group, i) {
                         let option = document.createElement("option");
                         option.value = group.key;
                         option.innerHTML = group.name;
                         select_feed_id.appendChild(option);
                     });
                 });
+            } else {
+                generate_button.disabled = true;
+                preview_button.disabled = true;
             }
         }
 
-        function update_feed_path( evt ) {
+        function update_feed_path(evt) {
             let aggregation = select_aggregation.value,
                 feed_id = select_feed_id.value,
-                option;
-                option = document.createElement("option");
-                option.innerHTML = "Step 3. Pick feed type";
-                select_feed_path.innerHTML = "";
-                select_feed_path.appendChild(option);
+                option,
+                code_block,
+                select_feed_path;
+
+            option = document.createElement("option");
+            option.innerHTML = "Step 3. Pick feed type";
+            select_feed_path = document.getElementById("feed-path");
+            select_feed_path.innerHTML = "";
+            select_feed_path.appendChild(option);
+            code_block = document.getElementById("generated-code");
+            if (code_block !== undefined) {
+                code_block.innerHTML = "";
+            }
+
             if (aggregation === "people") {
-                CL.getPeopleInfo(feed_id, function (profile, err) {
+                self.getPeopleInfo(feed_id, function(profile, err) {
                     if (err != "") {
-                           let elem = document.getElementById(error_element_id);
-                           if (elem) {
-                              elem.innerHTML = err;
-                           } else {
-                              console.log("ERROR", err);
-                           }
-                           return;
+                        let elem = document.getElementById(error_element_id);
+                        if (elem) {
+                            elem.innerHTML = err;
+                        } else {
+                            console.log("ERROR", err);
+                        }
+                        return;
                     }
                     if ("CaltechTHESIS" in profile) {
                         for (let feed_label in profile.CaltechTHESIS) {
                             let option = document.createElement("option");
                             option.innerHTML = "CaltechTHESIS: " + feed_label;
-                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_");
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
                             select_feed_path.appendChild(option);
                         }
                     }
@@ -138,50 +172,50 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         for (let feed_label in profile.CaltechAUTHORS) {
                             let option = document.createElement("option");
                             option.innerHTML = "CaltechAUTHORS: " + feed_label;
-                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_");
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechauthors";
                             select_feed_path.appendChild(option);
                         }
                     }
                     if ("CaltechDATA" in profile) {
                         for (let feed_label in profile.CaltechDATA) {
                             let option = document.createElement("option"),
-                            feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
+                                feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
                             if (feed_type === "combined") {
                                 feed_type = "data";
                             } else if (feed_type === "interactive_resource") {
                                 feed_type = "interactiveresource";
                             }
                             option.innerHTML = "CaltechDATA: " + feed_label;
-                            option.value = feed_type;
+                            option.value = feed_type + ":caltechdata";
                             select_feed_path.appendChild(option);
                         }
                     }
                 });
             } else if (aggregation === "groups") {
-                CL.getGroupInfo(feed_id, function (group, err) {
+                self.getGroupInfo(feed_id, function(group, err) {
                     if (err != "") {
-                       let elem = document.getElementById(error_element_id);
-                       if (elem) {
-                          elem.innerHTML = err;
-                       } else {
-                          console.log("ERROR", err);
-                       }
-                       return;
+                        let elem = document.getElementById(error_element_id);
+                        if (elem) {
+                            elem.innerHTML = err;
+                        } else {
+                            console.log("ERROR", err);
+                        }
+                        return;
                     }
                     if ("CaltechTHESIS" in group) {
                         for (let feed_label in group.CaltechTHESIS) {
-                             let option = document.createElement("option");
-                             option.innerHTML = "CaltechTHESIS: " + feed_label;
-                             option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_");
-                             select_feed_path.appendChild(option);
+                            let option = document.createElement("option");
+                            option.innerHTML = "CaltechTHESIS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
+                            select_feed_path.appendChild(option);
                         }
                     }
                     if ("CaltechAUTHORS" in group) {
                         for (let feed_label in group.CaltechAUTHORS) {
-                             let option = document.createElement("option");
-                             option.innerHTML = "CaltechAUTHORS: " + feed_label;
-                             option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_");
-                             select_feed_path.appendChild(option);
+                            let option = document.createElement("option");
+                            option.innerHTML = "CaltechAUTHORS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechauthors";
+                            select_feed_path.appendChild(option);
                         }
                     }
                     if ("CaltechDATA" in group) {
@@ -189,12 +223,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             let option = document.createElement("option"),
                                 feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
                             if (feed_type === "combined") {
-                               feed_type = "data";
+                                feed_type = "data";
                             } else if (feed_type === "interactive_resource") {
-                               feed_type = "interactiveresource";
+                                feed_type = "interactiveresource";
                             }
                             option.innerHTML = "CaltechDATA: " + feed_label;
-                            option.value = feed_type;
+                            option.value = feed_type + ":caltechauthors";
                             select_feed_path.appendChild(option);
                         }
                     }
@@ -202,32 +236,243 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
         }
 
-        function generate_code( evt ) {
-            console.log("Generate the code goes here!!", evt);
+        // get_config scans the settings in the Search Widget form and creates a configuration to
+        // suitable to pass to code_render().
+        function get_config() {
+            let config = {};
+
+            ["aggregation", "feed-id", "feed-path"].forEach(function(id) {
+                let elem = document.getElementById(id),
+                    key = "",
+                    val = "";
+                if (elem !== undefined) {
+                    key = id.replace(/-/g, "_");
+                    config[key] = elem.value;
+                }
+            });
+            ["feed-count", "show-year-headings", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+                let elem = document.getElementById(id),
+                    key;
+                key = id.replace(/-/g, "_");
+                if (elem.checked === true) {
+                    config[key] = true;
+                } else {
+                    config[key] = false;
+                }
+            });
+            return config;
         }
 
+        // code_render take the contents of the form and render the 
+        // resulting source code.
+        function code_render(config) {
+            let text = [],
+                include_style = true,
+                include_CL = true,
+                developer_mode = false,
+                elem_id = "cl";
+
+            if (config.include_style !== undefined) {
+                include_style = config.include_style;
+            }
+            if (config.include_CL !== undefined) {
+                include_CL = config.include_CL;
+            }
+            if (config.developer_mode !== undefined) {
+                developer_mode = config.developer_mode;
+            }
+
+
+            config.repository = css_classname.substr(1);
+            config.css_classname = css_classname;
+            if (config.feed_id !== undefined && config.feed_id !== "") {
+                elem_id = config.feed_id;
+            }
+            if (config.feed_path !== undefined && config.feed_path !== "") {
+                config.feed_path = config.feed_path.split(":")[0];
+            }
+            if (config.use_recent === undefined ||
+                config.use_recent === false) {
+                config.recent_n = 0;
+            }
+            // Generate Style Block and HTML block
+            if (include_style === true) {
+                text.push("<style>");
+                text.push(css_classname + " .unknown-year { display: none; }");
+                if (config.title_link === false) {
+                    text.push(css_classname + " .title { padding-left: 0.24em }");
+                    text.push(css_classname + " .link { padding-left: 0.24em }");
+                }
+                if (config.show_year_headings === true) {
+                    text.push(css_classname + " .jump-list {");
+                    text.push("    padding-bottom: 0.24em;");
+                    text.push("    margin-bottom: 0.24em;");
+                    text.push("    border-bottom: solid 0.24em black;");
+                    text.push("}");
+                    text.push(css_classname + " .jump-list-label {");
+                    text.push("    padding-left:0.24em;");
+                    text.push("    padding-right:0.24em;");
+                    text.push("    border-right: solid 0.12em black;");
+                    text.push("    text-decoration: none;");
+                    text.push("}");
+                    text.push(css_classname + " .jump-list:last-child {");
+                    text.push("    border-right: none;");
+                    text.push("}");
+                }
+                text.push(css_classname + " li {");
+                text.push("    padding-bottom: 0.24em;");
+                text.push("    margin-bottom: 0.24em;");
+                text.push("    list-style: none;");
+                text.push("}");
+                text.push(css_classname + " a {");
+                text.push("    padding-right: 0.24em;");
+                text.push("}");
+                text.push(css_classname + " span {");
+                text.push("    padding-right: 0.24em;");
+                text.push("}");
+                text.push(css_classname + " div {");
+                text.push("    padding-bottom: 0.24em;");
+                text.push("    margin-bottom: 0.24em;");
+                text.push("}");
+                text.push("</style>\n");
+            }
+
+            text.push("<div id=\"" + elem_id + "\" class=\"" + css_classname.substr(1) + "\"></div>\n");
+
+
+            // Generate JavaScript CL.js include 
+            if (include_CL == true) {
+                if (developer_mode === true) {
+                    text.push("<script src=\"/scripts/CL-core.js\"></script>");
+                    text.push("<script src=\"/scripts/CL-ui.js\"></script>");
+                } else {
+                    text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL.js\"></script>");
+                }
+            }
+
+            // Generate JavaScript src block
+            config.filters = [];
+            text.push("<script>");
+            text.push("(function(document, window) {");
+            text.push("  \"use strict\";");
+            text.push("  let cl = Object.assign({}, window.CL),");
+            text.push("      config = {},");
+            text.push("      elem = document.getElementById(\"" +
+                elem_id + "\");");
+            if (developer_mode === true) {
+                text.push("");
+                text.push("/* NOTE: Remove the following when we're ready");
+                text.push("   for production. */");
+                text.push("cl.BaseURL = \"\";");
+                text.push("");
+            } else {
+                text.push("cl.BaseURL = \"https://feeds.library.caltech.edu\";");
+            }
+            text.push("");
+            text.push("  config = " +
+                JSON.stringify(config, "", "    ") + ";");
+            text.push("  config.parent_element = elem;");
+            text.push("  config.show_search_box = true;");
+
+            //NOTE: Search is the ultimate filter, so we don't
+            // need to include a filter section in the Search Widget
+            // UI.
+
+            text.push("  config.filters.push(cl.normalize_view);");
+            text.push("  cl.setAttribute(\"viewer\", config);");
+
+
+            switch (config.aggregation) {
+                case "groups":
+                    text.push("  cl.getGroupJSON(\"" + config.feed_id + "\", \"" + config.feed_path + "\", function(data, err) {");
+                    break;
+                case "people":
+                    text.push("  cl.getPeopleJSON(\"" + config.feed_id + "\", \"" + config.feed_path + "\", function(data, err) {");
+                    break;
+            }
+            text.push("     // NOTE: we build index, render our viewer and run the search");
+            text.push("     cl.lunrIndexer(data, err);");
+            text.push("     cl.viewer(data, err);");
+            text.push("     cl.lunrSearch(data, err);");
+            text.push("  });");
+            text.push("}(document, window));");
+            text.push("</script>");
+            // Generate JavaScript code block 
+            return text.join("\n");
+        }
+
+        function generate_code(evt) {
+            let config = get_config(),
+                code_block = document.getElementById("generated-code"),
+                preview_block = document.getElementById("previewed-code");
+            if (code_block !== undefined && code_block.innerHTML !== "") {
+                code_block.innerHTML = "";
+            }
+            if (preview_block !== undefined && preview_block.innerHTML !== "") {
+                preview_block.innerHTML = "";
+            }
+            config.developer_mode = false;
+            config.include_style = true;
+            config.include_CL = true;
+            code_block.textContent = code_render(config);
+        }
+
+        function preview_code(evt) {
+            let src = "",
+                config = get_config(),
+                code_block = document.getElementById("generated-code"),
+                preview_block = document.getElementById("previewed-code");
+            if (code_block !== undefined && code_block.innerHTML !== "") {
+                code_block.innerHTML = "";
+            }
+            if (preview_block !== undefined && preview_block.innerHTML !== "") {
+                preview_block.innerHTML = "";
+            }
+            config.developer_mode = true;
+            config.include_style = true;
+            config.include_CL = false;
+            src = code_render(config);
+            let div = document.createElement("div"),
+                style,
+                js_src = "";
+            div.innerHTML = src;
+            js_src = div.querySelector("script").textContent;
+            style = div.querySelector("style");
+            /* NOTE: we only want to the div we were going to 
+             * render into */
+            preview_block.appendChild(style);
+            preview_block.appendChild(div.querySelector("div"));
+            /* UGLY: doing this eval so I can preview what the JS 
+             * I generarted renders */
+            console.log("DEBUG eval js source:", js_src);
+            eval(js_src);
+        }
+
+
+        /*
+         * Main Search Widget UI setup
+         */
 
         /* Form holds our control panel for generating code */
         form = document.createElement("form");
         form.setAttribute("id", "feed-search-widget");
-    
+
         heading = document.createElement("h1");
         heading.innerHTML = "Search Widget";
         form.appendChild(heading);
         heading = document.createElement("h2");
         heading.innerHTML = "Data Source";
         form.appendChild(heading);
-    
 
         /* Step 1. Pick which aggregation you want to generate code for */
-        div = CL.createCompositElement("div", ["label", "select"], ["", "aggregation"]);
+        div = self.createCompositElement("div", ["label", "select"], ["", "aggregation"]);
         label = div.querySelector("label");
         label.setAttribute("for", "aggregation");
         label.setAttribute("title", "Step 1. pick an aggregation (people or groups)");
         label.innerHTML = "Aggregation:";
         select_aggregation = div.querySelector("#aggregation");
         select_aggregation.setAttribute("name", "aggregation");
-        [ "", "Groups", "People" ].forEach(function(value, i) {
+        ["", "Groups", "People"].forEach(function(value, i) {
             let option = document.createElement("option");
             if (i === 0) {
                 option.setAttribute("value", "");
@@ -243,31 +488,62 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         form.appendChild(div);
 
         /* Step 2. Pick a feed (e.g. GALCIT, Newman-D-K) */
-        div = CL.createCompositElement("div",
-            ["label", "select"],
-            ["", "feed_id"]);
+        div = self.createCompositElement("div", ["label", "select"], ["", "feed-id"]);
         label = div.querySelector("label");
-        label.setAttribute("for", "feed_id");
+        label.setAttribute("for", "feed-id");
         label.setAttribute("title", "Step 2. pick the feed id");
         label.innerHTML = "Feed:";
-        select_feed_id = div.querySelector("#feed_id");
-        select_feed_id.setAttribute("name", "feed_id");
+        select_feed_id = div.querySelector("#feed-id");
+        select_feed_id.setAttribute("name", "feed-id");
         select_feed_id.setAttribute("title", "this list depends on the aggregation previously selected");
         select_feed_id.addEventListener("change", update_feed_path, false);
         form.appendChild(div);
 
         /* Step 3. Pick a feed type (e.g. article, recent/article, combined) */
-        div = CL.createCompositElement("div",
-            ["label", "select"],
-            ["", "feed_path"]);
+        div = self.createCompositElement("div", ["label", "select"], ["", "feed-path"]);
         label = div.querySelector("label");
-        label.setAttribute("for", "feed_path");
-        label.setAttribute("title", "Step 3. pick the feed type (e.g. recent/article, combined)");
+        label.setAttribute("for", "feed-path");
+        label.setAttribute("title", "Step 3. pick the feed type (e.g. article, combined)");
         label.innerHTML = "Feed type:";
-        select_feed_path = div.querySelector("#feed_path");
-        select_feed_path.setAttribute("name", "feed_path");
+        select_feed_path = div.querySelector("#feed-path");
+        select_feed_path.setAttribute("name", "feed-path");
         select_feed_path.setAttribute("title", "list of available feed paths");
+        select_feed_path.addEventListener("change", function(evt) {
+            let code_block;
+
+            code_block = document.getElementById("generated-code");
+            if (code_block !== undefined) {
+                code_block.innerHTML = "";
+            }
+            if (select_feed_path.value.startsWith("Step ")) {
+                generate_button.disabled = true;
+                preview_button.disabled = true;
+            } else {
+                generate_button.disabled = false;
+                preview_button.disabled = false;
+                let parts = select_feed_path.value.split(":");
+                if (parts.length === 2) {
+                    switch (parts[1]) {
+                        case 'caltechauthors':
+                            css_classname = ".CaltechAUTHORS";
+                            break;
+                        case 'caltechthesis':
+                            css_classname = ".CaltechTHESIS";
+                            break;
+                        case 'caltechdata':
+                            css_classname = ".CaltechDATA";
+                            break;
+                        default:
+                            css_classname = ".CaltechLibrary";
+                            break;
+                    }
+                }
+            }
+        }, true);
         form.appendChild(div);
+
+        // NOTE: we don't need the Filter Data section in the UI
+        // this search box is the filter.
 
         heading = document.createElement("h2");
         heading.innerHTML = "Layout";
@@ -278,20 +554,18 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         div = document.createElement("div");
         div.classList.add("checkbox-control");
 
-        [ "Title Link", "Pub Date", "Authors", "Abstract" ].forEach(function (s, i) {
+        ["Show Year Headings", "Feed Count", "Creators", "Pub Date", "Title Link", "Citation Details", "ISSN or ISBN", "PMCID", "Description"].forEach(function(s, i) {
             let elem_id = s.toLocaleLowerCase().replace(/ /g, "-"),
                 elem_name = s.toLocaleLowerCase().replace(/ /g, "_"),
                 control, label, input;
 
-            control = CL.createCompositElement("div",
-                      [ "label", "input" ],
-                      [ "", elem_id ]);
+            control = self.createCompositElement("div", ["label", "input"], ["", elem_id]);
             control.classList.add("checkbox");
             input = control.querySelector("#" + elem_id);
             input.setAttribute("type", "checkbox");
             input.setAttribute("name", elem_name);
             input.setAttribute("label", s);
-            if (i == 1) {
+            if ([2, 3, 4].indexOf(i) > -1) {
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");
@@ -300,19 +574,50 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         });
         form.appendChild(div);
 
-        /* Step 5. generate the code */
-        div = CL.createCompositElement("div",
-            ["input" ],
-            ["generate"]);
+        /* Step 5. preview and generate the code */
+        div = self.createCompositElement("div", ["input", "input"], ["preview", "generate"]);
+
+        /* setup generate code and preview code buttons */
+        input = div.querySelector("#preview");
+        input.disabled = true;
+        input.setAttribute("id", "preview-code");
+        input.setAttribute("type", "button");
+        input.setAttribute("value", "Preview Searchbox and Results");
+        input.addEventListener("click", preview_code, false);
+        preview_button = input;
+
         input = div.querySelector("#generate");
+        /* NOTE: this input should become enabled 
+         * when the data sources
+         * have been defined. */
+        input.disabled = true;
+        input.setAttribute("id", "generate-code");
         input.setAttribute("type", "button");
         input.setAttribute("value", "Generate code");
         input.addEventListener("click", generate_code, false);
-    
+        generate_button = input;
+
+
         form.appendChild(div);
 
-        /* Finally instantiate the form! */
+        /* Instantiate the form! */
         widget_ui.appendChild(form);
+        /* Add <code><pre> bocks for generated output */
+        code = document.createElement("code");
+        pre = document.createElement("pre");
+        pre.setAttribute("id", "generated-code");
+        code.appendChild(pre);
+        /* Add section to preview generated output of code */
+        section = document.createElement("section");
+        section.classList.add("preview");
+        section.setAttribute("id", "previewed-code");
+
+        widget_ui.setAttribute("id", "search-widget-ui");
+        widget_error.setAttribute("id", "search-widget-error");
+        parent_element.appendChild(widget_ui);
+        parent_element.appendChild(widget_error);
+        parent_element.appendChild(code);
+        parent_element.appendChild(section);
     };
 
     /* Now add CL.SearchWidget to the CL in the window object. */
@@ -321,4 +626,3 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     }
     window.CL = Object.assign(window.CL, CL);
 }(document, window));
-
