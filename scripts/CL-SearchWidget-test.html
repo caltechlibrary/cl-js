@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="../">README</a></li>
+<li><a href="../license.html">LICENSE</a></li>
+<li><a href="../install.html">INSTALL</a></li>
+<li><a href="../gallery/">Gallery</a></li>
+<li><a href="../scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>CL-SearchWidget test</h1>
+
+<p>Show search page for Big Bear Solar Observatory.</p>
+
+<script src="https://unpkg.com/lunr/lunr.js"></script>
+
+<script src="CL-core.js"></script>
+<script src="CL-ui.js"></script>
+<script src="CL-feeds.js"></script>
+<script src="CL-feeds-ui.js"></script>
+<script src="CL-feeds-lunr.js"></script>
+
+<style>
+.CaltechAUTHORS .unknown-year { display: none; }
+.CaltechAUTHORS li {
+    padding-bottom: 0.24em;
+    margin-bottom: 0.24em;
+    list-style: none;
+}
+.CaltechAUTHORS a {
+    padding-right: 0.24em;
+}
+.CaltechAUTHORS span {
+    padding-right: 0.24em;
+}
+.CaltechAUTHORS div {
+    padding-bottom: 0.24em;
+    margin-bottom: 0.24em;
+}
+</style>
+
+<div id="Big-Bear-Solar-Observatory" class="CaltechAUTHORS"></div>
+
+<script src="https://feeds.library.caltech.edu/scripts/CL.js"></script>
+<script>
+(function(document, window) {
+  "use strict";
+  let cl = Object.assign({}, window.CL),
+      config = {},
+      elem = document.getElementById("Big-Bear-Solar-Observatory"),
+      query_form = document.createElement('div');
+  query_form.innerHTML = `
+<form method="get">
+  <input type="text" name="q" value="" placeholder="Enter search terms">
+  <button>Search</button>
+</form>
+`;
+  elem.appendChild(query_form);
+    cl.BaseURL = "https://feeds.library.caltech.edu";
+
+  config = {
+    "aggregation": "groups",
+    "feed_id": "Big-Bear-Solar-Observatory",
+    "feed_path": "combined",
+    "feed_count": true,
+    "creators": true,
+    "pub_date": true,
+    "title_link": true,
+    "citation_details": true,
+    "issn_or_isbn": false,
+    "pmcid": false,
+    "description": false,
+    "developer_mode": false,
+    "include_style": true,
+    "include_CL": true,
+    "repository": "CaltechAUTHORS",
+    "css_classname": ".CaltechAUTHORS",
+    "recent_n": 0,
+    "filters": []
+};
+  config.show_search_box = true;
+  config.parent_element = elem;
+  config.filters.push(cl.normalize_view);
+  cl.setAttribute("viewer", config);
+  cl.getGroupJSON("Big-Bear-Solar-Observatory", "combined", function(data, err) {
+     cl.viewer(data, err);
+  });
+}(document, window));
+</script>
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2018 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+<!-- START: PrettyFi from https://github.com/google/code-prettify -->
+<script>
+/* We want to add the class "prettyprint" to all the pre elements */
+var pre_list = document.querySelectorAll("pre");
+
+pre_list.forEach(function(elem) {
+    elem.classList.add("prettyprint");
+    /* elem.classList.add("linenums:1");*/
+});
+</script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<!--  END: PrettyFi from https://github.com/google/code-prettify -->
+</body>
+</html>

@@ -26,13 +26,14 @@ search widget.
 <!-- Required: the LunrJS library is needed to run our search and indexing!!! -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 
-<!-- START: DEBUG
-<script src="../scripts/CL.js"></script> 
-END: DEBUG -->
+<!-- DEBUG <script src="../scripts/CL.js"></script> -->
+
+<!-- START: DEV. DEBUG -->
 <script src="../scripts/CL-core.js"></script>
 <script src="../scripts/CL-ui.js"></script>
 <script src="../scripts/CL-feeds.js"></script>
 <script src="../scripts/CL-feeds-ui.js"></script>
+<!--   END: DEV. DEBUG -->
 
 <script src="../scripts/CL-SearchWidget.js"></script>
 
@@ -41,7 +42,7 @@ END: DEBUG -->
     let cl = Object.assign({}, window.CL),
         widget_element = document.getElementById("search-widget");
 
-    /* NOTE: We want the builder to be hosted
+    /* NOTE: We want the Search Widget to be hosted
      * where our code is deployed */
     cl.BaseURL = "";
     cl.SearchWidget(widget_element);

@@ -9,7 +9,7 @@ Below are links to examples using the CL-ui.js library.
 
 + Including feeds.library.caltech.edu content
     + Introducing the [Builder Widget](builder-widget.html)
-    + Introducing the [Search Widget](search-widget.html))
+    + Introducing the [Search Widget](search-widget.html)
     + People lists
         + Custom embedding a person's article list
         + Adding search using [LunrJS](https://lunrjs.com) 

@@ -1,9 +1,10 @@
 /**
  * CL-SearchWidget.js defines the SearchWidget based on CL-core.js
- * and CL-ui.js.
+ * CL-ui.js, CL-feeds.js and CL-feeds-ui.js.
  *
  * CL.SearchWidget() creates a feed search and results widget embedded in
- * an element.
+ * an DOM element. It is a tool for generating browser side search in your 
+ * webpage for Caltech Library content.
  *
  * @params element to embed the search widget.
  *
@@ -250,7 +251,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["feed-count", "show-year-headings", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+            ["feed-count", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
                 key = id.replace(/-/g, "_");
@@ -270,7 +271,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 include_style = true,
                 include_CL = true,
                 developer_mode = false,
-                elem_id = "cl";
+                elem_id = "cl",
+                query_form;
 
             if (config.include_style !== undefined) {
                 include_style = config.include_style;
@@ -345,6 +347,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (developer_mode === true) {
                     text.push("<script src=\"/scripts/CL-core.js\"></script>");
                     text.push("<script src=\"/scripts/CL-ui.js\"></script>");
+                    text.push("<script src=\"/scripts/CL-feeds.js\"></script>");
+                    text.push("<script src=\"/scripts/CL-feeds-ui.js\"></script>");
                 } else {
                     text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL.js\"></script>");
                 }
@@ -358,30 +362,41 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("  let cl = Object.assign({}, window.CL),");
             text.push("      config = {},");
             text.push("      elem = document.getElementById(\"" +
-                elem_id + "\");");
+                elem_id + "\"),");
+
+            text.push("      query_form = document.createElement('div');");
+
+            query_form = `
+<form method="get">
+  <input type="text" name="q" value="" placeholder="Enter search terms">
+  <button>Search</button>
+</form>
+`;
+            text.push("  query_form.innerHTML = `" + query_form + "`;");
+            text.push("  elem.appendChild(query_form);");
             if (developer_mode === true) {
                 text.push("");
-                text.push("/* NOTE: Remove the following when we're ready");
-                text.push("   for production. */");
-                text.push("cl.BaseURL = \"\";");
+                text.push("    /* NOTE: Remove the following when we're ready");
+                text.push("       for production. */");
+                text.push("    cl.BaseURL = \"\";");
                 text.push("");
             } else {
-                text.push("cl.BaseURL = \"https://feeds.library.caltech.edu\";");
+                text.push("    cl.BaseURL = \"https://feeds.library.caltech.edu\";");
             }
             text.push("");
             text.push("  config = " +
                 JSON.stringify(config, "", "    ") + ";");
-            text.push("  config.parent_element = elem;");
             text.push("  config.show_search_box = true;");
-
-            //NOTE: Search is the ultimate filter, so we don't
-            // need to include a filter section in the Search Widget
-            // UI.
+            text.push("  config.parent_element = elem;");
 
             text.push("  config.filters.push(cl.normalize_view);");
+            //text.push("  /* NOTE: lunr_search includes indexing ");
+            //text.push("     if a query is submitted, otherwise");
+            //text.push("     all records are returned unfilter by search *\/");
+            //text.push("  config.filters.push(cl.lunr_search);");
+            
+           
             text.push("  cl.setAttribute(\"viewer\", config);");
-
-
             switch (config.aggregation) {
                 case "groups":
                     text.push("  cl.getGroupJSON(\"" + config.feed_id + "\", \"" + config.feed_path + "\", function(data, err) {");
@@ -390,10 +405,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     text.push("  cl.getPeopleJSON(\"" + config.feed_id + "\", \"" + config.feed_path + "\", function(data, err) {");
                     break;
             }
-            text.push("     // NOTE: we build index, render our viewer and run the search");
-            text.push("     cl.lunrIndexer(data, err);");
             text.push("     cl.viewer(data, err);");
-            text.push("     cl.lunrSearch(data, err);");
             text.push("  });");
             text.push("}(document, window));");
             text.push("</script>");
@@ -444,7 +456,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             preview_block.appendChild(div.querySelector("div"));
             /* UGLY: doing this eval so I can preview what the JS 
              * I generarted renders */
-            console.log("DEBUG eval js source:", js_src);
             eval(js_src);
         }
 
@@ -554,7 +565,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         div = document.createElement("div");
         div.classList.add("checkbox-control");
 
-        ["Show Year Headings", "Feed Count", "Creators", "Pub Date", "Title Link", "Citation Details", "ISSN or ISBN", "PMCID", "Description"].forEach(function(s, i) {
+        ["Feed Count", "Creators", "Pub Date", "Title Link", "Citation Details", "ISSN or ISBN", "PMCID", "Description"].forEach(function(s, i) {
             let elem_id = s.toLocaleLowerCase().replace(/ /g, "-"),
                 elem_name = s.toLocaleLowerCase().replace(/ /g, "_"),
                 control, label, input;
