@@ -345,14 +345,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             // Generate JavaScript CL.js include 
             if (include_CL == true) {
                 if (developer_mode === true) {
-                    test.push("<script src=\"https://unpkg.com/lunr/lunr.js\"></script>")
+                    text.push("<script src=\"https://unpkg.com/lunr/lunr.js\"></script>")
                     text.push("<script src=\"/scripts/CL-core.js\"></script>");
                     text.push("<script src=\"/scripts/CL-ui.js\"></script>");
                     text.push("<script src=\"/scripts/CL-feeds.js\"></script>");
                     text.push("<script src=\"/scripts/CL-feeds-ui.js\"></script>");
                     text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL-feeds-lunr.js\"></script>");
                 } else {
-                    test.push("<script src=\"https://unpkg.com/lunr/lunr.js\"></script>")
+                    text.push("<script src=\"https://unpkg.com/lunr/lunr.js\"></script>")
                     text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL.js\"></script>");
                     text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL-feeds-lunr.js\"></script>");
                 }
