@@ -26,14 +26,9 @@ search widget.
 <!-- Required: the LunrJS library is needed to run our search and indexing!!! -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 
-<!-- DEBUG <script src="../scripts/CL.js"></script> -->
+<script src="../scripts/CL.js"></script>
 
-<!-- START: DEV. DEBUG -->
-<script src="../scripts/CL-core.js"></script>
-<script src="../scripts/CL-ui.js"></script>
-<script src="../scripts/CL-feeds.js"></script>
-<script src="../scripts/CL-feeds-ui.js"></script>
-<!--   END: DEV. DEBUG -->
+<script src="../scripts/CL-feeds-lunr.js"></script>
 
 <script src="../scripts/CL-SearchWidget.js"></script>
 

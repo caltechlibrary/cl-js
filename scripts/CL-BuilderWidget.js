@@ -439,7 +439,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             preview_block.appendChild(div.querySelector("div"));
             /* UGLY: doing this eval so I can preview what the JS I generarted
                renders */
-            console.log("DEBUG eval js source:", js_src);
             eval(js_src);
         }
 

@@ -862,7 +862,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     window.CL = Object.assign(window.CL, CL);
 }(document, window));
 /**
- * CL-ui.js builds on the CL object providing simple support
+ * CL-feeds-ui.js builds on the CL object providing simple support
  * for constructing DOM based UI.
  *
  * @author R. S. Doiel
@@ -1027,6 +1027,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (Object.keys(citation_info).length > 0) {
                     view.citation_info = citation_info;
                 }
+                // NOTE: Some records have no publication date because 
+                // there is no date in the material provided
+                // when it was digitized and added to the repository.
                 view.pub_date = "";
                 if (record.date_type !== undefined &&
                     (record.date_type === "completed" ||
@@ -1037,9 +1040,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 } else if (record.type !== undefined && record.date !== undefined &
                     (record.type === "conference_item" || record.type === "teaching_resource") && record.date !== "") {
                     view.pub_date = "(" + record.date.substring(0, 4) + ")";
-
-                } else {
-                    console.log("ERROR: failed to normalize, missing pub date", record);
                 }
                 if (record.creators !== undefined && record.creators.items !== undefined) {
                     view.creators = [];
@@ -1109,7 +1109,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
             normal_view.push(view);
         }
-        self.nextCallbackFn(normal_view, err);
+        self.nextCallbackFn(normal_view, "");
     };
 
     /**
@@ -1154,39 +1154,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             return word[0].toUpperCase() + word.substr(1).toLowerCase();
         }).join(" ");
     }
-
-    /**
-     * indexer is a callback used in create LunrJS search indexes based on the data retrieved
-     * from getPeopleJSON() and getGroupJSON().
-     */
-    CL.indexer = function(data, err) {
-        if (err !== "") {
-            console.log("ERROR: indexer failed", err);
-            return;
-        }
-        //FIXME: Create our LunrJS index to be used by our search_box
-        try {
-            let idx = lunr(function() {
-                this.ref('search_id');
-                this.field('title');
-                this.field('creators');
-                this.field('description');
-                this.field('pub_date');
-                this.field('collection');
-                this.field('doi');
-                this.field('citation_info');
-                this.field('resource_type');
-
-                for (let search_id in data) {
-                    let doc = data[search_id];
-                    doc.search_id = search_id;
-                    this.add(doc);
-                }
-            });
-        } catch(e) {
-            console.log("ERROR: Can't find Lunrjs library", e);
-        }
-    };
 
 
     /**
@@ -1285,16 +1252,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 return;
             }
             let ul = document.createElement("ul"),
-                search_box = document.createElement("div"),
                 feed_count = document.createElement("div"),
                 year_jump_list = document.createElement("div"),
                 year_heading = "";
             /* Handle showing search box with current search string */
-            if (show_search_box === true) {
-                search_box.innerHTML = `<input id="search-query" class="search-query" name="search" value="" placeholder="Enter search terms here">
-<button id="search-button" class="search-button">Search</button>`;
-                parent_element.append(search_box);
-            }
             /* Handle Managing Year Jump List */
             if (show_year_headings === true) {
                 year_heading = "";

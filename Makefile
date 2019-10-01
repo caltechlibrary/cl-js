@@ -20,6 +20,7 @@ lint:
 	jshint scripts/CL-feeds.js
 	jshint scripts/CL-feeds-ui.js
 	jshint scripts/CL-doi-media.js
+	jshint scripts/CL-feeds-lunr.js
 
 
 status:

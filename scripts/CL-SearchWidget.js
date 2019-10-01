@@ -345,12 +345,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             // Generate JavaScript CL.js include 
             if (include_CL == true) {
                 if (developer_mode === true) {
+                    test.push("<script src=\"https://unpkg.com/lunr/lunr.js\"></script>")
                     text.push("<script src=\"/scripts/CL-core.js\"></script>");
                     text.push("<script src=\"/scripts/CL-ui.js\"></script>");
                     text.push("<script src=\"/scripts/CL-feeds.js\"></script>");
                     text.push("<script src=\"/scripts/CL-feeds-ui.js\"></script>");
+                    text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL-feeds-lunr.js\"></script>");
                 } else {
+                    test.push("<script src=\"https://unpkg.com/lunr/lunr.js\"></script>")
                     text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL.js\"></script>");
+                    text.push("<script src=\"https://feeds.library.caltech.edu/scripts/CL-feeds-lunr.js\"></script>");
                 }
             }
 
@@ -361,14 +365,20 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("  \"use strict\";");
             text.push("  let cl = Object.assign({}, window.CL),");
             text.push("      config = {},");
+            text.push("      q = '',");
+            text.push("      u = new URL(window.location.href),");
             text.push("      elem = document.getElementById(\"" +
                 elem_id + "\"),");
 
             text.push("      query_form = document.createElement('div');");
+            text.push("");
 
+            text.push("  if (u.search !== '') {");
+            text.push("      q = u.searchParams ? (u.searchParams).get('q') : '';"); 
+            text.push("  }");
             query_form = `
 <form method="get">
-  <input type="text" name="q" value="" placeholder="Enter search terms">
+  <input type="text" name="q" value="` + "${q}" + `" placeholder="Enter search terms">
   <button>Search</button>
 </form>
 `;
@@ -393,7 +403,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             //text.push("  /* NOTE: lunr_search includes indexing ");
             //text.push("     if a query is submitted, otherwise");
             //text.push("     all records are returned unfilter by search *\/");
-            //text.push("  config.filters.push(cl.lunr_search);");
+            text.push("  config.filters.push(cl.lunr_search);");
             
            
             text.push("  cl.setAttribute(\"viewer\", config);");
@@ -576,7 +586,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             input.setAttribute("type", "checkbox");
             input.setAttribute("name", elem_name);
             input.setAttribute("label", s);
-            if ([2, 3, 4].indexOf(i) > -1) {
+            if ([0, 2, 3, 4].indexOf(i) > -1) {
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");

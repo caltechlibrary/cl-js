@@ -31,6 +31,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * the query string if set. Otherwise it is just a pass-
      */
     CL.lunr_search = function(data, err) {
+        let self = this;
         if (err !== "") {
             self.nextCallbackFn(data, err);
             return;
@@ -41,12 +42,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             q = params.get("q"),
             records = [],
             results = [];
-        console.log("DEBUG u", u.toString());
-        console.log("DEBUG params", params); 
-        console.log("DEBUG q ->", q, "<-");
 
-        // Build an index 
-        // Run the query 
+        // Build an index if query is present. Otherwise
+        // Return unfiltered data.
         if (q && q !== "") {
             let idx = lunr(function() {
                 this.ref("_i");
@@ -60,14 +58,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 this.field("citation_info");
                 this.field("resource_type");
                 for (let i in data) {
-                    doc = data[i];
-                    this.add(doc);
+                    data[i]._i = i;
+                    this.add(data[i]);
                 }
             });
             results = idx.search(q);
             for (let i in results) {
-                console.log("DEBUG results[i]", JSON.stringify(results[i]));
+                let j = results[i].ref;
+                records.push(data[j]);
             }
+            self.nextCallbackFn(records, "");
+            return;
         }
         
         // Call the next filter function 

@@ -164,6 +164,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (Object.keys(citation_info).length > 0) {
                     view.citation_info = citation_info;
                 }
+                // NOTE: Some records have no publication date because 
+                // there is no date in the material provided
+                // when it was digitized and added to the repository.
                 view.pub_date = "";
                 if (record.date_type !== undefined &&
                     (record.date_type === "completed" ||
@@ -174,9 +177,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 } else if (record.type !== undefined && record.date !== undefined &
                     (record.type === "conference_item" || record.type === "teaching_resource") && record.date !== "") {
                     view.pub_date = "(" + record.date.substring(0, 4) + ")";
-
-                } else {
-                    console.log("ERROR: failed to normalize, missing pub date", record);
                 }
                 if (record.creators !== undefined && record.creators.items !== undefined) {
                     view.creators = [];
@@ -246,7 +246,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
             normal_view.push(view);
         }
-        self.nextCallbackFn(normal_view, err);
+        self.nextCallbackFn(normal_view, "");
     };
 
     /**

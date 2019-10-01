@@ -36,16 +36,23 @@ Show search page for Big Bear Solar Observatory.
 <div id="Big-Bear-Solar-Observatory" class="CaltechAUTHORS"></div>
 
 <script src="https://feeds.library.caltech.edu/scripts/CL.js"></script>
+<script src="https://feeds.library.caltech.edu/scripts/CL-feeds-lunr.js"></script>
 <script>
 (function(document, window) {
   "use strict";
   let cl = Object.assign({}, window.CL),
       config = {},
+      q = '',
+      u = new URL(window.location.href),
       elem = document.getElementById("Big-Bear-Solar-Observatory"),
       query_form = document.createElement('div');
+
+  if (u.search !== '') {
+      q = u.searchParams ? (u.searchParams).get('q') : '';
+  }
   query_form.innerHTML = `
 <form method="get">
-  <input type="text" name="q" value="" placeholder="Enter search terms">
+  <input type="text" name="q" value="${q}" placeholder="Enter search terms">
   <button>Search</button>
 </form>
 `;
@@ -56,8 +63,8 @@ Show search page for Big Bear Solar Observatory.
     "aggregation": "groups",
     "feed_id": "Big-Bear-Solar-Observatory",
     "feed_path": "combined",
-    "feed_count": true,
-    "creators": true,
+    "feed_count": false,
+    "creators": false,
     "pub_date": true,
     "title_link": true,
     "citation_details": true,
@@ -75,10 +82,10 @@ Show search page for Big Bear Solar Observatory.
   config.show_search_box = true;
   config.parent_element = elem;
   config.filters.push(cl.normalize_view);
+  config.filters.push(cl.lunr_search);
   cl.setAttribute("viewer", config);
   cl.getGroupJSON("Big-Bear-Solar-Observatory", "combined", function(data, err) {
      cl.viewer(data, err);
   });
 }(document, window));
 </script>
-
