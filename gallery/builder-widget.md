@@ -1,8 +1,9 @@
 
 # Introducing the Builder Widget
 
-The [Builder Widget](https://feeds.library.caltech.edu/widgets/builder-widget.html) is a tool for embedding feeds.library.caltech.edu
-content. It generates CSS, HTML and JavaScript for embedding in your 
+The [Builder Widget](builder-widget.html) is a tool for embedding 
+https://feeds.library.caltech.edu content. It generates CSS, 
+HTML and JavaScript for embedding in your 
 own webpage. Feeds provides content for groups and individuals
 in the various Caltech Library repositories. The data is bibliographic 
 and collection related. The Builder Widget lets you choose the source 

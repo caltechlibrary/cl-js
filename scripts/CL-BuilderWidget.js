@@ -161,9 +161,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     if ("CaltechTHESIS" in profile) {
                         for (let feed_label in profile.CaltechTHESIS) {
                             let option = document.createElement("option");
-                            option.innerHTML = "CaltechTHESIS: " + feed_label;
-                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
-                            select_feed_path.appendChild(option);
+                            //NOTE: People don't have combined thesis, only
+                            // Groups.
+                            if (feed_label !== "combined") {
+                                option.innerHTML = "CaltechTHESIS: " + feed_label;
+                                option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
+                                select_feed_path.appendChild(option);
+                            }
                         }
                     }
                     if ("CaltechAUTHORS" in profile) {
