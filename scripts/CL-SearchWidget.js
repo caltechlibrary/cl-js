@@ -38,13 +38,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
     /**
      * CL.SearchWidget() creates a search widget in the elements
-     * indicated by element id and error_element_id.
+     * indicated by element id.
      *
      * @param parent_element_selector the DOM element selector 
      *                                which wild the widget.
      */
     CL.SearchWidget = function(parent_element) {
-        let self = this;
+        let self = this,
+            u = new URL(window.location.href),
+            searchParams = u.searchParams;
 
         /* Widget code goes here */
         let widget_ui = document.createElement("div"),
@@ -66,12 +68,32 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         /* Widget event handlers */
         function update_feed_id(evt) {
-            let value = select_aggregation.value,
+            let aggregation = select_aggregation.value,
+                param_aggregation = decodeURIComponent(searchParams.get("aggregation")),
                 option,
                 code_block,
                 select_feed_id,
                 select_feed_path;
 
+            console.log("DEBUG update_feed_id()");
+
+            //NOTE: do we want to use the default value for feed_id?
+            let default_value = "",
+                q = searchParams.get("q");
+            if (q !== null && aggregation === param_aggregation) {
+                default_value = decodeURIComponent(searchParams.get("feed_id"));
+            } else {
+                // NOTE: If we not submitting a new search test make sure we reset preview!
+                let preview = document.querySelector("#previewed-code"),
+                    u = new URL(window.location.href);
+                if (preview) {
+                    preview.innerHTML = "";
+                }
+                u.search = "";
+                searchParams = u.searchParams;
+            }
+
+            
             select_feed_id = document.getElementById("feed-id");
             select_feed_id.innerHTML = "";
             option = document.createElement("option");
@@ -86,15 +108,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             if (code_block !== undefined) {
                 code_block.innerHTML = "";
             }
-            if (value === "people") {
+            if (aggregation === "people") {
                 self.getPeopleList(function(people, err) {
                     if (err != "") {
-                        let elem = document.getElementById(error_element_id);
-                        if (elem) {
-                            elem.innerHTML = err;
-                        } else {
-                            console.log("ERROR", err);
-                        }
+                        console.log("ERROR", err);
                         return;
                     }
                     people.forEach(function(profile, i) {
@@ -108,16 +125,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         }
                         select_feed_id.appendChild(option);
                     });
+                    if (default_value) {
+                        select_feed_id.value = default_value;
+                        update_feed_path({});
+                    }
                 });
-            } else if (value === "groups") {
+            } else if (aggregation === "groups") {
                 self.getGroupsList(function(groups, err) {
                     if (err != "") {
-                        let elem = document.getElementById(error_element_id);
-                        if (elem) {
-                            elem.innerHTML = err;
-                        } else {
-                            console.log("ERROR", err);
-                        }
+                        console.log("ERROR", err);
                         return;
                     }
                     groups.forEach(function(group, i) {
@@ -126,6 +142,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         option.innerHTML = group.name;
                         select_feed_id.appendChild(option);
                     });
+                    if (default_value) {
+                        select_feed_id.value = default_value;
+                        update_feed_path({});
+                    }
                 });
             } else {
                 generate_button.disabled = true;
@@ -135,10 +155,30 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
         function update_feed_path(evt) {
             let aggregation = select_aggregation.value,
+                param_aggregation = decodeURIComponent(searchParams.get("aggregation")),
                 feed_id = select_feed_id.value,
+                param_feed_id = decodeURIComponent(searchParams.get("feed_id")),
                 option,
                 code_block,
                 select_feed_path;
+
+            console.log("DEBUG update_feed_path()");
+
+            //NOTE: do we want to use the default value for feed_id, feed_path?
+            let default_value = "",
+                q = searchParams.get("q");
+            if (q !== null && aggregation === param_aggregation && feed_id === param_feed_id) {
+                default_value = decodeURIComponent(searchParams.get("feed_path"));
+            } else {
+                // NOTE: If we not submitting a new search test make sure we reset preview!
+                let preview = document.querySelector("#previewed-code"),
+                    u = new URL(window.location.href);
+                if (preview) {
+                    preview.innerHTML = "";
+                }
+                u.search = "";
+                searchParams = u.searchParams;
+            }
 
             option = document.createElement("option");
             option.innerHTML = "Step 3. Pick feed type";
@@ -153,20 +193,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             if (aggregation === "people") {
                 self.getPeopleInfo(feed_id, function(profile, err) {
                     if (err != "") {
-                        let elem = document.getElementById(error_element_id);
-                        if (elem) {
-                            elem.innerHTML = err;
-                        } else {
-                            console.log("ERROR", err);
-                        }
+                        console.log("ERROR", err);
                         return;
                     }
                     if ("CaltechTHESIS" in profile) {
                         for (let feed_label in profile.CaltechTHESIS) {
                             let option = document.createElement("option");
-                            option.innerHTML = "CaltechTHESIS: " + feed_label;
-                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
-                            select_feed_path.appendChild(option);
+                            if (feed_label !== "combined") {
+                                option.innerHTML = "CaltechTHESIS: " + feed_label;
+                                option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
+                                select_feed_path.appendChild(option);
+                            }
                         }
                     }
                     if ("CaltechAUTHORS" in profile) {
@@ -191,16 +228,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             select_feed_path.appendChild(option);
                         }
                     }
+                    if (default_value) {
+                        select_feed_path.value = default_value;
+                        preview_code({});
+                    }
                 });
             } else if (aggregation === "groups") {
                 self.getGroupInfo(feed_id, function(group, err) {
                     if (err != "") {
-                        let elem = document.getElementById(error_element_id);
-                        if (elem) {
-                            elem.innerHTML = err;
-                        } else {
-                            console.log("ERROR", err);
-                        }
+                        console.log("ERROR", err);
                         return;
                     }
                     if ("CaltechTHESIS" in group) {
@@ -233,9 +269,65 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             select_feed_path.appendChild(option);
                         }
                     }
+                    if (default_value) {
+                        select_feed_path.value = default_value;
+                        preview_code({});
+                    }
                 });
             }
         }
+        
+        function select_feed(evt) {
+            let aggregation = select_aggregation.value,
+                param_aggregation = decodeURIComponent(searchParams.get("aggregation")),
+                feed_id = select_feed_id.value,
+                param_feed_id = decodeURIComponent(searchParams.get("feed_id")),
+                feed_path = select_feed_path.value,
+                param_feed_path = decodeURIComponent(searchParams.get("feed_path")),
+                code_block;
+
+            console.log("DEBUG select_feed()");
+            
+            // NOTE: If we not submitting a new search test make sure we reset preview!
+            let preview = document.querySelector("#previewed-code"),
+                u = new URL(window.location.href);
+            if (preview) {
+                preview.innerHTML = "";
+                u.search = "";
+                searchParams = u.searchParams;
+                //update_feed_path(evt);
+            }
+
+            code_block = document.getElementById("generated-code");
+            if (code_block !== undefined) {
+                code_block.innerHTML = "";
+            }
+            if (select_feed_path.value.startsWith("Step ")) {
+                generate_button.disabled = true;
+                preview_button.disabled = true;
+            } else {
+                generate_button.disabled = false;
+                preview_button.disabled = false;
+                let parts = select_feed_path.value.split(":");
+                if (parts.length === 2) {
+                    switch (parts[1]) {
+                        case 'caltechauthors':
+                            css_classname = ".CaltechAUTHORS";
+                            break;
+                        case 'caltechthesis':
+                            css_classname = ".CaltechTHESIS";
+                            break;
+                        case 'caltechdata':
+                            css_classname = ".CaltechDATA";
+                            break;
+                        default:
+                            css_classname = ".CaltechLibrary";
+                            break;
+                    }
+                }
+            }
+        }
+
 
         // get_config scans the settings in the Search Widget form and creates a configuration to
         // suitable to pass to code_render().
@@ -374,8 +466,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("");
 
             text.push("  if (u.search !== '') {");
-            text.push("      q = u.searchParams ? (u.searchParams).get('q') : '';"); 
+            text.push("      q = u.searchParams.get('q');"); 
+            text.push("      if (q === null) {");
+            text.push("          q = ''; ");
+            text.push("      } else {"); 
+            text.push("          q = decodeURIComponent(q);");
+            text.push("      }");
             text.push("  }");
+            
             query_form = `
 <form method="get">
   <input type="text" name="q" value="` + "${q}" + `" placeholder="Enter search terms">
@@ -400,9 +498,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("  config.parent_element = elem;");
 
             text.push("  config.filters.push(cl.normalize_view);");
-            //text.push("  /* NOTE: lunr_search includes indexing ");
-            //text.push("     if a query is submitted, otherwise");
-            //text.push("     all records are returned unfilter by search *\/");
+            /* NOTE: lunr_search includes indexing if a query is submitted, otherwise
+               all records are returned unfilter by lunr_search */
             text.push("  config.filters.push(cl.lunr_search);");
             
            
@@ -440,7 +537,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
 
         function preview_code(evt) {
+            console.log("DEBUG preview code()");
             let src = "",
+                input = document.createElement("input"),
                 config = get_config(),
                 code_block = document.getElementById("generated-code"),
                 preview_block = document.getElementById("previewed-code");
@@ -456,7 +555,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             src = code_render(config);
             let div = document.createElement("div"),
                 style,
-                js_src = "";
+                js_src = "",
+                form;
             div.innerHTML = src;
             js_src = div.querySelector("script").textContent;
             style = div.querySelector("style");
@@ -467,6 +567,45 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             /* UGLY: doing this eval so I can preview what the JS 
              * I generarted renders */
             eval(js_src);
+            /** NOTE: we need to modify the input for so if they press search we can
+                recreate everything with these settings including running the search results **/
+            form = preview_block.querySelector("form");
+            if (form !== null) {
+                let q = searchParams.get("q");
+                if (q !== null) {
+                    let searchbox = form.querySelector("[name=q]")
+                    searchbox.setAttribute("value", q);
+                }
+                input.setAttribute("name", "aggregation");
+                input.setAttribute("type", "hidden");
+                input.setAttribute("value", document.querySelector("#aggregation").value);
+                form.appendChild(input);
+
+                input = document.createElement("input");
+                input.setAttribute("name", "feed_id");
+                input.setAttribute("type", "hidden");
+                input.setAttribute("value", document.querySelector("#feed-id").value);
+                form.appendChild(input);
+
+                input = document.createElement("input");
+                input.setAttribute("name", "feed_path");
+                input.setAttribute("type", "hidden");
+                input.setAttribute("value", document.querySelector("#feed-path").value);
+                form.appendChild(input);
+
+                ["feed-count", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+                    let name = id.replace(/-/g,"_");
+                    input = document.createElement("input");
+                    input.setAttribute("name", name);
+                    input.setAttribute("type", "hidden");
+                    if (document.querySelector("#"+id).checked === true) {
+                        input.setAttribute("value", 1);
+                    } else {
+                        input.setAttribute("value", 0);
+                    }
+                    form.appendChild(input);
+                });
+            }
         }
 
 
@@ -477,6 +616,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         /* Form holds our control panel for generating code */
         form = document.createElement("form");
         form.setAttribute("id", "feed-search-widget");
+        
 
         heading = document.createElement("h1");
         heading.innerHTML = "Search Widget";
@@ -529,38 +669,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         select_feed_path = div.querySelector("#feed-path");
         select_feed_path.setAttribute("name", "feed-path");
         select_feed_path.setAttribute("title", "list of available feed paths");
-        select_feed_path.addEventListener("change", function(evt) {
-            let code_block;
-
-            code_block = document.getElementById("generated-code");
-            if (code_block !== undefined) {
-                code_block.innerHTML = "";
-            }
-            if (select_feed_path.value.startsWith("Step ")) {
-                generate_button.disabled = true;
-                preview_button.disabled = true;
-            } else {
-                generate_button.disabled = false;
-                preview_button.disabled = false;
-                let parts = select_feed_path.value.split(":");
-                if (parts.length === 2) {
-                    switch (parts[1]) {
-                        case 'caltechauthors':
-                            css_classname = ".CaltechAUTHORS";
-                            break;
-                        case 'caltechthesis':
-                            css_classname = ".CaltechTHESIS";
-                            break;
-                        case 'caltechdata':
-                            css_classname = ".CaltechDATA";
-                            break;
-                        default:
-                            css_classname = ".CaltechLibrary";
-                            break;
-                    }
-                }
-            }
-        }, true);
+        select_feed_path.addEventListener("change", select_feed, false);
         form.appendChild(div);
 
         // NOTE: we don't need the Filter Data section in the UI
@@ -618,7 +727,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         input.addEventListener("click", generate_code, false);
         generate_button = input;
 
-
         form.appendChild(div);
 
         /* Instantiate the form! */
@@ -638,7 +746,39 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         parent_element.appendChild(widget_ui);
         parent_element.appendChild(widget_error);
         parent_element.appendChild(code);
-        parent_element.appendChild(section);
+        parent_element.appendChild(section);        
+        
+        /** Trigger form updates as needed **/
+        (function() {
+            let q = searchParams.get("q"),
+                aggregation = document.querySelector("#aggregation"),
+                params_aggregation = searchParams.get("aggregation"),
+                feed_id = document.querySelector("#feed-id"),
+                params_feed_id = searchParams.get("feed_id"),
+                feed_path = document.querySelector("#feed-path"),
+                params_feed_path = searchParams.get("feed_path");
+              
+            if (q !== null) {
+                if (aggregation !== null && aggregation.value === "" && params_aggregation &&
+                    feed_id !== null && feed_id.value === "" && params_feed_id &&
+                    feed_path !== null && feed_path.value === "" && params_feed_path) {
+                    ["feed-count", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+                        let name = id.replace(/-/g, '_'),
+                            elem = document.querySelector('#'+id),
+                            default_value = searchParams.get(name);
+                        if (default_value == 1) {
+                            elem.setAttribute("checked", "checked");
+                        } else {
+                            elem.removeAttribute("checked");
+                        }
+                    });
+                    aggregation.value = params_aggregation;
+                    generate_button.disabled = false;
+                    preview_button.disabled = false;
+                    update_feed_id({});
+                }
+            }
+        }());
     };
 
     /* Now add CL.SearchWidget to the CL in the window object. */

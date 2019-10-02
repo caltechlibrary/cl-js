@@ -1,7 +1,7 @@
 
 # Introducing the Search Widget
 
-The [Search Widget](https://feeds.library.caltech.edu/widgets/search-widget.html) is a tool for embedding a browser side search and result box
+The [Search Widget](search-widget.html) is a tool for embedding a browser side search and result box
 based on feeds hosted at feeds.library.caltech.edu. The widget generates 
 CSS, HTML and JavaScript for embedding in your own webpage.
 The embedded search is specific to a group or individual feed. It is
