@@ -94,23 +94,15 @@ Using the concatenated version
     <script src="/scripts/CL.js"></script>
 ```
 
-Or if you are experimenting, enhancing or 
-exploring the JavaScript library you can include
-the file individually.
-
-```html
-    <script src="/scripts/CL-core.js"></script>
-    <script src="/scripts/CL-ui.js"></script>
-    <script src="/scripts/CL-feeds.js"></script>
-    <script src="/scripts/CL-feeds-ui.js"></script>
-    <script src="/scripts/CL-doi-media.js"></script>
-```
+You can create `CL.js` by concatenating the following 
+files `CL-core.js`, `CL-ui.js`, `CL-feeds.js`, `CL-feeds-ui.js`
+and `CL-doi-media.js`.
 
 
 Known issues and limitations
 ----------------------------
 
-The `CL-*.js` library is limited to web browser environment
+The `CL.js` library is limited to web browser environment
 running on evergreen web browser. Because of DOM usage
 it is not intended to be used from server side environments
 like [NodeJS](https://nodejs.org).
