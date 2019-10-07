@@ -22,29 +22,45 @@
 </nav>
 
 <section>
-<h1 id="examples">Examples</h1>
+<h1>DOI Video player</h1>
 
-<p>The follow examples demonstrates some of the things created with
-<a href="https://feeds.library.caltech.edu/scripts/CL.js" title="Production version of CL.js">CL.js</a> JavaScript library.</p>
+<p>The DOI assigned via CaltechDATA repository can include media elements
+such as videos. The <a href="../">CL.js</a> JavaScript library makes it easy to
+embed those videos in your own website.</p>
 
-<h2 id="doi-video-player-doi-video-player-html-example-of-embedding-video-content"><a href="doi-video-player.html" title="Example of embedding video content">DOI video player</a></h2>
+<h2>Example embedded media player</h2>
 
-<p>The <a href="https://feeds.library.caltech.edu/scripts/CL.js" title="link to production CL.js copy">CL.js</a> provides support for embedding videos from datasets deposited at <a href="https://data.library.caltech.edu" title="link to the CaltechDATA repository">CaltechDATA</a>. See <a href="doi-video-player.html">DOI video player</a> page.</p>
+<p>DOI: <a href="https://doi.org/10.22002/D1.1281" title="link to DOI content">10.22002/D1.1281</a>
+Video is the first item in the media list.</p>
 
-<h2 id="builder-widget">Builder Widget</h2>
+<div id="video-demo"></div>
 
-<p>The <a href="builder-widget.html" title="demo of builder widget">Builder Widget</a>
-is a tool to help you embed content from feeds.library.caltech.edu and
-your own website. It generates example CSS, HTML and JavaScript based
-on a set of feed sources you choose.</p>
+<h2>Example JavaScript</h2>
 
-<h2 id="search-widget">Search Widget</h2>
+<pre><code class="language-html">    &lt;script src=&quot;https://feeds.library.caltech.edu/scripts/CL.js&quot;&gt;&lt;/script&gt;
+    
+    &lt;script&gt;
+    /* Get the info we need to embed */
+    let div = document.getElementById(&quot;video-demo&quot;);
+    
+    /* Embed our video with element, doi and item number */
+    CL.doi_video_player(div, '10.22002/D1.1281', 0);
+    &lt;/script&gt;
+</code></pre>
 
-<p>The <a href="search-widget.html" title="demo of search widget">Search Widget</a>
-is a tool to help you embed a search in your website for content
-coming from feeds.library.caltech.edu. Like the builder widget it
-generates example CSS, HTML and JavaScript needed to include search
-in your own web page.</p>
+<!-- START: Demo of DOI video player -->
+
+<script src="../scripts/CL.js"></script>
+
+<script>
+/* Get the info we need to embed */
+let div = document.getElementById("video-demo");
+    
+/* Embed our video with element, doi and item number */
+CL.doi_video_player(div, '10.22002/D1.1281', 0);
+</script>
+
+<!--   END: Demo of DOI video player -->
 
 </section>
 

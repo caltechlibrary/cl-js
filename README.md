@@ -3,8 +3,7 @@ CL-js - A vanilla JavaScript library for Caltech Library projects
 
 This repository provides a vanilla JavaScript library 
 used across some of Caltech Library projects including 
-[feeds.library.caltech.edu](https://feeds.library.caltech.edu)
-and the [And/Or](https://github.com/caltechlibrary/andor) prototype.
+[feeds.library.caltech.edu](https://feeds.library.caltech.edu).
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
 [![Latest release](https://img.shields.io/badge/Latest_release-0.1.2-b44e88.svg?style=flat-square)](http://shields.io)
@@ -18,6 +17,7 @@ Table of contents
 * [Usage](#usage)
 * [Known issues and limitations](#known-issues-and-limitations)
 * [Getting help](#getting-help)
+    * [Gallery](gallery/) examples 
 * [Contributing](#contributing)
 * [License](#license)
 * [Authors and history](#authors-and-history)
@@ -35,7 +35,8 @@ The core CL object is defined in `CL-core.js`. Additional features
 are provided in their own files `CL-us.js`, `CL-feeds.js`, 
 `CL-feeds-ui.js`, `CL-fields.js` and `CL-doi-media.js`. 
 If you want to used our JavaScript library you should 
-references the concatenated version of all named `CL.js`.
+references the concatenated version of [CL.js](https://feeds.library.caltech.edu/scripts/CL.js "Production version of CL.js") hosted at
+`https://feeds.library.caltech.edu/scripts/CL.js`.
 
 Installation
 ------------
@@ -138,11 +139,11 @@ Software produced by the Caltech Library is Copyright (C) 2019, Caltech.  This s
 Authors and history
 ---------------------------
 
-The CL JavaScript object evolved out of our [feeds.library.caltech.edu](https://feeds.library.caltech.edu) aggregation project. As enhanced vanilla 
-JavaScript functions were needed in other projects, some of which
-included content from feeds the CL object was extended. It was split
-into its own repository during the prototyping of [And/Or](https://github.com/caltechlibrary/andor) in Summer 2019.
+The CL JavaScript object evolved out of our [feeds.library.caltech.edu](https://feeds.library.caltech.edu) aggregation project. It's primary goal
+is to provide an easy to use vanilla JavaScript library for working with
+Caltech Library services and content.  It was split from the feeds.library.caltech.edu repository into its own repository in the Summer of 2019.
 
++ R. S. Doiel, <rsdoiel@library.caltech.edu>
 
 Acknowledgments
 ---------------
