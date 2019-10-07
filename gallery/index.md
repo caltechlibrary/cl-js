@@ -3,23 +3,29 @@ markup = "mmark"
 +++
 
 
-# Examples
+# Gallery
+
+## Example of using CL.js
 
 The follow examples demonstrates some of the things created with 
 [CL.js](https://feeds.library.caltech.edu/scripts/CL.js "Production version of CL.js") JavaScript library.
 
-## [DOI video player](doi-video-player.html "Example of embedding video content")
+### DOI video player
 
-The [CL.js](https://feeds.library.caltech.edu/scripts/CL.js "link to production CL.js copy") provides support for embedding videos from datasets deposited at [CaltechDATA](https://data.library.caltech.edu "link to the CaltechDATA repository"). See [DOI video player](doi-video-player.html) page.
+Demo and example JavaScript code for embedding [DOI video player](doi-video-player.html "Example of embedding video content")
 
-## Builder Widget
+The [CL.js](https://feeds.library.caltech.edu/scripts/CL.js "link to production CL.js copy") provides support for embedding videos associated with material deposited at [CaltechDATA](https://data.library.caltech.edu "link to the CaltechDATA repository"). 
+
+## Tools build with CL.js
+
+### Builder Widget
 
 The [Builder Widget](builder-widget.html "demo of builder widget") 
 is a tool to help you embed content from feeds.library.caltech.edu and
 your own website. It generates example CSS, HTML and JavaScript based
 on a set of feed sources you choose.
 
-## Search Widget
+### Search Widget
 
 The [Search Widget](search-widget.html "demo of search widget")
 is a tool to help you embed a search in your website for content
