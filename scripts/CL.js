@@ -943,7 +943,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * normalize_view is a function to use with a CL.pipeline. It expects
      * data and error parameters and will envoke `this.nextCallbackFn(data, err)`
      * before existing. The purpose of normalize_view is to extract titles, links,
-     * pub_data, creator and description from both Invenion and EPrints style JSON 
+     * pub_date, creator and description from both Invenion and EPrints style JSON 
      * lists.
      */
     CL.normalize_view = function(data, err) {
@@ -1030,16 +1030,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 // NOTE: Some records have no publication date because 
                 // there is no date in the material provided
                 // when it was digitized and added to the repository.
-                view.pub_date = "";
+                view.pub_date = '';
                 if (record.date_type !== undefined &&
-                    (record.date_type === "completed" ||
-                        record.date_type === "published" ||
-                        record.date_type === "submitted" ||
-                        record.date_type === "degree")) {
-                    view.pub_date = "(" + record.date.substring(0, 4) + ")";
+                    (record.date_type === 'completed' ||
+                        record.date_type === 'published' ||
+                        record.date_type === 'inpress' ||
+                        record.date_type === 'submitted' ||
+                        record.date_type === 'degree')) {
+                    view.pub_date = '(' + record.date.substring(0, 4) + ')';
                 } else if (record.type !== undefined && record.date !== undefined &
-                    (record.type === "conference_item" || record.type === "teaching_resource") && record.date !== "") {
-                    view.pub_date = "(" + record.date.substring(0, 4) + ")";
+                    (record.type === 'conference_item' || record.type === 'teaching_resource') && record.date !== '') {
+                    view.pub_date = '(' + record.date.substring(0, 4) + ')';
                 }
                 if (record.creators !== undefined && record.creators.items !== undefined) {
                     view.creators = [];
@@ -1255,7 +1256,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 feed_count = document.createElement("div"),
                 year_jump_list = document.createElement("div"),
                 year_heading = "";
-            /* Handle showing search box with current search string */
             /* Handle Managing Year Jump List */
             if (show_year_headings === true) {
                 year_heading = "";

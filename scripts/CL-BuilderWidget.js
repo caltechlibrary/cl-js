@@ -1,11 +1,10 @@
 /**
- * CL-BuilderWidget.js defines the BuilderWidget based on CL-core.js
- * and CL-ui.js.
+ * CL-BuilderWidget.js defines the BuilderWidget based on CL.js
  *
  * CL.BuilderWidget() creates a feed builder widget embedded at element id.
  * @params element id to embed the builder widget.
  *
- * CL-core.js provides browser side JavaScript access to 
+ * CL.js provides browser side JavaScript access to 
  * feeds.library.caltech.edu and other Caltech Library resources.
  *
  * @author R. S. Doiel
