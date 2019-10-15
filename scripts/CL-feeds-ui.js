@@ -497,10 +497,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     title.appendChild(link);
                     li.appendChild(title);
                 } else {
-                    title.innerHTML = record.title;
-                    link.innerHTML = record.href;
+                    title.innerHTML = '<em>' + record.title + '</em>';
                     li.appendChild(title);
-                    li.appendChild(link);
                 }
                 if (show_citation === true && Object.keys(record.citation_info).length > 0) {
                     ["publication", "series", "volume", "number",
@@ -587,11 +585,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     });
                 }
 
+
                 if (show_doi === true && record.doi !== undefined && record.doi !== "") {
                     span = document.createElement("span");
                     span.classList.add("doi");
                     span.innerHTML = record.doi;
                     li.appendChild(span);
+                }
+                if (show_title_linked === false) {
+                    link.innerHTML = record.href;
+                    li.appendChild(link);
                 }
                 if (show_description === true && record.description !== undefined && record.description !== "") {
                     description = document.createElement("div");
