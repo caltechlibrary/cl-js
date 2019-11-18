@@ -1071,7 +1071,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 view.description = record.abstract;
             } else {
                 view.collection = "CaltechDATA";
-                view.title = record.titles[0];
+                view.title = record.titles[0].title;
                 if (record.resourceType !== undefined && record.resourceType.resourceTypeGeneral !== undefined && record.resourceType.resourceTypeGeneral !== "") {
                     view.resource_type = record.resourceType.resourceTypeGeneral;
                 }

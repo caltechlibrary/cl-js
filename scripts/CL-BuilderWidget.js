@@ -182,7 +182,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             let option = document.createElement("option"),
                                 feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
                             if (feed_type === "combined") {
-                                feed_type = "data";
+                                feed_type = "combined_data";
                             } else if (feed_type === "interactive_resource") {
                                 feed_type = "interactiveresource";
                             }
