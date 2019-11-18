@@ -24,7 +24,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     "use strict";
     /* CL is our root object */
     let CL = {},
-        Version = 'v0.1.3';
+        Version = 'v0.1.4';
 
 
     if (window.CL === undefined) {

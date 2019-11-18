@@ -83,4 +83,4 @@ __pycache__
 # Ignore NodeJS stuff and specific libraries
 node_modules
 scripts/handlebars.js
-
+dist
