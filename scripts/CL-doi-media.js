@@ -66,7 +66,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         });
     };
 
-    CL.doi_video_player = function(elem, doi, item_no) {
+    CL.doi_video_player = function(elem, doi, item_no, width = 640, height = 480) {
         let self = this;
         if (item_no === undefined) {
             item_no = 0;
@@ -81,7 +81,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <!-- If you'd like to support IE8 -->
 <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 
-<video class="video-js" controls preload="auto" width="640" height="480" data-setup="{}">
+<video class="video-js" controls preload="auto" width="${width}" height="${height}" data-setup="{}">
     <source src="${obj.media_url}" type='${obj.media_type}'>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a web browser that

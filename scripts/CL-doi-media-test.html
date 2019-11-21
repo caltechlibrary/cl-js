@@ -108,7 +108,7 @@ function testDoiVideoPlayer(tests, err) {
     let div = document.getElementById("video-demo"),
         doi = '10.22002/D1.1281',
         item_no = 0;
-    CL.doi_video_player(div, doi, item_no);
+    CL.doi_video_player(div, doi, item_no, 1024, 768);
     setTimeout(function() {
         let src = div.textContent;
         if (src.includes('error')) {
