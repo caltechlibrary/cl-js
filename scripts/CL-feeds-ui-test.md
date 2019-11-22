@@ -20,6 +20,10 @@ and to confirm we have a working `CL` object.
 .jump-list-label {
     margin-right: 0.24em;
 }
+.book-title {
+    font-weight: bolder;
+    padding-right: 0.42em;
+}
 </style>
 
 <div id="test-output"></div>
@@ -87,7 +91,7 @@ function testRecentNAndViewer(tests, err) {
 
     books.getPeopleJSON("Newman-D-K", "book_section", function(data, err) {
         books.viewer(data, err);
-        /* console.log(div); */
+        /*console.log(div); */
         /*NOTE: this is a minimal test, really need to check the whole DOM tree created. */
         if (div.childNodes.length !== 5) {
             tests.errors++;
@@ -113,9 +117,9 @@ function testRecentNAndViewer(tests, err) {
         /* Get the next sibling after the year the heading */
         elem = div.firstChild.nextSibling;
         elem = elem.nextSibling.firstChild;
-        if (elem.childNodes.length !== 2) {
+        if (elem.childNodes.length !== 3) {
             tests.errors++;
-            println("FAILED: Expected li element to have two spans as children", elem.childNodes.length);
+            println("FAILED: Expected li element to have three spans as children", elem.childNodes.length);
             console.log("FAILED: li should have two spans inside ", elem);
             testSummary(tests, "");
             return;

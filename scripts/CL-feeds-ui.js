@@ -108,6 +108,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.type !== undefined && record.type !== "") {
                     view.resource_type = record.type;
                 }
+                if (record.book_title !== undefined && record.book_title !== "") {
+                    view.book_title = record.book_title;
+                }
                 /* NOTE: we should prefer the DOI if available */
                 view.href = record.official_url;
                 if (record.doi !== undefined && record.doi !== "") {
@@ -403,8 +406,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 feed_count.innerHTML = "(" + records.length + " items)";
                 parent_element.append(feed_count);
             }
-            /* Add our ul to parent_element */
-            parent_element.appendChild(ul);
             records.forEach(function(record) {
                 let view = {},
                     current_year = "",
@@ -415,6 +416,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     creators,
                     pub_year,
                     pub_date,
+                    book_title,
                     title,
                     link,
                     description,
@@ -484,6 +486,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     pub_date.classList.add("pub-date");
                     pub_date.innerHTML = " " + record.pub_date + " ";
                     li.appendChild(pub_date);
+                }
+
+                if (record.book_title !== undefined && record.book_title !== "") {
+                    book_title = document.createElement("span");
+                    book_title.classList.add("book-title");
+                    link = document.createElement("a");
+                    link.classList.add("link");
+                    link.setAttribute("href", record.href);
+                    link.setAttribute("title", "linked to " + record.collection);
+                    if (show_title_linked === true) {
+                        link.innerHTML = record.book_title;
+                        book_title.appendChild(link);
+                        li.appendChild(book_title);
+                    } else {
+                        book_title.innerHTML = '<em>' + record.book_title + '</em>';
+                        li.appendChild(book_title);
+                    }
                 }
 
                 title = document.createElement("span");
