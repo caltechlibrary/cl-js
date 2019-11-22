@@ -491,18 +491,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.book_title !== undefined && record.book_title !== "") {
                     book_title = document.createElement("span");
                     book_title.classList.add("book-title");
-                    link = document.createElement("a");
-                    link.classList.add("link");
-                    link.setAttribute("href", record.href);
-                    link.setAttribute("title", "linked to " + record.collection);
-                    if (show_title_linked === true) {
-                        link.innerHTML = record.book_title;
-                        book_title.appendChild(link);
-                        li.appendChild(book_title);
-                    } else {
-                        book_title.innerHTML = '<em>' + record.book_title + '</em>';
-                        li.appendChild(book_title);
-                    }
+                    book_title.innerHTML = '<em>' + record.book_title + '</em>';
+                    li.appendChild(book_title);
                 }
 
                 title = document.createElement("span");
