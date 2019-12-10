@@ -75,8 +75,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 select_feed_id,
                 select_feed_path;
 
-            console.log("DEBUG update_feed_id()");
-
             //NOTE: do we want to use the default value for feed_id?
             let default_value = "",
                 q = searchParams.get("q");
@@ -161,8 +159,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 option,
                 code_block,
                 select_feed_path;
-
-            console.log("DEBUG update_feed_path()");
 
             //NOTE: do we want to use the default value for feed_id, feed_path?
             let default_value = "",
@@ -288,8 +284,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 param_feed_path = decodeURIComponent(searchParams.get("feed_path")),
                 code_block;
 
-            console.log("DEBUG select_feed()");
-            
             // NOTE: If we not submitting a new search test make sure we reset preview!
             let preview = document.querySelector("#previewed-code"),
                 u = new URL(window.location.href);
@@ -539,7 +533,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
 
         function preview_code(evt) {
-            console.log("DEBUG preview code()");
             let src = "",
                 input = document.createElement("input"),
                 config = get_config(),

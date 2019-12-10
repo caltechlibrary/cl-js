@@ -374,7 +374,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
          * + show_isbn
          */
         if (config.parent_element !== undefined && config.parent_element) {
-            console.log("DEBUG parent_element from config.parent_element.");
             parent_element = config.parent_element;
         } else if (self.element !== undefined) {
             parent_element = self.element;
@@ -385,8 +384,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             parent_element.classList.add("CL-library-Feed");
             body.appendChild(parent_element);
         }
-        console.log("DEBUG xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!");
-        console.log("DEBUG parent_element should not be null!", parent_element);
 
 
         __display = function(records, err) {

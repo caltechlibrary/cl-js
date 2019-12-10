@@ -11,14 +11,10 @@ and make sure you can see a list of combined articles for matching articles list
 <div id="Thirty-Meter-Telescope">Test failed!, combined article list should go here.</div>
 
 
-<script src="CL-core.js"></script>
-<script src="CL-ui.js"></script>
-<script src="CL-feeds.js"></script>
-<script src="CL-feeds-ui.js"></script>
+<script src="CL.js"></script>
 <script>
 (function(document, window) {
   "use strict";
-  console.log("DEBUG starting code");
   let cl = Object.assign({}, window.CL),
       config = {},
       elem = document.getElementById("Thirty-Meter-Telescope");
@@ -50,10 +46,8 @@ and make sure you can see a list of combined articles for matching articles list
   config.filters.push(cl.normalize_view);
   cl.setAttribute("viewer", config);
   cl.getGroupJSON("Thirty-Meter-Telescope", "combined", function(data, err) {
-    console.log("DEBUG data -> ", JSON.stringify(data));
     cl.viewer(data, err);
   });
-  console.log("DEBUG ending code");
 }(document, window));
 </script>
 
