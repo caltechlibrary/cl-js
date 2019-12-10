@@ -8,3 +8,7 @@
 + [CL-feeds-ui-test](CL-feeds-ui-test.html)
 + [CL-doi-media-test](CL-doi-media-test.html)
 
+## Bug report tests
+
++ [dr-139](dr-139-test.html)
+

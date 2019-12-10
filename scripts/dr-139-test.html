@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="../">README</a></li>
+<li><a href="../license.html">LICENSE</a></li>
+<li><a href="../install.html">INSTALL</a></li>
+<li><a href="../gallery/">Gallery</a></li>
+<li><a href="../scripts/testing.html">Tests</a></li>
+<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+</ul>
+
+</nav>
+
+<section>
+<h1>CL-feeds-ui.js test viewer code</h1>
+
+<p>This is a test file for testing the &ldquo;viewer&rdquo; method of the CL
+object. It is related to DR-139 bug report. Visually inspect the output
+and make sure you can see a list of combined articles for matching articles listed at <a href="https://feeds.library.caltech.edu/groups/Thirty-Meter-Telescope/combined.html">Thirty Meter Telescope</a>.</p>
+
+<!-- START: test -->
+
+<div id="Thirty-Meter-Telescope">Test failed!, combined article list should go here.</div>
+
+<script src="CL-core.js"></script>
+<script src="CL-ui.js"></script>
+<script src="CL-feeds.js"></script>
+<script src="CL-feeds-ui.js"></script>
+<script>
+(function(document, window) {
+  "use strict";
+  console.log("DEBUG starting code");
+  let cl = Object.assign({}, window.CL),
+      config = {},
+      elem = document.getElementById("Thirty-Meter-Telescope");
+  cl.BaseURL = "https://feeds.library.caltech.edu";
+
+  config = {
+    "aggregation": "groups",
+    "feed_id": "Thirty-Meter-Telescope",
+    "feed_path": "combined",
+    "recent_n": 0,
+    "use_recent": false,
+    "feed_count": false,
+    "show_year_headings": false,
+    "creators": true,
+    "pub_date": true,
+    "title_link": true,
+    "citation_details": false,
+    "issn_or_isbn": false,
+    "pmcid": false,
+    "description": false,
+    "developer_mode": false,
+    "include_style": true,
+    "include_CL": true,
+    "repository": "CaltechAUTHORS",
+    "css_classname": ".CaltechAUTHORS",
+    "filters": []
+};
+  config.parent_element = elem;
+  config.filters.push(cl.normalize_view);
+  cl.setAttribute("viewer", config);
+  cl.getGroupJSON("Thirty-Meter-Telescope", "combined", function(data, err) {
+    console.log("DEBUG data -> ", JSON.stringify(data));
+    cl.viewer(data, err);
+  });
+  console.log("DEBUG ending code");
+}(document, window));
+</script>
+
+<!--   END: test -->
+
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2019 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+<!-- START: PrettyFi from https://github.com/google/code-prettify -->
+<script>
+/* We want to add the class "prettyprint" to all the pre elements */
+var pre_list = document.querySelectorAll("pre");
+
+pre_list.forEach(function(elem) {
+    elem.classList.add("prettyprint");
+    /* elem.classList.add("linenums:1");*/
+});
+</script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<!--  END: PrettyFi from https://github.com/google/code-prettify -->
+</body>
+</html>

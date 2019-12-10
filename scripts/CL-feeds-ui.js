@@ -373,7 +373,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
          * + show_issn
          * + show_isbn
          */
-        if (config.parent_element !== undefined) {
+        if (config.parent_element !== undefined && config.parent_element) {
+            console.log("DEBUG parent_element from config.parent_element.");
             parent_element = config.parent_element;
         } else if (self.element !== undefined) {
             parent_element = self.element;
@@ -384,6 +385,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             parent_element.classList.add("CL-library-Feed");
             body.appendChild(parent_element);
         }
+        console.log("DEBUG xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx!");
+        console.log("DEBUG parent_element should not be null!", parent_element);
 
 
         __display = function(records, err) {
@@ -396,6 +399,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 feed_count = document.createElement("div"),
                 year_jump_list = document.createElement("div"),
                 year_heading = "";
+            /* Clear the inner content of our element. */
+            parent_element.innerHTML = "";
             /* Handle Managing Year Jump List */
             if (show_year_headings === true) {
                 year_heading = "";
@@ -405,6 +410,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             if (show_feed_count === true) {
                 feed_count.innerHTML = "(" + records.length + " items)";
                 parent_element.append(feed_count);
+            }
+            /* NOTE: If we're not showing headings we're ready to attach our UL list
+             * which will be populated record by record, otherwise we need a 
+             * alternate with divs and uls for each grouping */
+            if (show_year_headings === false) {
+                parent_element.appendChild(ul);
             }
             records.forEach(function(record) {
                 let view = {},
