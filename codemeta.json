@@ -6,7 +6,7 @@
     "codeRepository": "https://github.com/caltechlibrary/cl-js",
     "issueTracker": "https://github.com/caltechlibrary/cl-js/issues",
     "license": "https://github.com/caltechlibrary/cl-js/blob/master/LICENSE",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "author": [
         {
             "@type": "Person",
@@ -18,7 +18,7 @@
         }
     ],
     "developmentStatus": "active",
-    "downloadUrl": "https://github.com/caltechlibrary/cl-js/archive/0.1.7.zip",
+    "downloadUrl": "https://github.com/caltechlibrary/cl-js/archive/0.1.8.zip",
     "keywords": [
         "software",
         "javascript"
