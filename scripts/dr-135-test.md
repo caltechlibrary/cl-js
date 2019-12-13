@@ -39,10 +39,7 @@ object. It is related to DR-135 bug report revising what is displayed for
 }
 </style>
 
-<script src="CL-core.js"></script>
-<script src="CL-ui.js"></script>
-<script src="CL-feeds.js"></script>
-<script src="CL-feeds-ui.js"></script>
+<script src="CL.js"></script>
 <script>
 (function(document, window) {
   "use strict";

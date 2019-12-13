@@ -168,7 +168,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     citation_info.series = record.series;
                 }
                 if (record.ispublished !== undefined && record.ispublished !== "") {
-                    console.log("DEBUG adding inpress and submit to citation_info -> ", record.ispublished);
                     if (record.ispublished === "inpress") {
                         citation_info.ispublished = "(In Press)";
                     }
@@ -558,7 +557,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             span.classList.add(key);
                             switch (key) {
                                 case "ispublished":
-                                    console.log("DEBUG including inpress and submitted");
                                     span.innerHTML = val;
                                     break;
                                 case "publication":
