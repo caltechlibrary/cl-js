@@ -10,5 +10,6 @@
 
 ## Bug report tests
 
-+ [dr-139](dr-139-test.html)
++ [dr-135](dr-135-test.html), improved conference items, monographs and inpress items
++ [dr-139](dr-139-test.html), missing data when "year heading" not used
 

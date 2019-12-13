@@ -155,6 +155,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.edition !== undefined && record.edition !== "") {
                     citation_info.edition = record.edition;
                 }
+                if (record.event_title !== undefined && record.event_title !== "") {
+                    citation_info.event_title = record.event_title;
+                }
+                if (record.event_dated !== undefined && record.event_dates !== "") {
+                    citation_info.event_dates = record.event_dates;
+                }
+                if (record.event_location !== undefined && record.event_location !== "") {
+                    citation_info.event_location = record.event_location;
+                }
+                if (record.series !== undefined && record.series !== "") {
+                    citation_info.series = record.series;
+                }
+                if (record.ispublished !== undefined && record.ispublished !== "") {
+                    console.log("DEBUG adding inpress and submit to citation_info -> ", record.ispublished);
+                    if (record.ispublished === "inpress") {
+                        citation_info.ispublished = "(In Press)";
+                    }
+                    if (record.ispublished === "submitted") {
+                        citation_info.ispublished = "(Submitted)";
+                    }
+                }
                 //FIXME: we had this field wrongly labeled in our EPrint 
                 // output, it was called .pmc_id rather than .pmcid we
                 // can simplify this if/else when that has propagated
@@ -207,6 +228,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             "pos": i
                         });
                     });
+                    /* DR-135, add additional fields for conference items. */
+                    if (record.type !== undefined && record.type === 'conference_item') {
+                        view.event_title = record.event_title;
+                        view.event_dates = record.event_dates;
+                        view.event_location = record.event_location;
+                    }
                 }
                 view.description = record.abstract;
             } else {
@@ -519,7 +546,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 }
                 if (show_citation === true && Object.keys(record.citation_info).length > 0) {
                     ["publication", "series", "volume", "number",
-                        "page_range", "pages", "issn", "isbn", "pmcid"
+                        "page_range", "issn", "isbn", "pmcid",
+                        "event_title", "event_dates", "event_location",
+                        "ispublished"
                     ].forEach(function(key) {
                         if (record.citation_info[key] !== undefined &&
                             record.citation_info[key] !== "") {
@@ -528,21 +557,36 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                 label = "";
                             span.classList.add(key);
                             switch (key) {
+                                case "ispublished":
+                                    console.log("DEBUG including inpress and submitted");
+                                    span.innerHTML = val;
+                                    break;
                                 case "publication":
                                     span.innerHTML = val;
                                     break;
                                 case "volume":
                                     span.innerHTML = val;
                                     break;
+                                case "series":
+                                    if (record.citation_info["number"] !== undefined && record.citation_info["number"] !== "") {
+                                        span.innerHTML = val + ", " +
+                                            record.citation_info["number"] + ".";
+                                    } else {
+                                        span.innerHTML = val + ".";
+                                    }
+                                    break;
                                 case "number":
-                                    span.innerHTML = "(" + val + ")";
+                                    if (record.citation_info['series'] === undefined || record.citation_info['series'] === "") {
+                                      span.innerHTML = "(" + val + ")";
+                                    }
                                     break;
                                 case "page_range":
-                                    span.innerHTML = "pp. " + val;
+                                    span.innerHTML = ": " + val;
                                     break;
+                                /* removed per DR-135,
                                 case "pages":
                                     span.innerHTML = "pg. " + val;
-                                    break;
+                                    break; */
                                 case "issn":
                                     if (show_issn === true) {
                                         span.innerHTML = "ISSN " + val;
@@ -557,6 +601,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                     if (show_pmcid === true) {
                                         span.innerHTML = "PMCID " + val;
                                     }
+                                    break;
+                                case "event_title":
+                                    span.innerHTML = "In: " + val;
+                                    break;
+                                case "event_dates":
+                                    span.innerHTML = ", " + val;
+                                    break;
+                                case "event_location":
+                                    span.innerHTML = ", " + val;
                                     break;
                                 default:
                                     label = titleCase(key.replace("_", " "));
