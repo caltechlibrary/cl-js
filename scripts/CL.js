@@ -1361,7 +1361,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         if (creator.display_name !== undefined && creator.display_name !== "") {
                             let span = document.createElement("span");
                             if (i > 0) {
-                                span.innerHTML = "and";
+                                if ((i == 2) && (record.creators.length == 3)) {
+                                    span.innerHTML = " and ";
+                                } else {
+                                    span.innerHTML = ";";
+                                }
                                 creators.appendChild(span);
                                 span = document.createElement("span");
                             }
@@ -1385,13 +1389,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     li.appendChild(pub_date);
                 }
 
-                if (record.book_title !== undefined && record.book_title !== "") {
-                    book_title = document.createElement("span");
-                    book_title.classList.add("book-title");
-                    book_title.innerHTML = '<em>' + record.book_title + '</em>';
-                    li.appendChild(book_title);
-                }
-
                 title = document.createElement("span");
                 title.classList.add("title");
                 link = document.createElement("a");
@@ -1405,6 +1402,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 } else {
                     title.innerHTML = '<em>' + record.title + '</em>';
                     li.appendChild(title);
+                }
+                if (record.book_title !== undefined && record.book_title !== "") {
+                    book_title = document.createElement("span");
+                    book_title.classList.add("book-title");
+                    book_title.innerHTML = 'In: <em>' + record.book_title + '</em>';
+                    li.appendChild(book_title);
                 }
                 if (show_citation === true && Object.keys(record.citation_info).length > 0) {
                     ["publication", "series", "volume", "number",
