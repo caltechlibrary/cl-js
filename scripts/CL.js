@@ -1021,7 +1021,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.event_title !== undefined && record.event_title !== "") {
                     citation_info.event_title = record.event_title;
                 }
-                if (record.event_dated !== undefined && record.event_dates !== "") {
+                if (record.event_dates !== undefined && record.event_dates !== "") {
                     citation_info.event_dates = record.event_dates;
                 }
                 if (record.event_location !== undefined && record.event_location !== "") {
@@ -1357,15 +1357,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (show_creators === true && record.creators.length > 0) {
                     creators = document.createElement("span");
                     creators.classList.add("creator");
-                    record.creators.slice(0, 3).forEach(function(creator, i) {
+                    record.creators.slice(0, 2).forEach(function(creator, i) {
                         if (creator.display_name !== undefined && creator.display_name !== "") {
                             let span = document.createElement("span");
                             if (i > 0) {
-                                if ((i == 2) && (record.creators.length == 3)) {
-                                    span.innerHTML = " and ";
-                                } else {
-                                    span.innerHTML = ";";
-                                }
+                                span.innerHTML = ";";
                                 creators.appendChild(span);
                                 span = document.createElement("span");
                             }
@@ -1377,7 +1373,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             creators.appendChild(span);
                         }
                     });
-                    if (record.creators.length > 3) {
+                    if (record.creators.length > 2) {
                         creators.append(" et al.");
                     }
                     li.appendChild(creators);
@@ -1410,8 +1406,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     li.appendChild(book_title);
                 }
                 if (show_citation === true && Object.keys(record.citation_info).length > 0) {
-                    ["publication", "series", "volume", "number",
-                        "page_range", "issn", "isbn", "pmcid",
+                    [ 
+                        "publication", "series", "volume", "number",
+                        /* removed DR-135,
+                        "page_range", "pages", */
+                        "issn", "isbn", "pmcid",
                         "event_title", "event_dates", "event_location",
                         "ispublished"
                     ].forEach(function(key) {
@@ -1429,28 +1428,28 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                     span.innerHTML = val;
                                     break;
                                 case "volume":
-                                    span.innerHTML = val;
+                                    span.innerHTML = "; Vol. " + val;
                                     break;
                                 case "series":
                                     if (record.citation_info["number"] !== undefined && record.citation_info["number"] !== "") {
-                                        span.innerHTML = val + ", " +
+                                        span.innerHTML = "Series " + val + ", " +
                                             record.citation_info["number"] + ".";
                                     } else {
-                                        span.innerHTML = val + ".";
+                                        span.innerHTML = "Series " + val + ".";
                                     }
                                     break;
                                 case "number":
                                     if (record.citation_info['series'] === undefined || record.citation_info['series'] === "") {
-                                      span.innerHTML = "(" + val + ")";
+                                      span.innerHTML = "; No. " + val + "";
                                     }
                                     break;
+                                /* DR-135 remove pages,
                                 case "page_range":
-                                    span.innerHTML = ": " + val;
-                                    break;
-                                /* removed per DR-135,
+                                    span.innerHTML = "page range: " + val;
+                                    break; 
                                 case "pages":
-                                    span.innerHTML = "pg. " + val;
-                                    break; */
+                                    span.innerHTML = "no. pg. " + val;
+                                    break;  */
                                 case "issn":
                                     if (show_issn === true) {
                                         span.innerHTML = "ISSN " + val;
