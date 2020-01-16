@@ -31,7 +31,6 @@ save:
 	git push origin $(BRANCH)
 
 clean:
-	if [ $(shell ls scripts/*~) != "" ]; then rm scripts/*~; fi
 	if [ -f scripts/CL.js ]; then rm scripts/CL.js; fi
 	if [ -d dist ]; then rm -fR dist; fi
 
@@ -54,9 +53,11 @@ distribute_docs:
 release: clean website distribute_docs dist/webbrowser
 
 deployment: clean build
-	mkdir -p dist
-	cp -vR scripts dist/
-	cd dist && zip -r $(PROJECT)-$(VERSION)-deployment.zip scripts/*
+	mkdir -p dist/htdocs/scripts/
+	cp -vR scripts/*.js dist/htdocs/scripts/
+	cp -vR scripts/*.md dist/htdocs/scripts/
+	if [ -f dist/htdocs/scripts/nav.md ]; then rm dist/htdocs/scripts/nav.md; fi
+	cd dist && zip -r $(PROJECT)-$(VERSION)-deployment.zip htdocs/scripts/*
 
 website:
 	./mk-website.py
