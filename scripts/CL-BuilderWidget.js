@@ -361,15 +361,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("      config = {},");
             text.push("      elem = document.getElementById(\"" +
                 elem_id + "\");");
-            if (developer_mode === true) {
-                text.push("");
-                text.push("/* NOTE: Remove the following when we're ready");
-                text.push("   for production. */");
-                text.push("cl.BaseURL = \"\";");
-                text.push("");
-            } else {
-                text.push("cl.BaseURL = \"https://feeds.library.caltech.edu\";");
-            }
             text.push("");
             text.push("  config = " +
                 JSON.stringify(config, "", "    ") + ";");
