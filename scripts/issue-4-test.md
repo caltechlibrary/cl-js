@@ -36,10 +36,12 @@ Compare with https://feeds.library.caltech.edu/people/Abu-Mostafa-Y-S/advisor.ht
 }
 </style>
 
-<!-- <script src="CL.js"></script> -->
+<script src="CL.js"></script>
+<!-- 
 <script src="CL-core.js"></script>
 <script src="CL-feeds.js"></script>
 <script src="CL-feeds-ui.js"></script>
+-->
 <script>
 (function(document, window) {
   "use strict";
