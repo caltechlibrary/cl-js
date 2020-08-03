@@ -18,35 +18,18 @@
 <li><a href="../scripts/testing.html">Tests</a></li>
 <li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
 </ul>
-
 </nav>
 
 <section>
 <h1>Introducing the Builder Widget</h1>
-
-<p>The <a href="builder-widget.html">Builder Widget</a> is a tool for embedding
-<a href="https://feeds.library.caltech.edu">https://feeds.library.caltech.edu</a> content. It generates CSS,
-HTML and JavaScript for embedding in your
-own webpage. Feeds provides content for groups and individuals
-in the various Caltech Library repositories. The data is bibliographic
-and collection related. The Builder Widget lets you choose the source
-of data you want to include (group or person), the type of data you
-want to include (e.g. article, book, combined publication list or
-data collections) as well as the number of items and some layout options
-for displaying the listings.</p>
-
+<p>The <a href="builder-widget.html">Builder Widget</a> is a tool for embedding https://feeds.library.caltech.edu content. It generates CSS, HTML and JavaScript for embedding in your own webpage. Feeds provides content for groups and individuals in the various Caltech Library repositories. The data is bibliographic and collection related. The Builder Widget lets you choose the source of data you want to include (group or person), the type of data you want to include (e.g. article, book, combined publication list or data collections) as well as the number of items and some layout options for displaying the listings.</p>
 <!-- START: Builder Widget -->
-
 <section id="builder-widget" class="widget">
 <!-- This is where "the widget" should display -->
 </section>
-
-<noscript>JavaScript is required to display and use the Builder Widget</noscript>
-
+<p><noscript>JavaScript is required to display and use the Builder Widget</noscript></p>
 <script src="../scripts/CL.js"></script>
-
 <script src="../scripts/CL-BuilderWidget.js"></script>
-
 <script>
 (function (document, window) {
     let cl = Object.assign({}, window.CL),
@@ -58,12 +41,8 @@ for displaying the listings.</p>
     cl.BuilderWidget(widget_element);
 }(document, window));
 </script>
-
 <!--   END: Builder Widget -->
-
-<p>The <a href="CL-Builder-Widget.js" title="link to source code of Builder Widget">Builder Widget JavaScript</a> is an example of a JavaScript program based on
-<a href="../scripts/CL.js" title="link to source code for CL.js">CL.js</a>.</p>
-
+<p>The <a href="CL-Builder-Widget.js" title="link to source code of Builder Widget">Builder Widget JavaScript</a> is an example of a JavaScript program based on <a href="../scripts/CL.js" title="link to source code for CL.js">CL.js</a>.</p>
 </section>
 
 <footer>

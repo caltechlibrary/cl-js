@@ -18,36 +18,21 @@
 <li><a href="../scripts/testing.html">Tests</a></li>
 <li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
 </ul>
-
 </nav>
 
 <section>
 <h1>CL-feeds-ui.js test viewer code</h1>
-
-<p>This is a test file for testing the &ldquo;viewer&rdquo; method of the CL
-object. It is related to DR-135 bug report revising what is displayed for
-&ldquo;inpress&rdquo; items, conference events and monographs.</p>
-
+<p>This is a test file for testing the "viewer" method of the CL object. It is related to DR-135 bug report revising what is displayed for "inpress" items, conference events and monographs.</p>
 <!-- START: test -->
-
 <h3>Conference items</h3>
-
 <p>Compare with <a href="https://feeds.library.caltech.edu/groups/CCI-Solar-Fuels/conference_item.html">CCI-Solar-Fuels, conference items</a>, <a href="https://feeds.library.caltech.edu/groups/CCI-Solar-Fuels/conference_item.json">json data</a></p>
-
 <div class="CaltechAUTHORS" id="conference-items">Testing layout of conference items, if you see this Test failed!</div>
-
 <h3>Monographs, add series name and issue number</h3>
-
 <p>Compare with <a href="https://feeds.library.caltech.edu/groups/Applied-&amp;-Computational-Mathematics/monograph.html">Applied-&amp;-Computational-Mathematics, monographs</a>, <a href="https://feeds.library.caltech.edu/groups/Applied-&amp;-Computational-Mathematics/monograph.json">json data</a></p>
-
 <div class="CaltechAUTHORS" id="monograph-items">Testing layout of monograph items, if you see this Test failed!</div>
-
-<h3>Handle &ldquo;In press&rdquo; and &ldquo;Submitted&rdquo; published states</h3>
-
+<h3>Handle "In press" and "Submitted" published states</h3>
 <p>Compare with <a href="https://feeds.library.caltech.edu/groups/Earthquake-Engineering-Research-Laboratory/combined.html">Earthquake-Engineering-Research-Laboratory, combined</a>, <a href="https://feeds.library.caltech.edu/groups/Earthquake-Engineering-Research-Laboratory/combined.json">json data</a></p>
-
 <div class="CaltechAUTHORS" id="ispublished-items">Testing layout of items that are "inpress" and "submitted", if you see this Test failed!</div>
-
 <style>
 .CaltechAUTHORS .unknown-year { display: none; }
 .CaltechAUTHORS li {
@@ -66,7 +51,6 @@ object. It is related to DR-135 bug report revising what is displayed for
     margin-bottom: 0.24em;
 }
 </style>
-
 <script src="CL.js"></script>
 <script>
 (function(document, window) {
@@ -175,9 +159,7 @@ object. It is related to DR-135 bug report revising what is displayed for
   });
 }(document, window));
 </script>
-
 <!--   END: test -->
-
 </section>
 
 <footer>
