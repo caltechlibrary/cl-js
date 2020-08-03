@@ -169,6 +169,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             }
                         }
                     }
+                    if ("CaltechTHESIS_advisor" in profile) {
+                        if ("combined" in profile.CaltechTHESIS_advisor) {
+                            let option = document.createElement("option");
+                            //NOTE: People we have only combined for thesis.
+                            option.innerHTML = "CaltechTHESIS: advisor";
+                            option.value = "advisor:advisor";
+                            select_feed_path.appendChild(option);
+                        }
+                    }
                     if ("CaltechAUTHORS" in profile) {
                         for (let feed_label in profile.CaltechAUTHORS) {
                             let option = document.createElement("option");
@@ -291,6 +300,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
             if (config.feed_path !== undefined && config.feed_path !== "") {
                 config.feed_path = config.feed_path.split(":")[0];
+                console.log("DEBUG config.feed_path " + config.feed_path)
             }
             if (config.use_recent === undefined ||
                 config.use_recent === false) {
@@ -518,6 +528,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         case 'caltechthesis':
                             css_classname = ".CaltechTHESIS";
                             break;
+                        case 'caltechthesis_advisor':
+                            css_classname = '.CaltechTHESIS_advisor';
                         case 'caltechdata':
                             css_classname = ".CaltechDATA";
                             break;
