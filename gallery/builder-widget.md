@@ -10,7 +10,8 @@ and collection related. The Builder Widget lets you choose the source
 of data you want to include (group or person), the type of data you 
 want to include (e.g. article, book, combined publication list or 
 data collections) as well as the number of items and some layout options 
-for displaying the listings.
+for displaying the listings. The content is always sorted in descending
+publication date order.
 
 
 <!-- START: Builder Widget -->
