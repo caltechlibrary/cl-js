@@ -572,7 +572,7 @@ console.log("DEBUG key translates to ", key);
         form.appendChild(div);
 
         heading = document.createElement("h2");
-        heading.innerHTML = "Layout";
+        heading.innerHTML = "Display Options";
         heading.setAttribute("title", "Step 4. pick the fields to display");
         form.appendChild(heading);
 
@@ -583,7 +583,7 @@ console.log("DEBUG key translates to ", key);
         /* Process the list of element id and labels */
         [
             {"show_year_headings": "Show Year Headings"},
-            {"feed_count": "Feed Count"},
+            {"feed_count": "Record Count"},
             {"creators": "Authors"},
             {"pub_date": "Pub Date"},
             {"title_link": "Link the Title"},
