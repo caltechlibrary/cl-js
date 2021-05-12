@@ -987,9 +987,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 /* NOTE: we accumulate the possible citation fields
                  * before adding them to the view */
                 let citation_info = {};
-                if (record.version !== undefined && record.version !== "") {
-                    citation_info.version = record.version;
-                }
                 if (record.volume !== undefined && record.volume !== "") {
                     citation_info.volume = record.volume;
                 }
@@ -1215,7 +1212,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             show_chapters = false,
             show_volume = false,
             show_issue = false,
-            show_version = false,
             show_description = false,
             show_search_box = false,
             config = {},
@@ -1262,10 +1258,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         if (config.volume !== undefined && config.volume === true) {
             show_volume = true;
         }
-        if (config.version !== undefined && config.version === true) {
-console.log("DEBUG 'show_version' is in config");
-            show_version = true;
-        }
         if (config.issn_or_isbn !== undefined && config.issn_or_isbn === true) {
             show_issn = true;
             show_isbn = true;
@@ -1279,17 +1271,6 @@ console.log("DEBUG 'show_version' is in config");
         if (config.description !== undefined && config.description === true) {
             show_description = true;
         }
-        /* FIXME: add the following toggled fields
-         * + show_citaition_fields
-         *     + page_number
-         *     + chapter
-         *     + vol no
-         *     + issue no
-         *     + version number
-         * + show_doi
-         * + show_issn
-         * + show_isbn
-         */
         if (config.parent_element !== undefined && config.parent_element) {
             parent_element = config.parent_element;
         } else if (self.element !== undefined) {
@@ -1439,7 +1420,7 @@ console.log("DEBUG 'show_version' is in config");
                 if (Object.keys(record.citation_info).length > 0) {
                     [
                         "publication", "series", "volume", "number",
-                        "page_range", "pages", "version",
+                        "page_range", "pages", 
                         "issn", "isbn", "pmcid", 
                         "event_title", "event_dates", "event_location", 
                         "ispublished" 
@@ -1526,10 +1507,6 @@ console.log("DEBUG 'show_version' is in config");
                                 case "event_location":
                                     span.innerHTML = ", " + val;
                                     break;
-                                case "version":
-                                    if (show_version === true) {
-                                        span.innerHTML = "Version " + val;
-                                    }
                                 default:
                                     label = titleCase(key.replace("_", " "));
                                     span.innerHTML = label + " " + val;

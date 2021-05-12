@@ -266,7 +266,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", "volume", "version", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", "volume", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
                 key = id.replace(/-/g, "_");
@@ -587,13 +587,12 @@ console.log("DEBUG key translates to ", key);
             {"creators": "Authors"},
             {"pub_date": "Pub Date"},
             {"title_link": "Link the Title"},
-            {"link": "Show Links"},
+            {"link": "Show Link"},
             {"publication": "Show Publication"},
             {"chapters": "Show Chapters"},
             {"page_numbers": "Show Page Numbers"},
             {"volume": "Show Volume/Series"},
             {"issue": "Show Issue/Number"},
-            {"version": "Show Version"},
             {"doi": "Show DOI"},
             {"issn_or_isbn": "ISSN or ISBN"},
             {"pmcid": "Show PMCID"},
@@ -616,7 +615,7 @@ console.log("DEBUG label text:", label_text, typeof(label_text));
             input.setAttribute("type", "checkbox");
             input.setAttribute("name", elem_name);
             input.setAttribute("label", label_text);
-            if ([2, 3, 4].indexOf(i) > -1) {
+            if ([2, 3, 4, 5].indexOf(i) > -1) {
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");
