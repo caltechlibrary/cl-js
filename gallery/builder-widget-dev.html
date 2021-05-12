@@ -35,56 +35,38 @@
 </nav>
 
 <section>
-<h1 id="cl-feeds-ui.js-test-viewer-code">
-CL-feeds-ui.js test viewer code
+<h1 id="introducing-the-builder-widget">
+Introducing the Builder Widget
 </h1>
 <p>
-This is a test file for testing the “viewer” method of the CL object. It is related to DR-139 bug report. Visually inspect the output and make sure you can see a list of combined articles for matching articles listed at <a href="https://feeds.library.caltech.edu/groups/Thirty-Meter-Telescope/combined.html">Thirty Meter Telescope</a>.
+The <a href="builder-widget.html">Builder Widget</a> is a tool for embedding https://feeds.library.caltech.edu content. It generates CSS, HTML and JavaScript for embedding in your own webpage. Feeds provides content for groups and individuals in the various Caltech Library repositories. The data is bibliographic and collection related. The Builder Widget lets you choose the source of data you want to include (group or person), the type of data you want to include (e.g. article, book, combined publication list or data collections) as well as the number of items and some layout options for displaying the listings.
 </p>
-<!-- START: test -->
-<div id="Thirty-Meter-Telescope">
-<p>Test failed!, combined article list should go here.</p>
-</div>
-<script src="CL.js"></script>
+<!-- START: Builder Widget -->
+<section id="builder-widget" class="widget">
+<!-- This is where "the widget" should display -->
+</section>
+<noscript>
+JavaScript is required to display and use the Builder Widget
+</noscript>
+<script src="../scripts/CL-core.js"></script>
+<script src="../scripts/CL-feeds.js"></script>
+<script src="../scripts/CL-feeds-ui.js"></script>
+<script src="../scripts/CL-BuilderWidget.js"></script>
 <script>
-(function(document, window) {
-  "use strict";
-  let cl = Object.assign({}, window.CL),
-      config = {},
-      elem = document.getElementById("Thirty-Meter-Telescope");
-  cl.BaseURL = "https://feeds.library.caltech.edu";
+(function (document, window) {
+    let cl = Object.assign({}, window.CL),
+        widget_element = document.getElementById("builder-widget");
 
-  config = {
-    "aggregation": "groups",
-    "feed_id": "Thirty-Meter-Telescope",
-    "feed_path": "combined",
-    "recent_n": 0,
-    "use_recent": false,
-    "feed_count": false,
-    "show_year_headings": false,
-    "creators": true,
-    "pub_date": true,
-    "title_link": true,
-    "citation_details": true,
-    "issn_or_isbn": false,
-    "pmcid": false,
-    "description": false,
-    "developer_mode": false,
-    "include_style": true,
-    "include_CL": true,
-    "repository": "CaltechAUTHORS",
-    "css_classname": ".CaltechAUTHORS",
-    "filters": []
-};
-  config.parent_element = elem;
-  config.filters.push(cl.normalize_view);
-  cl.setAttribute("viewer", config);
-  cl.getGroupJSON("Thirty-Meter-Telescope", "combined", function(data, err) {
-    cl.viewer(data, err);
-  });
+    /* NOTE: We want the builder to be hosted
+     * where our code is deployed */
+    cl.BaseURL = "";
+    cl.BuilderWidget(widget_element);
 }(document, window));
 </script>
-<!--   END: test -->
+<!--   END: Builder Widget -->
+<p>
+The <a href="CL-Builder-Widget.js" title="link to source code of Builder Widget">Builder Widget JavaScript</a> is an example of a JavaScript program based on <a href="../scripts/CL.js" title="link to source code for CL.js">CL.js</a>.
+</p>
 </section>
 
 <footer>

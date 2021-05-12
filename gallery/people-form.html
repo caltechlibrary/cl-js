@@ -10,21 +10,41 @@
 </header>
 <nav>
 <ul>
-<li><a href="/">Home</a></li>
-<li><a href="../">README</a></li>
-<li><a href="../license.html">LICENSE</a></li>
-<li><a href="../install.html">INSTALL</a></li>
-<li><a href="../gallery/">Gallery</a></li>
-<li><a href="../scripts/testing.html">Tests</a></li>
-<li><a href="https://github.com/caltechlibrary/cl-js">Github</a></li>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">README</a>
+</li>
+<li>
+<a href="../license.html">LICENSE</a>
+</li>
+<li>
+<a href="../install.html">INSTALL</a>
+</li>
+<li>
+<a href="../gallery/">Gallery</a>
+</li>
+<li>
+<a href="../scripts/testing.html">Tests</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/cl-js">Github</a>
+</li>
 </ul>
 </nav>
 
 <section>
-<h1>Example form for People info</h1>
-<p>In this example we'll create a people object for Richard Feynman and populate a form with this object's attributes.</p>
+<h1 id="example-form-for-people-info">
+Example form for People info
+</h1>
+<p>
+In this example we’ll create a people object for Richard Feynman and populate a form with this object’s attributes.
+</p>
 <div id="example-output">
+<p>
 Form will go here.
+</p>
 </div>
 <!-- START: Example People Info Form built with CL-ui.js -->
 <script src="../scripts/CL.js"></script>
@@ -88,7 +108,6 @@ div.form-example > div > input[type=checkbox] {
     margin-left: 1em;
 }
 </style>
-
 <div class="form-example">
 <div>
     <label for="family_name">Family Name:</label>
@@ -200,18 +219,18 @@ div.form-example > div > input[type=checkbox] {
     let form = CL.assembleFields(div, field),
         save = document.getElementById('save');
 
-<pre><code>save.addEventListener(&#39;click&#39;, function(evt) {
-    //NOTE: this is where you&#39;d do something like CL.httpPost( ... )
-    CL.httpPost(&#39;/&#39;, &#39;application/javascript&#39;, JSON.stringify(people), function(data, err) {
-        //NOTE: This is a dummy post error handler since this is a demo ...
-        console.log(&quot;DEBUG You SHOULD see an error since / shouldn&#39;t accept POSTs&quot;);
-        console.log(&quot;ERROR: &quot;, err);
-        console.log(&quot;DATA: &quot;, data);
-    }, false);
-});
-</code></pre>
-<p>}(document, window)); </script>
-</p>
+    save.addEventListener('click', function(evt) {
+        //NOTE: this is where you'd do something like CL.httpPost( ... )
+        CL.httpPost('/', 'application/javascript', JSON.stringify(people), function(data, err) {
+            //NOTE: This is a dummy post error handler since this is a demo ...
+            console.log("DEBUG You SHOULD see an error since / shouldn't accept POSTs");
+            console.log("ERROR: ", err);
+            console.log("DATA: ", data);
+        }, false);
+    });
+
+}(document, window));
+</script>
 <!--   END: Example People Info Form built with CL-ui.js -->
 </section>
 

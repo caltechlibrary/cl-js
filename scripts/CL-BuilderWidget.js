@@ -32,6 +32,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         CL = Object.assign(CL, window.CL);
     }
 
+    /* utility function to pull out key/value pair from simple
+     * one element objects by index order
+     */
+    let ithKeyOf = function(o, i) { return Object.keys(o)[i]; }
+    let ithValueOf = function(o, i) { return Object.values(o)[i]; }
+
     /**
      * CL.BuilderWidget() creates a builder widget in the elements
      * indicated by element id and error_element_id.
@@ -260,10 +266,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", "volume", "version", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
                 key = id.replace(/-/g, "_");
+/* 
+console.log("DEBUG key translates to ", key);
+*/
                 if (elem.checked === true) {
                     config[key] = true;
                 } else {
@@ -300,7 +309,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
             if (config.feed_path !== undefined && config.feed_path !== "") {
                 config.feed_path = config.feed_path.split(":")[0];
-                console.log("DEBUG config.feed_path " + config.feed_path)
             }
             if (config.use_recent === undefined ||
                 config.use_recent === false) {
@@ -470,6 +478,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         label.innerHTML = "Aggregation:";
         select_aggregation = div.querySelector("#aggregation");
         select_aggregation.setAttribute("name", "aggregation");
+        select_aggregation.setAttribute("title", "Available aggregations include group and people");
         ["", "Groups", "People"].forEach(function(value, i) {
             let option = document.createElement("option");
             if (i === 0) {
@@ -490,7 +499,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         label = div.querySelector("label");
         label.setAttribute("for", "feed-id");
         label.setAttribute("title", "Step 2. pick the feed id");
-        label.innerHTML = "Feed:";
+        label.innerHTML = "Feed Name:";
         select_feed_id = div.querySelector("#feed-id");
         select_feed_id.setAttribute("name", "feed-id");
         select_feed_id.setAttribute("title", "this list depends on the aggregation previously selected");
@@ -546,19 +555,20 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         heading.innerHTML = "Filter Data";
         form.appendChild(heading);
 
-        div = self.createCompositElement("div", ["label", "input", "input"], ["", "use-recent", "recent-n"]);
-        label = div.querySelector("label");
+        div = self.createCompositElement("div", ["input", "label", "input"], [ "use-recent", "label-recent-n", "recent-n"]);
+        label = div.querySelector("#label-recent-n");
         label.setAttribute("for", "use-recent");
-        label.innerHTML = "recent (N)";
+        label.innerHTML = "Recent records only, maximum displayed"; /* recent (N) */
         input = div.querySelector("#use-recent");
         input.setAttribute("type", "checkbox");
         input.setAttribute("id", "use-recent");
+        input.setAttribute("title", "Restrict to recent records only, you can then set the maximun number of records to display.");
 
         input = div.querySelector("#recent-n");
         input.setAttribute("type", "number");
         input.setAttribute("value", 25);
         input.setAttribute("id", "recent-n");
-        input.setAttribute("title", "set the value of N for recent(n)");
+        input.setAttribute("title", "set the maxium count of recent records to display");
         form.appendChild(div);
 
         heading = document.createElement("h2");
@@ -570,22 +580,47 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         div = document.createElement("div");
         div.classList.add("checkbox-control");
 
-        ["Show Year Headings", "Feed Count", "Creators", "Pub Date", "Title Link", "Citation Details", "ISSN or ISBN", "PMCID", "Description"].forEach(function(s, i) {
-            let elem_id = s.toLocaleLowerCase().replace(/ /g, "-"),
-                elem_name = s.toLocaleLowerCase().replace(/ /g, "_"),
+        /* Process the list of element id and labels */
+        [
+            {"show_year_headings": "Show Year Headings"},
+            {"feed_count": "Feed Count"},
+            {"creators": "Authors"},
+            {"pub_date": "Pub Date"},
+            {"title_link": "Link the Title"},
+            {"link": "Show Links"},
+            {"publication": "Show Publication"},
+            {"chapters": "Show Chapters"},
+            {"page_numbers": "Show Page Numbers"},
+            {"volume": "Show Volume/Series"},
+            {"issue": "Show Issue/Number"},
+            {"version": "Show Version"},
+            {"doi": "Show DOI"},
+            {"issn_or_isbn": "ISSN or ISBN"},
+            {"pmcid": "Show PMCID"},
+            {"description": "Show Abstract"}
+        ].forEach(function(o, i) {
+            let elem_id = ithKeyOf(o, 0).replaceAll('_', '-'),
+                elem_name = ithKeyOf(o, 0),
+                label_text = ithValueOf(o, 0),
                 control, label, input;
+/*
+console.log("DEBUG obj: ", o, typeof(o));
+console.log("DEBUG elem_id: ", elem_id, typeof(elem_id));
+console.log("DEBUG elem_name: ", elem_name, typeof(elem_name));
+console.log("DEBUG label text:", label_text, typeof(label_text));
+*/
 
             control = self.createCompositElement("div", ["label", "input"], ["", elem_id]);
             control.classList.add("checkbox");
             input = control.querySelector("#" + elem_id);
             input.setAttribute("type", "checkbox");
             input.setAttribute("name", elem_name);
-            input.setAttribute("label", s);
+            input.setAttribute("label", label_text);
             if ([2, 3, 4].indexOf(i) > -1) {
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");
-            label.innerHTML = s + ":";
+            label.innerHTML = label_text + ":";
             div.append(control);
         });
         form.appendChild(div);
@@ -612,7 +647,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         input.setAttribute("value", "Generate code");
         input.addEventListener("click", generate_code, false);
         generate_button = input;
-
 
         form.appendChild(div);
 

@@ -124,6 +124,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 /* NOTE: we accumulate the possible citation fields
                  * before adding them to the view */
                 let citation_info = {};
+                if (record.version !== undefined && record.version !== "") {
+                    citation_info.version = record.version;
+                }
                 if (record.volume !== undefined && record.volume !== "") {
                     citation_info.volume = record.volume;
                 }
@@ -339,11 +342,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             show_creators = false,
             show_pub_date = false,
             show_title_linked = false,
-            show_citation = false,
+            show_link = false,
             show_issn = false,
             show_isbn = false,
             show_pmcid = false,
             show_doi = false,
+            show_publication = false,
+            show_page_numbers = false,
+            show_chapters = false,
+            show_volume = false,
+            show_issue = false,
+            show_version = false,
             show_description = false,
             show_search_box = false,
             config = {},
@@ -372,8 +381,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         if (config.title_link !== undefined && config.title_link === true) {
             show_title_linked = true;
         }
-        if (config.citation_details !== undefined && config.citation_details === true) {
-            show_citation = true;
+        if (config.link !== undefined && config.link === true) {
+            show_link = true;
+        }
+        if (config.publication !== undefined && config.publication === true) {
+            show_publication = true;
+        }
+        if (config.page_numbers !== undefined && config.page_numbers === true) {
+            show_page_numbers = true;
+        }
+        if (config.chapters !== undefined && config.chapters === true) {
+            show_chapters = true;
+        }
+        if (config.issue !== undefined && config.issue === true) {
+            show_issue = true;
+        }
+        if (config.volume !== undefined && config.volume === true) {
+            show_volume = true;
+        }
+        if (config.version !== undefined && config.version === true) {
+console.log("DEBUG 'show_version' is in config");
+            show_version = true;
         }
         if (config.issn_or_isbn !== undefined && config.issn_or_isbn === true) {
             show_issn = true;
@@ -431,7 +459,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
             /* Handle feed count */
             if (show_feed_count === true) {
-                feed_count.innerHTML = "(" + records.length + " items)";
+                feed_count.innerHTML = "(" + records.length + " records)";
                 parent_element.append(feed_count);
             }
             /* NOTE: If we're not showing headings we're ready to attach our UL list
@@ -542,14 +570,16 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     book_title.innerHTML = 'In: <em>' + record.book_title + '</em>';
                     li.appendChild(book_title);
                 }
-                if (show_citation === true && Object.keys(record.citation_info).length > 0) {
-                    [ 
+                /* DR-273 makes citation details selected able */
+                /* removed DR-135, removed page_range and pages, DR-273 
+                 * puts them back */
+                if (Object.keys(record.citation_info).length > 0) {
+                    [
                         "publication", "series", "volume", "number",
-                        /* removed DR-135,
-                        "page_range", "pages", */
-                        "issn", "isbn", "pmcid",
-                        "event_title", "event_dates", "event_location",
-                        "ispublished"
+                        "page_range", "pages", "version",
+                        "issn", "isbn", "pmcid", 
+                        "event_title", "event_dates", "event_location", 
+                        "ispublished" 
                     ].forEach(function(key) {
                         if (record.citation_info[key] !== undefined &&
                             record.citation_info[key] !== "") {
@@ -562,31 +592,53 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                     span.innerHTML = val;
                                     break;
                                 case "publication":
-                                    span.innerHTML = val;
+                                    if (show_publication) {
+                                        if (show_title_linked === false) {
+                                            span.innerHTML = "; " + val;
+                                        } else{
+                                            span.innerHTML = val;
+                                        }
+                                    }
                                     break;
                                 case "volume":
-                                    span.innerHTML = "; Vol. " + val;
+                                    if (show_volume === true) {
+                                        span.innerHTML = "; Vol. " + val;
+                                    }
                                     break;
                                 case "series":
-                                    if (record.citation_info["number"] !== undefined && record.citation_info["number"] !== "") {
-                                        span.innerHTML = "Series " + val + ", " +
+                                    if (show_volume === true) {
+                                        if (record.citation_info["number"] !== undefined && record.citation_info["number"] !== "") {
+                                            span.innerHTML = "Series " + val + ", " +
                                             record.citation_info["number"] + ".";
-                                    } else {
-                                        span.innerHTML = "Series " + val + ".";
+                                        } else {
+                                            span.innerHTML = "Series " + val + ".";
+                                        }
                                     }
                                     break;
                                 case "number":
-                                    if (record.citation_info['series'] === undefined || record.citation_info['series'] === "") {
-                                      span.innerHTML = "; No. " + val + "";
+                                    if (show_issue == true) {
+                                        if (record.citation_info['series'] === undefined || record.citation_info['series'] === "") {
+                                            span.innerHTML = "; No. " + val + "";
+                                        }
                                     }
                                     break;
-                                /* DR-135 remove pages,
+                                /* DR-135 remove page_range pages, */
+                                /* DR-273 puts pages, ranges back */
                                 case "page_range":
-                                    span.innerHTML = "page range: " + val;
+                                    if (show_page_numbers === true) {
+                                        span.innerHTML = "; page range: " + val;
+                                    }
                                     break; 
                                 case "pages":
-                                    span.innerHTML = "no. pg. " + val;
-                                    break;  */
+                                    if (show_page_numbers === true) {
+                                        span.innerHTML = "; no. pg. " + val;
+                                    }
+                                    break;
+                                case "doi":
+                                    if (show_doi === true) {
+                                        span.innerHTML = "DOI " + val;
+                                    }
+                                    break;
                                 case "issn":
                                     if (show_issn === true) {
                                         span.innerHTML = "ISSN " + val;
@@ -611,6 +663,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                 case "event_location":
                                     span.innerHTML = ", " + val;
                                     break;
+                                case "version":
+                                    if (show_version === true) {
+                                        span.innerHTML = "Version " + val;
+                                    }
                                 default:
                                     label = titleCase(key.replace("_", " "));
                                     span.innerHTML = label + " " + val;
@@ -622,7 +678,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             }
                         }
                     });
-                } else if (show_citation === false && Object.keys(record.citation_info).length > 0) {
+                } else if (Object.keys(record.citation_info).length > 0) {
                     ["issn", "isbn", "pmcid"].forEach(function(key) {
                         if (record.citation_info[key] !== undefined &&
                             record.citation_info[key] !== "") {
@@ -655,16 +711,23 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     });
                 }
 
-
+                if (show_publication === true && record.publication !== undefined && record.publication !== "") {
+                    span = document.createElement("span");
+                    span.classList.add("publication");
+                    span.innerHTML = record.publication;
+                    li.appendChild(span);
+                }
                 if (show_doi === true && record.doi !== undefined && record.doi !== "") {
                     span = document.createElement("span");
                     span.classList.add("doi");
-                    span.innerHTML = record.doi;
+                    span.innerHTML = "DOI " + record.doi;
                     li.appendChild(span);
                 }
                 if (show_title_linked === false) {
-                    link.innerHTML = record.href;
-                    li.appendChild(link);
+                    if (show_link === true) {
+                        link.innerHTML = record.href;
+                        li.appendChild(link);
+                    }
                 }
                 if (show_description === true && record.description !== undefined && record.description !== "") {
                     description = document.createElement("div");
