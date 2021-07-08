@@ -97,6 +97,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     "pub_date": "",
                     "collection": "",
                     "doi": "",
+                    "primary_object": {},
                     "citation_info": {},
                     "resource_type": ""
                 };
@@ -111,15 +112,21 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.book_title !== undefined && record.book_title !== "") {
                     view.book_title = record.book_title;
                 }
-                /* NOTE: we should prefer the DOI if available */
+                /* NOTE: DR-313 we no longer prefer the DOI for link */
                 view.href = record.official_url;
                 if (record.doi !== undefined && record.doi !== "") {
                     view.doi = record.doi;
-                    if (record.doi.indexOf("://") > -1) {
-                        view.href = record.doi;
-                    } else {
-                        view.href = "https://doi.org/" + record.doi;
+                }
+                /* NOTE: We're adding a primary_object link if available. */
+                if (record.primary_object !== undefined && record.primary_object.mime_type !== undefined && record.primary_object.url) {
+                    let label = record.primary_object.mime_type;
+                    if (label.indexOf('/') > -1) {
+                        label = label.split('/', 2)[1].toUpperCase();
                     }
+                    view.primary_object.url = record.primary_object.url;
+                    view.primary_object.label = label;
+                    console.log("DEBUG setting up primary_object url and mime type.");
+                    console.log(`DEBUG primary_object ${view.primary_object.label} -> ${view.primary_object.url}`);
                 }
                 /* NOTE: we accumulate the possible citation fields
                  * before adding them to the view */
@@ -241,13 +248,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.resourceType !== undefined && record.resourceType.resourceTypeGeneral !== undefined && record.resourceType.resourceTypeGeneral !== "") {
                     view.resource_type = record.resourceType.resourceTypeGeneral;
                 }
-                /* NOTE: we should prefer the DOI if available */
-                if (record.identifier !== undefined &&
-                    (record.identifier.identifierType === "DOI")) {
-                    view.href = "https://doi.org/" + record.identifier.identifier;
-                } else {
-                    view.href = "";
-                }
                 view.pub_date = record.publicationYear;
                 if (record.creators !== undefined) {
                     view.creators = [];
@@ -344,6 +344,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             show_isbn = false,
             show_pmcid = false,
             show_doi = false,
+            show_primary_object = false,
             show_publication = false,
             show_page_numbers = false,
             show_chapters = false,
@@ -355,6 +356,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             parent_element,
             __display;
         config = self.getAttribute("viewer");
+        for (const key in config) { console.log(`DEBUG config key ${key}`); };
         /* To be cautious we want to validate our configuration object */
         if (config.show_search_box !== undefined && config.show_search_box === true) {
             show_search_box = true;
@@ -404,6 +406,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
         if (config.doi !== undefined && config.doi === true) {
             show_doi = true;
+        }
+        if (config.primary_object !== undefined && config.primary_object === true) {
+            show_primary_object = true;
         }
         if (config.description !== undefined && config.description === true) {
             show_description = true;
@@ -560,7 +565,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         "page_range", "pages", 
                         "issn", "isbn", "pmcid", 
                         "event_title", "event_dates", "event_location", 
-                        "ispublished" 
+                        "ispublished"
                     ].forEach(function(key) {
                         if (record.citation_info[key] !== undefined &&
                             record.citation_info[key] !== "") {
@@ -616,8 +621,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                     }
                                     break;
                                 case "doi":
-                                    if (show_doi === true) {
-                                        span.innerHTML = "DOI " + val;
+                                    if (show_doi === true) {  
+                                        span.innerHTML = `DOI <a href="https://doi.org/${val}">${val}<a/>`;
                                     }
                                     break;
                                 case "issn":
@@ -697,8 +702,22 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (show_doi === true && record.doi !== undefined && record.doi !== "") {
                     span = document.createElement("span");
                     span.classList.add("doi");
-                    span.innerHTML = "DOI " + record.doi;
+                    span.innerHTML = `DOI <a href="https://doi.org/${record.doi}">${record.doi}<a/>`;
                     li.appendChild(span);
+                }
+                if (show_primary_object === true ) {
+                    console.log(`DEBUG render primary object link ${record.primary_object.mime_type} ${record.primary_object.url}`)
+                    if (record.primary_object !== undefined && record.primary_object.url !== undefined) {
+                        span = document.createElement("span");
+                        span.classList.add("primary_object");
+                        span.innerHTML = `<a href="${record.primary_object.url}">${record.primary_object.label}<a/>`;
+                        li.appendChild(span);
+                    }
+                } else {
+                    console.log(`DEBUG show_primary_object is ${show_primary_object}.`);
+                    if (record.primary_object !== undefined && record.primary_object.url !== undefined) { /* DEBUG */
+                        console.log(`DEBUG would have been: <a href="${record.primary_object.url}">${record.primary_object.label}<a/>`);
+                    } /* DEBUG */
                 }
                 if (show_title_linked === false) {
                     if (show_link === true) {

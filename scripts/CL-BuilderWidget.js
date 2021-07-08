@@ -266,7 +266,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", "volume", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
                 key = id.replace(/-/g, "_");
@@ -588,12 +588,14 @@ console.log("DEBUG key translates to ", key);
             {"pub_date": "Pub Date"},
             {"title_link": "Link the Title"},
             {"link": "Show Link"},
+            {"doi": "Show DOI"},
+            /* Added for DR-327 */
+            {"primary_object": "Show Direct Link"},
             {"publication": "Show Publication"},
             {"chapters": "Show Chapters"},
             {"page_numbers": "Show Page Numbers"},
             {"volume": "Show Volume/Series"},
             {"issue": "Show Issue/Number"},
-            {"doi": "Show DOI"},
             {"issn_or_isbn": "ISSN or ISBN"},
             {"pmcid": "Show PMCID"},
             {"description": "Show Abstract"}

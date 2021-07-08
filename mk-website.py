@@ -96,6 +96,9 @@ def main(args):
     # Find the .md files and render them with template unless nav.md.
     # crawl docs_dir and ingest files into data collection.
     for path, folders, files in os.walk("."):
+        # NOTE: we never want to build anything in ./node_module or .git/
+        if ('node_module' in path) or ('.git' in path) or ('/.' in path): 
+            continue
         for filename in files:
             in_name = ""
             out_name = ""
