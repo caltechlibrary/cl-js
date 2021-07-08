@@ -98,7 +98,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     "collection": "",
                     "doi": "",
                     "primary_object": {},
-                    "citation_info": {},
+                    /* Citation Info to be removed per DR-273, each shold be individually selectable */
                     "resource_type": ""
                 };
             /* Normalize our view between EPrint and Invenio style records */
@@ -126,58 +126,53 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     view.primary_object.url = record.primary_object.url;
                     view.primary_object.label = label;
                 }
-                /* NOTE: we accumulate the possible citation fields
-                 * before adding them to the view */
-                let citation_info = {};
                 if (record.volume !== undefined && record.volume !== "") {
-                    citation_info.volume = record.volume;
+                    view.volume = record.volume;
                 }
                 /* number is issue number in Journals, Magazines */
                 if (record.number !== undefined && record.number !== "") {
-                    citation_info.number = record.number;
+                    view.number = record.number;
                 }
                 if (record.series !== undefined && record.series !== "") {
-                    citation_info.series = record.series;
+                    view.series = record.series;
                 }
-                if (record.pages !== undefined && record.pages !== "") {
-                    citation_info.pages = record.pages;
-                }
+                /* Removed per DR-273, pages is populated by arxiv imported and in spurious */
                 if (record.pagerange !== undefined && record.pagerange !== "") {
-                    citation_info.page_range = record.pagerange;
+                    view.page_range = record.pagerange;
                 }
                 if (record.publication !== undefined && record.publication !== "") {
-                    citation_info.publication = record.publication;
+                    view.publication = record.publication;
                 }
                 if (record.publisher !== undefined && record.publisher !== "") {
-                    citation_info.publisher = record.publisher;
+                    view.publisher = record.publisher;
                 }
                 if (record.issn !== undefined && record.issn !== "") {
-                    citation_info.issn = record.issn;
+                    view.issn = record.issn;
                 }
                 if (record.isbn !== undefined && record.isbn !== "") {
-                    citation_info.isbn = record.isbn;
+                    view.isbn = record.isbn;
                 }
                 if (record.edition !== undefined && record.edition !== "") {
-                    citation_info.edition = record.edition;
+                    view.edition = record.edition;
                 }
                 if (record.event_title !== undefined && record.event_title !== "") {
-                    citation_info.event_title = record.event_title;
+                    view.event_title = record.event_title;
                 }
                 if (record.event_dates !== undefined && record.event_dates !== "") {
-                    citation_info.event_dates = record.event_dates;
+                    view.event_dates = record.event_dates;
                 }
                 if (record.event_location !== undefined && record.event_location !== "") {
-                    citation_info.event_location = record.event_location;
+                    view.event_location = record.event_location;
                 }
                 if (record.series !== undefined && record.series !== "") {
-                    citation_info.series = record.series;
+                    view.series = record.series;
                 }
                 if (record.ispublished !== undefined && record.ispublished !== "") {
                     if (record.ispublished === "inpress") {
-                        citation_info.ispublished = "(In Press)";
+                        view.ispublished = "(In Press)";
                     }
                     if (record.ispublished === "submitted") {
-                        citation_info.ispublished = "(Submitted)";
+                        view.ispublished = "(Submitted)";
                     }
                 }
                 //FIXME: we had this field wrongly labeled in our EPrint 
@@ -185,12 +180,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 // can simplify this if/else when that has propagated
                 // throughout our collections.
                 if (record.pmcid !== undefined && record.pmcid !== "") {
-                    citation_info.pmcid = record.pmcid;
+                    view.pmcid = record.pmcid;
                 } else if (record.pmc_id !== undefined && record.pmc_id !== "") {
-                    citation_info.pmcid = record.pmc_id;
-                }
-                if (Object.keys(citation_info).length > 0) {
-                    view.citation_info = citation_info;
+                    view.pmcid = record.pmc_id;
                 }
                 // NOTE: Some records have no publication date because 
                 // there is no date in the material provided
@@ -553,147 +545,119 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     book_title.innerHTML = 'In: <em>' + record.book_title + '</em>';
                     li.appendChild(book_title);
                 }
-                /* DR-273 makes citation details selected able */
-                /* removed DR-135, removed page_range and pages, DR-273 
-                 * puts them back */
-                if (Object.keys(record.citation_info).length > 0) {
-                    [
-                        "publication", "series", "volume", "number",
-                        "page_range", "pages", 
-                        "issn", "isbn", "pmcid", 
-                        "event_title", "event_dates", "event_location", 
-                        "ispublished"
-                    ].forEach(function(key) {
-                        if (record.citation_info[key] !== undefined &&
-                            record.citation_info[key] !== "") {
-                            let span = document.createElement("span"),
-                                val = record.citation_info[key],
-                                label = "";
-                            span.classList.add(key);
-                            switch (key) {
-                                case "ispublished":
-                                    span.innerHTML = val;
-                                    break;
-                                case "publication":
-                                    if (show_publication) {
-                                        if (show_title_linked === false) {
-                                            span.innerHTML = "; " + val;
-                                        } else{
-                                            span.innerHTML = val;
-                                        }
+                /* DR-273 makes citation details **individually** selectable
+                   citiation checkbox removed DR-135, removed page_range.
+                   Pages removed DR-273 as arxiv imported generates pages
+                   and they're not part of our currated metadata. */
+                [
+                    "publication", "series", "volume", "number",
+                    "page_range",
+                    "issn", "isbn", "pmcid", 
+                    "event_title", "event_dates", "event_location", 
+                    "ispublished"
+                ].forEach(function(key) {
+                    if (record[key] !== undefined &&
+                        record[key] !== "") {
+                        let span = document.createElement("span"),
+                            val = record[key],
+                            label = "";
+                        span.classList.add(key);
+                        switch (key) {
+                            case "ispublished":
+                                span.innerHTML = val;
+                                break;
+                            case "publication":
+                                if (show_publication) {
+                                    if (show_title_linked === false) {
+                                        span.innerHTML = "; " + val;
+                                    } else{
+                                        span.innerHTML = val;
                                     }
-                                    break;
-                                case "volume":
-                                    if (show_volume === true) {
-                                        span.innerHTML = "; Vol. " + val;
+                                }
+                                break;
+                            case "volume":
+                                if (show_volume === true) {
+                                    span.innerHTML = "; Vol. " + val;
+                                }
+                                break;
+                            case "series":
+                                if (show_volume === true) {
+                                    if (record.number !== undefined && record.number !== "") {
+                                        span.innerHTML = "Series " + val + ", " +
+                                        record["number"] + ".";
+                                    } else {
+                                        span.innerHTML = "Series " + val + ".";
                                     }
-                                    break;
-                                case "series":
-                                    if (show_volume === true) {
-                                        if (record.citation_info["number"] !== undefined && record.citation_info["number"] !== "") {
-                                            span.innerHTML = "Series " + val + ", " +
-                                            record.citation_info["number"] + ".";
-                                        } else {
-                                            span.innerHTML = "Series " + val + ".";
-                                        }
+                                }
+                                break;
+                            case "number":
+                                if (show_issue == true) {
+                                    if (record.series === undefined || record.series === "") {
+                                        span.innerHTML = "; No. " + val + "";
                                     }
-                                    break;
-                                case "number":
-                                    if (show_issue == true) {
-                                        if (record.citation_info['series'] === undefined || record.citation_info['series'] === "") {
-                                            span.innerHTML = "; No. " + val + "";
-                                        }
-                                    }
-                                    break;
-                                /* DR-135 remove page_range pages, */
-                                /* DR-273 puts pages, ranges back */
-                                case "page_range":
-                                    if (show_page_numbers === true) {
-                                        span.innerHTML = "; page range: " + val;
-                                    }
-                                    break; 
-                                case "pages":
-                                    if (show_page_numbers === true) {
-                                        span.innerHTML = "; no. pg. " + val;
-                                    }
-                                    break;
-                                case "doi":
-                                    if (show_doi === true) {  
-                                        span.innerHTML = `DOI <a href="https://doi.org/${val}">${val}<a/>`;
-                                    }
-                                    break;
-                                case "issn":
-                                    if (show_issn === true) {
-                                        span.innerHTML = "ISSN " + val;
-                                    }
-                                    break;
-                                case "isbn":
-                                    if (show_isbn === true) {
-                                        span.innerHTML = "ISBN " + val;
-                                    }
-                                    break;
-                                case "pmcid":
-                                    if (show_pmcid === true) {
-                                        span.innerHTML = "PMCID " + val;
-                                    }
-                                    break;
-                                case "event_title":
-                                    span.innerHTML = "In: " + val;
-                                    break;
-                                case "event_dates":
-                                    span.innerHTML = ", " + val;
-                                    break;
-                                case "event_location":
-                                    span.innerHTML = ", " + val;
-                                    break;
-                                default:
-                                    label = titleCase(key.replace("_", " "));
-                                    span.innerHTML = label + " " + val;
-                                    break;
-                            }
-                            /* only add the span if we have content */
-                            if (span.innerHTML !== "") {
-                                li.appendChild(span);
-                            }
+                                }
+                                break;
+                            /* DR-135 remove page_range pages, */
+                            /* DR-273 puts pages, ranges back, removes pages as they
+                                have dubious value due to the arxiv importer. */
+                            case "page_range":
+                                if (show_page_numbers === true) {
+                                    span.innerHTML = "; pp. " + val;
+                                }
+                                break; 
+                            case "issn":
+                                if (show_issn === true) {
+                                    span.innerHTML = "ISSN " + val;
+                                }
+                                break;
+                            case "isbn":
+                                if (show_isbn === true) {
+                                    span.innerHTML = "ISBN " + val;
+                                }
+                                break;
+                            case "pmcid":
+                                if (show_pmcid === true) {
+                                    span.innerHTML = "PMCID " + val;
+                                }
+                                break;
+                            case "event_title":
+                                span.innerHTML = "In: " + val;
+                                break;
+                            case "event_dates":
+                                span.innerHTML = ", " + val;
+                                break;
+                            case "event_location":
+                                span.innerHTML = ", " + val;
+                                break;
+                            default:
+                                label = titleCase(key.replace("_", " "));
+                                span.innerHTML = label + " " + val;
+                                break;
                         }
-                    });
-                } else if (Object.keys(record.citation_info).length > 0) {
-                    ["issn", "isbn", "pmcid"].forEach(function(key) {
-                        if (record.citation_info[key] !== undefined &&
-                            record.citation_info[key] !== "") {
-                            let span = document.createElement("span"),
-                                val = record.citation_info[key],
-                                label = "";
-                            span.classList.add(key);
-                            switch (key) {
-                                case "issn":
-                                    if (show_issn === true) {
-                                        span.innerHTML = "ISSN " + val;
-                                    }
-                                    break;
-                                case "isbn":
-                                    if (show_isbn === true) {
-                                        span.innerHTML = "ISBN " + val;
-                                    }
-                                    break;
-                                case "pmcid":
-                                    if (show_pmcid === true) {
-                                        span.innerHTML = "PMCID " + val;
-                                    }
-                                    break;
-                            }
-                            /* only add the span if we have content */
-                            if (span.innerHTML !== "") {
-                                li.appendChild(span);
-                            }
+                        /* only add the span if we have content */
+                        if (span.innerHTML !== "") {
+                            li.appendChild(span);
                         }
-                    });
-                }
-
+                    }
+                });
+                    
                 if (show_publication === true && record.publication !== undefined && record.publication !== "") {
                     span = document.createElement("span");
                     span.classList.add("publication");
                     span.innerHTML = record.publication;
+                    li.appendChild(span);
+                }
+                if (show_description === true && record.description !== undefined && record.description !== "") {
+                    description = document.createElement("div");
+                    description.classList.add("description");
+                    description.innerHTML = record.description;
+                    li.appendChild(description);
+                }
+                /* Various links to object or landing page */
+                if (show_link === true) {
+                    span = document.createElement("span");
+                    span.classList.add("official-url");
+                    span.innerHTML = `<a href="${record.href}">${record.href}</a>`;
                     li.appendChild(span);
                 }
                 if (show_doi === true && record.doi !== undefined && record.doi !== "") {
@@ -703,22 +667,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     li.appendChild(span);
                 }
                 if (show_primary_object === true && record.primary_object !== undefined && record.primary_object.url !== undefined) {
-                        span = document.createElement("span");
-                        span.classList.add("primary_object");
-                        span.innerHTML = `<a href="${record.primary_object.url}">${record.primary_object.label}<a/>`;
-                        li.appendChild(span);
-                }
-                if (show_title_linked === false) {
-                    if (show_link === true) {
-                        link.innerHTML = record.href;
-                        li.appendChild(link);
-                    }
-                }
-                if (show_description === true && record.description !== undefined && record.description !== "") {
-                    description = document.createElement("div");
-                    description.classList.add("description");
-                    description.innerHTML = record.description;
-                    li.appendChild(description);
+                    span = document.createElement("span");
+                    span.classList.add("primary_object");
+                    span.innerHTML = `<a href="${record.primary_object.url}">${record.primary_object.label}<a/>`;
+                    li.appendChild(span);
                 }
                 /* Now add our li to the list */
                 ul.appendChild(li);

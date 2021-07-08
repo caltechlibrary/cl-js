@@ -586,10 +586,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             {"creators": "Authors"},
             {"pub_date": "Pub Date"},
             {"title_link": "Link the Title"},
-            {"link": "Show Link"},
-            {"doi": "Show DOI"},
-            /* Added for DR-327 */
-            {"primary_object": "Show Direct Link"},
             {"publication": "Show Publication"},
             {"chapters": "Show Chapters"},
             {"page_numbers": "Show Page Numbers"},
@@ -597,7 +593,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             {"issue": "Show Issue/Number"},
             {"issn_or_isbn": "ISSN or ISBN"},
             {"pmcid": "Show PMCID"},
-            {"description": "Show Abstract"}
+            {"description": "Show Abstract"},
+            {"link": "Show Link"},
+            {"doi": "Show DOI"},
+            /* Added for DR-327 */
+            {"primary_object": "Show Direct Link"}
         ].forEach(function(o, i) {
             let elem_id = ithKeyOf(o, 0).replaceAll('_', '-'),
                 elem_name = ithKeyOf(o, 0),
@@ -610,7 +610,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             input.setAttribute("type", "checkbox");
             input.setAttribute("name", elem_name);
             input.setAttribute("label", label_text);
-            if ([2, 3, 4, 5].indexOf(i) > -1) {
+            if ([2, 3, 4].indexOf(i) > -1) {
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");
