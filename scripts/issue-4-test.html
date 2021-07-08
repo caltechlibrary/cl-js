@@ -35,15 +35,28 @@
 </nav>
 
 <section>
-<h1 id="cl-searchwidget-test">
-CL-SearchWidget test
+<h1 id="cl-feeds-ui.js-test-advisor-feed">
+CL-feeds-ui.js test Advisor feed
 </h1>
 <p>
-Show search page for Big Bear Solar Observatory.
+GitHub issue #4 addresses adding advisor feeds to the Widget and getPeopleJSON function. We should see ia list Advisors.
 </p>
-<script src="https://unpkg.com/lunr/lunr.js"></script>
-<script src="CL.js"></script>
-<script src="CL-feeds-lunr.js"></script>
+<!-- START: test -->
+<h2 id="advisor-feed-for-abu-mostafa-yaser">
+Advisor Feed for Abu-Mostafa Yaser
+</h2>
+<h3 id="advisor-for">
+Advisor for
+</h3>
+<p>
+<a href="https://feeds.library.caltech.edu/people/Abu-Mostafa-Y-S/advisor.html">Thesis and Dissertations</a>, <a href="https://feeds.library.caltech.edu/people/Abu-Mostafa-Y-S/advisor.json">json data</a>
+</p>
+<p>
+Compare with https://feeds.library.caltech.edu/people/Abu-Mostafa-Y-S/advisor.html
+</p>
+<div id="thesis-items" class="CaltechAUTHORS">
+<p>Testing layout of thesis list , if you see this Test failed!</p>
+</div>
 <style>
 .CaltechAUTHORS .unknown-year { display: none; }
 .CaltechAUTHORS li {
@@ -62,39 +75,29 @@ Show search page for Big Bear Solar Observatory.
     margin-bottom: 0.24em;
 }
 </style>
-<div id="Big-Bear-Solar-Observatory" class="CaltechAUTHORS">
-
-</div>
-<script src="https://feeds.library.caltech.edu/scripts/CL.js"></script>
-<script src="https://feeds.library.caltech.edu/scripts/CL-feeds-lunr.js"></script>
+<script src="CL.js"></script>
+<!-- 
+<script src="CL-core.js"></script>
+<script src="CL-feeds.js"></script>
+<script src="CL-feeds-ui.js"></script>
+-->
 <script>
 (function(document, window) {
   "use strict";
   let cl = Object.assign({}, window.CL),
       config = {},
-      q = '',
-      u = new URL(window.location.href),
-      elem = document.getElementById("Big-Bear-Solar-Observatory"),
-      query_form = document.createElement('div');
+      thesis_elem = document.getElementById("thesis-items");
 
-  if (u.search !== '') {
-      q = u.searchParams ? (u.searchParams).get('q') : '';
-  }
-  query_form.innerHTML = `
-<form method="get">
-  <input type="text" name="q" value="${q}" placeholder="Enter search terms">
-  <button>Search</button>
-</form>
-`;
-  elem.appendChild(query_form);
-    cl.BaseURL = "https://feeds.library.caltech.edu";
-
-  config = {
-    "aggregation": "groups",
-    "feed_id": "Big-Bear-Solar-Observatory",
-    "feed_path": "combined",
+  /* issue-4, get a list of thesis and dissertation Yaser advised on */
+   config = {
+    "aggregation": "people",
+    "feed_id": "Abu-Mostafa-Y-S",
+    "feed_path": "advisor",
+    "recent_n": 0,
+    "use_recent": false,
     "feed_count": false,
-    "creators": false,
+    "show_year_headings": false,
+    "creators": true,
     "pub_date": true,
     "title_link": true,
     "citation_details": true,
@@ -106,19 +109,17 @@ Show search page for Big Bear Solar Observatory.
     "include_CL": true,
     "repository": "CaltechAUTHORS",
     "css_classname": ".CaltechAUTHORS",
-    "recent_n": 0,
     "filters": []
 };
-  config.show_search_box = true;
-  config.parent_element = elem;
+  config.parent_element = thesis_elem;
   config.filters.push(cl.normalize_view);
-  config.filters.push(cl.lunr_search);
   cl.setAttribute("viewer", config);
-  cl.getGroupJSON("Big-Bear-Solar-Observatory", "combined", function(data, err) {
-     cl.viewer(data, err);
+  cl.getPeopleJSON("Abu-Mostafa-Y-S", "advisor", function(data, err) {
+    cl.viewer(data, err);
   });
 }(document, window));
 </script>
+<!--   END: test -->
 </section>
 
 <footer>

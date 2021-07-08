@@ -1,11 +1,10 @@
 /**
- * CL-BuilderWidget.js defines the BuilderWidget based on CL-core.js
- * and CL-ui.js.
+ * CL-BuilderWidget.js defines the BuilderWidget based on CL.js
  *
  * CL.BuilderWidget() creates a feed builder widget embedded at element id.
  * @params element id to embed the builder widget.
  *
- * CL-core.js provides browser side JavaScript access to 
+ * CL.js provides browser side JavaScript access to 
  * feeds.library.caltech.edu and other Caltech Library resources.
  *
  * @author R. S. Doiel
@@ -32,6 +31,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     } else {
         CL = Object.assign(CL, window.CL);
     }
+
+    /* utility function to pull out key/value pair from simple
+     * one element objects by index order
+     */
+    let ithKeyOf = function(o, i) { return Object.keys(o)[i]; }
+    let ithValueOf = function(o, i) { return Object.values(o)[i]; }
 
     /**
      * CL.BuilderWidget() creates a builder widget in the elements
@@ -170,6 +175,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             }
                         }
                     }
+                    if ("CaltechTHESIS_advisor" in profile) {
+                        if ("combined" in profile.CaltechTHESIS_advisor) {
+                            let option = document.createElement("option");
+                            //NOTE: People we have only combined for thesis.
+                            option.innerHTML = "CaltechTHESIS: advisor";
+                            option.value = "advisor:advisor";
+                            select_feed_path.appendChild(option);
+                        }
+                    }
                     if ("CaltechAUTHORS" in profile) {
                         for (let feed_label in profile.CaltechAUTHORS) {
                             let option = document.createElement("option");
@@ -183,7 +197,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             let option = document.createElement("option"),
                                 feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
                             if (feed_type === "combined") {
-                                feed_type = "data";
+                                feed_type = "combined_data";
                             } else if (feed_type === "interactive_resource") {
                                 feed_type = "interactiveresource";
                             }
@@ -252,7 +266,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "citation-details", "issn-or-isbn", "pmcid", "description"].forEach(function(id) {
+            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", 
+            "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", 
+            "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
                 key = id.replace(/-/g, "_");
@@ -362,15 +378,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("      config = {},");
             text.push("      elem = document.getElementById(\"" +
                 elem_id + "\");");
-            if (developer_mode === true) {
-                text.push("");
-                text.push("/* NOTE: Remove the following when we're ready");
-                text.push("   for production. */");
-                text.push("cl.BaseURL = \"\";");
-                text.push("");
-            } else {
-                text.push("cl.BaseURL = \"https://feeds.library.caltech.edu\";");
-            }
             text.push("");
             text.push("  config = " +
                 JSON.stringify(config, "", "    ") + ";");
@@ -470,6 +477,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         label.innerHTML = "Aggregation:";
         select_aggregation = div.querySelector("#aggregation");
         select_aggregation.setAttribute("name", "aggregation");
+        select_aggregation.setAttribute("title", "Available aggregations include group and people");
         ["", "Groups", "People"].forEach(function(value, i) {
             let option = document.createElement("option");
             if (i === 0) {
@@ -490,7 +498,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         label = div.querySelector("label");
         label.setAttribute("for", "feed-id");
         label.setAttribute("title", "Step 2. pick the feed id");
-        label.innerHTML = "Feed:";
+        label.innerHTML = "Feed Name:";
         select_feed_id = div.querySelector("#feed-id");
         select_feed_id.setAttribute("name", "feed-id");
         select_feed_id.setAttribute("title", "this list depends on the aggregation previously selected");
@@ -528,6 +536,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         case 'caltechthesis':
                             css_classname = ".CaltechTHESIS";
                             break;
+                        case 'caltechthesis_advisor':
+                            css_classname = '.CaltechTHESIS_advisor';
                         case 'caltechdata':
                             css_classname = ".CaltechDATA";
                             break;
@@ -544,23 +554,24 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         heading.innerHTML = "Filter Data";
         form.appendChild(heading);
 
-        div = self.createCompositElement("div", ["label", "input", "input"], ["", "use-recent", "recent-n"]);
-        label = div.querySelector("label");
+        div = self.createCompositElement("div", ["input", "label", "input"], [ "use-recent", "label-recent-n", "recent-n"]);
+        label = div.querySelector("#label-recent-n");
         label.setAttribute("for", "use-recent");
-        label.innerHTML = "recent (N)";
+        label.innerHTML = "Recent records only, maximum displayed"; /* recent (N) */
         input = div.querySelector("#use-recent");
         input.setAttribute("type", "checkbox");
         input.setAttribute("id", "use-recent");
+        input.setAttribute("title", "Restrict to recent records only, you can then set the maximun number of records to display.");
 
         input = div.querySelector("#recent-n");
         input.setAttribute("type", "number");
         input.setAttribute("value", 25);
         input.setAttribute("id", "recent-n");
-        input.setAttribute("title", "set the value of N for recent(n)");
+        input.setAttribute("title", "set the maxium count of recent records to display");
         form.appendChild(div);
 
         heading = document.createElement("h2");
-        heading.innerHTML = "Layout";
+        heading.innerHTML = "Display Options";
         heading.setAttribute("title", "Step 4. pick the fields to display");
         form.appendChild(heading);
 
@@ -568,9 +579,29 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         div = document.createElement("div");
         div.classList.add("checkbox-control");
 
-        ["Show Year Headings", "Feed Count", "Creators", "Pub Date", "Title Link", "Citation Details", "ISSN or ISBN", "PMCID", "Description"].forEach(function(s, i) {
-            let elem_id = s.toLocaleLowerCase().replace(/ /g, "-"),
-                elem_name = s.toLocaleLowerCase().replace(/ /g, "_"),
+        /* Process the list of element id and labels */
+        [
+            {"show_year_headings": "Show Year Headings"},
+            {"feed_count": "Record Count"},
+            {"creators": "Authors"},
+            {"pub_date": "Pub Date"},
+            {"title_link": "Link the Title"},
+            {"publication": "Show Publication"},
+            {"chapters": "Show Chapters"},
+            {"page_numbers": "Show Page Numbers"},
+            {"volume": "Show Volume/Series"},
+            {"issue": "Show Issue/Number"},
+            {"issn_or_isbn": "ISSN or ISBN"},
+            {"pmcid": "Show PMCID"},
+            {"description": "Show Abstract"},
+            {"link": "Show Link"},
+            {"doi": "Show DOI"},
+            /* Added for DR-327 */
+            {"primary_object": "Show Direct Link"}
+        ].forEach(function(o, i) {
+            let elem_id = ithKeyOf(o, 0).replaceAll('_', '-'),
+                elem_name = ithKeyOf(o, 0),
+                label_text = ithValueOf(o, 0),
                 control, label, input;
 
             control = self.createCompositElement("div", ["label", "input"], ["", elem_id]);
@@ -578,12 +609,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             input = control.querySelector("#" + elem_id);
             input.setAttribute("type", "checkbox");
             input.setAttribute("name", elem_name);
-            input.setAttribute("label", s);
+            input.setAttribute("label", label_text);
             if ([2, 3, 4].indexOf(i) > -1) {
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");
-            label.innerHTML = s + ":";
+            label.innerHTML = label_text + ":";
             div.append(control);
         });
         form.appendChild(div);
@@ -610,7 +641,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         input.setAttribute("value", "Generate code");
         input.addEventListener("click", generate_code, false);
         generate_button = input;
-
 
         form.appendChild(div);
 

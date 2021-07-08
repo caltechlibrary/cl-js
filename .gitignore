@@ -80,7 +80,13 @@ __pycache__
 # Project-specific things to ignore:
 # .............................................................................
 
+# back up files and swap
+*~
+*.bak
+*.swp
+
 # Ignore NodeJS stuff and specific libraries
 node_modules
 scripts/handlebars.js
-
+dist
+doi-media-example.json

@@ -39,7 +39,7 @@
 Introducing the Builder Widget
 </h1>
 <p>
-The <a href="builder-widget.html">Builder Widget</a> is a tool for embedding https://feeds.library.caltech.edu content. It generates CSS, HTML and JavaScript for embedding in your own webpage. Caltech Library Feeds provides content for groups and individuals in the various Caltech Library repositories. The data is bibliographic and collection related. The Builder Widget lets you choose the source of data you want to include (group or person), the type of data you want to include (e.g. article, book, combined publication list or data collections) as well as the number of items and choices about what is displayed for each record.
+The <a href="builder-widget-dev.html">Builder Widget</a> is a tool for embedding https://feeds.library.caltech.edu content. It generates CSS, HTML and JavaScript for embedding in your own webpage. Caltech Library Feeds provides content for groups and individuals in the various Caltech Library repositories. The data is bibliographic and collection related. The Builder Widget lets you choose the source of data you want to include (group or person), the type of data you want to include (e.g. article, book, combined publication list or data collections) as well as the number of items and choices about what is displayed for each record.
 </p>
 <!-- START: Builder Widget -->
 <section id="builder-widget" class="widget">
@@ -48,7 +48,9 @@ The <a href="builder-widget.html">Builder Widget</a> is a tool for embedding htt
 <noscript>
 JavaScript is required to display and use the Builder Widget
 </noscript>
-<script src="../scripts/CL.js"></script>
+<script src="../scripts/CL-core.js"></script>
+<script src="../scripts/CL-feeds.js"></script>
+<script src="../scripts/CL-feeds-ui.js"></script>
 <script src="../scripts/CL-BuilderWidget.js"></script>
 <script>
 (function (document, window) {

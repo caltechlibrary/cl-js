@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<header>
+<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
+</header>
+<nav>
+<ul>
+<li>
+<a href="/">Home</a>
+</li>
+<li>
+<a href="../">README</a>
+</li>
+<li>
+<a href="../license.html">LICENSE</a>
+</li>
+<li>
+<a href="../install.html">INSTALL</a>
+</li>
+<li>
+<a href="../gallery/">Gallery</a>
+</li>
+<li>
+<a href="../scripts/testing.html">Tests</a>
+</li>
+<li>
+<a href="https://github.com/caltechlibrary/cl-js">Github</a>
+</li>
+</ul>
+</nav>
+
+<section>
+<h1 id="cl-feeds-ui.js-test-viewer-code">
+CL-feeds-ui.js test viewer code
+</h1>
+<p>
+This is a test file for testing the “viewer” method of the CL object. It is related to DR-135 bug report revising what is displayed for “inpress” items, conference events and monographs.
+</p>
+<!-- START: test -->
+<h3 id="conference-items">
+Conference items
+</h3>
+<p>
+Compare with <a href="https://feeds.library.caltech.edu/groups/CCI-Solar-Fuels/conference_item.html">CCI-Solar-Fuels, conference items</a>, <a href="https://feeds.library.caltech.edu/groups/CCI-Solar-Fuels/conference_item.json">json data</a>
+</p>
+<div id="conference-items" class="CaltechAUTHORS">
+<p>Testing layout of conference items, if you see this Test failed!</p>
+</div>
+<h3 id="monographs-add-series-name-and-issue-number">
+Monographs, add series name and issue number
+</h3>
+<p>
+Compare with <a href="https://feeds.library.caltech.edu/groups/Applied-&amp;-Computational-Mathematics/monograph.html">Applied-&amp;-Computational-Mathematics, monographs</a>, <a href="https://feeds.library.caltech.edu/groups/Applied-&amp;-Computational-Mathematics/monograph.json">json data</a>
+</p>
+<div id="monograph-items" class="CaltechAUTHORS">
+<p>Testing layout of monograph items, if you see this Test failed!</p>
+</div>
+<h3 id="handle-in-press-and-submitted-published-states">
+Handle “In press” and “Submitted” published states
+</h3>
+<p>
+Compare with <a href="https://feeds.library.caltech.edu/groups/Earthquake-Engineering-Research-Laboratory/combined.html">Earthquake-Engineering-Research-Laboratory, combined</a>, <a href="https://feeds.library.caltech.edu/groups/Earthquake-Engineering-Research-Laboratory/combined.json">json data</a>
+</p>
+<div id="ispublished-items" class="CaltechAUTHORS">
+<p>Testing layout of items that are “inpress” and “submitted”, if you see this Test failed!</p>
+</div>
+<style>
+.CaltechAUTHORS .unknown-year { display: none; }
+.CaltechAUTHORS li {
+    padding-bottom: 0.24em;
+    margin-bottom: 0.24em;
+    list-style: none;
+}
+.CaltechAUTHORS a {
+    padding-right: 0.24em;
+}
+.CaltechAUTHORS span {
+    padding-right: 0.24em;
+}
+.CaltechAUTHORS div {
+    padding-bottom: 0.24em;
+    margin-bottom: 0.24em;
+}
+</style>
+<script src="CL.js"></script>
+<script>
+(function(document, window) {
+  "use strict";
+  let cl = Object.assign({}, window.CL),
+      cl2 = Object.assign({}, window.CL),
+      cl3 = Object.assign({}, window.CL),
+      config = {},
+      conference_elem = document.getElementById("conference-items"),
+      monograph_elem = document.getElementById("monograph-items"),
+      ispublished_elem = document.getElementById("ispublished-items");
+  cl.BaseURL = "https://feeds.library.caltech.edu";
+  cl2.BaseURL = "https://feeds.library.caltech.edu";
+  cl3.BaseURL = "https://feeds.library.caltech.edu";
+
+  /* DR-135, conference_item changes */
+  config = {
+    "aggregation": "groups",
+    "feed_id": "CCI-Solar-Fuels",
+    "feed_path": "conference_item",
+    "recent_n": 0,
+    "use_recent": false,
+    "feed_count": false,
+    "show_year_headings": false,
+    "creators": true,
+    "pub_date": true,
+    "title_link": true,
+    "citation_details": true,
+    "issn_or_isbn": false,
+    "pmcid": false,
+    "description": false,
+    "developer_mode": false,
+    "include_style": true,
+    "include_CL": true,
+    "repository": "CaltechAUTHORS",
+    "css_classname": ".CaltechAUTHORS",
+    "filters": []
+};
+
+  config.parent_element = conference_elem;
+  config.filters.push(cl.normalize_view);
+  cl.setAttribute("viewer", config);
+  cl.getGroupJSON("CCI-Solar-Fuels", "conference_item", function(data, err) {
+    cl.viewer(data, err);
+  });
+
+
+  /* DR-135, monograph changes */
+  config = {
+    "aggregation": "groups",
+    "feed_id": "Applied-&-Computational-Mathematics",
+    "feed_path": "monograph",
+    "recent_n": 0,
+    "use_recent": false,
+    "feed_count": false,
+    "show_year_headings": false,
+    "creators": true,
+    "pub_date": true,
+    "title_link": true,
+    "citation_details": true,
+    "issn_or_isbn": false,
+    "pmcid": false,
+    "description": false,
+    "developer_mode": false,
+    "include_style": true,
+    "include_CL": true,
+    "repository": "CaltechAUTHORS",
+    "css_classname": ".CaltechAUTHORS",
+    "filters": []
+  };
+  config.parent_element = monograph_elem;
+  config.filters.push(cl2.normalize_view);
+  cl2.setAttribute("viewer", config);
+  cl2.getGroupJSON("Applied-&-Computational-Mathematics", "monograph", function(data, err) {
+    cl2.viewer(data, err);
+  });
+
+  /* DR-135 ispublished citation changes */
+   config = {
+    "aggregation": "groups",
+    "feed_id": "Earthquake-Engineering-Research-Laboratory",
+    "feed_path": "combined",
+    "recent_n": 0,
+    "use_recent": false,
+    "feed_count": false,
+    "show_year_headings": false,
+    "creators": true,
+    "pub_date": true,
+    "title_link": true,
+    "citation_details": true,
+    "issn_or_isbn": false,
+    "pmcid": false,
+    "description": false,
+    "developer_mode": false,
+    "include_style": true,
+    "include_CL": true,
+    "repository": "CaltechAUTHORS",
+    "css_classname": ".CaltechAUTHORS",
+    "filters": []
+};
+  config.parent_element = ispublished_elem;
+  config.filters.push(cl.normalize_view);
+  cl3.setAttribute("viewer", config);
+  cl3.getGroupJSON("Earthquake-Engineering-Research-Laboratory", "combined", function(data, err) {
+    cl3.viewer(data, err);
+  });
+}(document, window));
+</script>
+<!--   END: test -->
+</section>
+
+<footer>
+<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
+<span>&copy; 2019 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
+<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
+<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
+<span><a href="mailto:library@caltech.edu">Email Us</a></span>
+<a class="cl-hide" href="sitemap.xml">Site Map</a>
+</footer>
+<!-- START: PrettyFi from https://github.com/google/code-prettify -->
+<script>
+/* We want to add the class "prettyprint" to all the pre elements */
+var pre_list = document.querySelectorAll("pre");
+
+pre_list.forEach(function(elem) {
+    elem.classList.add("prettyprint");
+    /* elem.classList.add("linenums:1");*/
+});
+</script>
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+<!--  END: PrettyFi from https://github.com/google/code-prettify -->
+</body>
+</html>

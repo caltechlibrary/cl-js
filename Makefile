@@ -4,7 +4,7 @@
 
 PROJECT = cl-js
 
-VERSION = $(shell grep -m1 "Version = " scripts/CL-core.js | cut -d\' -f 2)
+VERSION = $(shell jq .version codemeta.json)
 
 BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 
@@ -51,6 +51,13 @@ distribute_docs:
 	cp -vR gallery/* dist/gallery/
 
 release: clean website distribute_docs dist/webbrowser
+
+deployment: clean build
+	mkdir -p dist/htdocs/scripts/
+	cp -vR scripts/*.js dist/htdocs/scripts/
+	cp -vR scripts/*.md dist/htdocs/scripts/
+	if [ -f dist/htdocs/scripts/nav.md ]; then rm dist/htdocs/scripts/nav.md; fi
+	cd dist && zip -r $(PROJECT)-$(VERSION)-deployment.zip htdocs/scripts/*
 
 website:
 	./mk-website.py

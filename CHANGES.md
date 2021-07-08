@@ -1,6 +1,14 @@
 Change log for REPOSITORY
 =========================
 
+Version 0.2.0
+-------------
+
++ Implemented Advisor lists
++ Title linking always uses resolver link
++ Show DOI will link itself if DOI avialable
++ Added Direct Link option for primary digital object in repository record
+
 
 Version 0.1.2
 -------------

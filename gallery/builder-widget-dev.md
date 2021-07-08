@@ -1,7 +1,7 @@
 
 # Introducing the Builder Widget
 
-The [Builder Widget](builder-widget.html) is a tool for embedding 
+The [Builder Widget](builder-widget-dev.html) is a tool for embedding 
 https://feeds.library.caltech.edu content. It generates CSS, 
 HTML and JavaScript for embedding in your 
 own webpage. Caltech Library Feeds provides content for groups and
@@ -21,7 +21,9 @@ and choices about what is displayed for each record.
 
 <noscript>JavaScript is required to display and use the Builder Widget</noscript>
 
-<script src="../scripts/CL.js"></script>
+<script src="../scripts/CL-core.js"></script>
+<script src="../scripts/CL-feeds.js"></script>
+<script src="../scripts/CL-feeds-ui.js"></script>
 
 <script src="../scripts/CL-BuilderWidget.js"></script>
 
