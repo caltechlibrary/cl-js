@@ -1504,12 +1504,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     }
                 });
                     
-                if (show_publication === true && record.publication !== undefined && record.publication !== "") {
-                    span = document.createElement("span");
-                    span.classList.add("publication");
-                    span.innerHTML = record.publication;
-                    li.appendChild(span);
-                }
                 if (show_description === true && record.description !== undefined && record.description !== "") {
                     description = document.createElement("div");
                     description.classList.add("description");
