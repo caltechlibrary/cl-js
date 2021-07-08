@@ -266,13 +266,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
+            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", 
+            "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", 
+            "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
                 key = id.replace(/-/g, "_");
-/* 
-console.log("DEBUG key translates to ", key);
-*/
                 if (elem.checked === true) {
                     config[key] = true;
                 } else {
@@ -604,12 +603,6 @@ console.log("DEBUG key translates to ", key);
                 elem_name = ithKeyOf(o, 0),
                 label_text = ithValueOf(o, 0),
                 control, label, input;
-/*
-console.log("DEBUG obj: ", o, typeof(o));
-console.log("DEBUG elem_id: ", elem_id, typeof(elem_id));
-console.log("DEBUG elem_name: ", elem_name, typeof(elem_name));
-console.log("DEBUG label text:", label_text, typeof(label_text));
-*/
 
             control = self.createCompositElement("div", ["label", "input"], ["", elem_id]);
             control.classList.add("checkbox");
