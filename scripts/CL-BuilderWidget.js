@@ -591,7 +591,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             {"page_numbers": "Show Page Numbers"},
             {"volume": "Show Volume/Series"},
             {"issue": "Show Issue/Number"},
-            {"issn_or_isbn": "ISSN or ISBN"},
+            {"issn_or_isbn": "Show ISSN or ISBN"},
             {"pmcid": "Show PMCID"},
             {"description": "Show Abstract"},
             {"link": "Show Link"},
