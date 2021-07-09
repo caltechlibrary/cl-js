@@ -267,7 +267,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 }
             });
             ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", 
-            "title-link", "doi", "link", "publication", "page-numbers", "chapters", "issue", 
+            "title-link", "doi", "link", "publisher", "publication", "page-numbers", "chapters", "issue", 
             "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
@@ -586,12 +586,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             {"creators": "Authors"},
             {"pub_date": "Pub Date"},
             {"title_link": "Link the Title"},
+            {"publisher": "Show Publisher"},
             {"publication": "Show Publication"},
             {"chapters": "Show Chapters"},
             {"page_numbers": "Show Page Numbers"},
             {"volume": "Show Volume/Series"},
             {"issue": "Show Issue/Number"},
-            {"issn_or_isbn": "ISSN or ISBN"},
+            {"issn_or_isbn": "Show ISSN or ISBN"},
             {"pmcid": "Show PMCID"},
             {"description": "Show Abstract"},
             {"link": "Show Link"},

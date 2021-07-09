@@ -1,6 +1,11 @@
 Change log for REPOSITORY
 =========================
 
+Version 0.2.1
+-------------
+
++ Added missing "Show publisher" to Builder Widget
+
 Version 0.2.0
 -------------
 
