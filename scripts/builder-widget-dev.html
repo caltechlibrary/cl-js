@@ -35,12 +35,6 @@
 </nav>
 
 <section>
-<h1 id="introducing-the-builder-widget">
-Introducing the Builder Widget
-</h1>
-<p>
-The <a href="builder-widget-dev.html">Builder Widget</a> is a tool for embedding https://feeds.library.caltech.edu content. It generates CSS, HTML and JavaScript for embedding in your own webpage. Caltech Library Feeds provides content for groups and individuals in the various Caltech Library repositories. The data is bibliographic and collection related. The Builder Widget lets you choose the source of data you want to include (group or person), the type of data you want to include (e.g. article, book, combined publication list or data collections) as well as the number of items and choices about what is displayed for each record.
-</p>
 <!-- START: Builder Widget -->
 <section id="builder-widget" class="widget">
 <!-- This is where "the widget" should display -->
@@ -48,10 +42,10 @@ The <a href="builder-widget-dev.html">Builder Widget</a> is a tool for embedding
 <noscript>
 JavaScript is required to display and use the Builder Widget
 </noscript>
-<script src="../scripts/CL-core.js"></script>
-<script src="../scripts/CL-feeds.js"></script>
-<script src="../scripts/CL-feeds-ui.js"></script>
-<script src="../scripts/CL-BuilderWidget.js"></script>
+<script src="CL-core.js"></script>
+<script src="CL-feeds.js"></script>
+<script src="CL-feeds-ui.js"></script>
+<script src="CL-BuilderWidget.js"></script>
 <script>
 (function (document, window) {
     let cl = Object.assign({}, window.CL),
@@ -64,9 +58,20 @@ JavaScript is required to display and use the Builder Widget
 }(document, window));
 </script>
 <!--   END: Builder Widget -->
-<p>
-The <a href="CL-Builder-Widget.js" title="link to source code of Builder Widget">Builder Widget JavaScript</a> is an example of a JavaScript program based on <a href="../scripts/CL.js" title="link to source code for CL.js">CL.js</a>.
-</p>
+<ul>
+<li>
+<a href="CL-Builder-Widget.js">CL-Builder-Widget.js</a>
+</li>
+<li>
+<a href="CL-core.js">CL-core.js</a>
+</li>
+<li>
+<a href="CL-feeds.js">CL-feeds.js</a>
+</li>
+<li>
+<a href="CL-feeds-ui.js">CL-feeds-ui.js</a>
+</li>
+</ul>
 </section>
 
 <footer>

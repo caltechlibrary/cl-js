@@ -14,3 +14,7 @@
 + [dr-135](dr-135-test.html), improved conference items, monographs and inpress items
 + [dr-139](dr-139-test.html), missing data when "year heading" not used
 + [issue-4](issue-4-test.html), test advisor feed
+
+## Developer tools
+
++ [Builder Widget](builder-widget-dev.html) in developer mode

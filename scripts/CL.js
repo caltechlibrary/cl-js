@@ -1003,11 +1003,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 if (record.pagerange !== undefined && record.pagerange !== "") {
                     view.page_range = record.pagerange;
                 }
-                if (record.publication !== undefined && record.publication !== "") {
-                    view.publication = record.publication;
-                }
                 if (record.publisher !== undefined && record.publisher !== "") {
                     view.publisher = record.publisher;
+                }
+                if (record.publication !== undefined && record.publication !== "") {
+                    view.publication = record.publication;
                 }
                 if (record.issn !== undefined && record.issn !== "") {
                     view.issn = record.issn;
@@ -1198,6 +1198,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             show_pmcid = false,
             show_doi = false,
             show_primary_object = false,
+            show_publisher = false,
             show_publication = false,
             show_page_numbers = false,
             show_chapters = false,
@@ -1233,6 +1234,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }
         if (config.link !== undefined && config.link === true) {
             show_link = true;
+        }
+        if (config.publisher !== undefined && config.publisher === true) {
+            show_publisher = true;
         }
         if (config.publication !== undefined && config.publication === true) {
             show_publication = true;
@@ -1413,7 +1417,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                    Pages removed DR-273 as arxiv imported generates pages
                    and they're not part of our currated metadata. */
                 [
-                    "publication", "series", "volume", "number",
+                    "publisher", "publication", "series", "volume", "number",
                     "page_range",
                     "issn", "isbn", "pmcid", 
                     "event_title", "event_dates", "event_location", 
@@ -1427,6 +1431,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         span.classList.add(key);
                         switch (key) {
                             case "ispublished":
+                                span.innerHTML = val;
+                                break;
+                            case "publisher":
                                 span.innerHTML = val;
                                 break;
                             case "publication":
