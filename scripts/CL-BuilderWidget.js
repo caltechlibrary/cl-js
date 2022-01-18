@@ -101,7 +101,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     }
                     people.forEach(function(profile, i) {
                         let option = document.createElement("option");
-                        option.value = profile.id;
+                        option.value = profile.cl_people_id;
                         if ("orcid" in profile) {
                             option.innerHTML = profile.sort_name + "(" + 
                                 profile.orcid + ")";

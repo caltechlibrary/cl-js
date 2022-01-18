@@ -8,7 +8,10 @@ VERSION = $(shell jq .version codemeta.json)
 
 BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 
+CODEMETA2CFF = $(shell which codemeta2cff)
+
 build: scripts/CL.js 
+	$(CODEMETA2CFF)
 
 scripts/CL.js: .FORCE
 	cat scripts/CL-core.js scripts/CL-ui.js scripts/CL-feeds.js scripts/CL-feeds-ui.js scripts/CL-doi-media.js > scripts/CL.js

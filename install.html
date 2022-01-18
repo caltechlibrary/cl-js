@@ -35,22 +35,22 @@
 </nav>
 
 <section>
-<h1 id="installation">
+<h1>
 Installation
 </h1>
 <p>
 <em>cl-js</em> is a Javascript library for working with Caltech Library content. Installation is usually a matter of unzipping the lastest release and copying the <code>CL.js</code> into your web tree where you normally place you JavaScript files. Then you reference that location to include it in your web pages.
 </p>
-<h2 id="the-basic-recipe">
+<h2>
 The basic recipe
 </h2>
 <p>
 If you want to use the production version we use at Caltech Library you can use the following script element in your web page.
 </p>
 <div id="cb1" class="sourceCode">
-<pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;https://feeds.library.caltech.edu/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
+<pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;https://feeds.library.caltech.edu/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
 </div>
-<h2 id="the-not-so-basic-recipe">
+<h2>
 The not so basic recipe
 </h2>
 <p>
@@ -85,15 +85,15 @@ Update your web page and you’re done
 Here are the command line steps I took for version v0.1.2.
 </p>
 <div id="cb2" class="sourceCode">
-<pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>    <span class="ex">curl</span> -O https://github.com/caltechlibrary/cl-js/releases/download/v0.1.2/cl-js-v0.1.2-webbrowser.zip</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="fu">unzip</span> cl-js-v0.1.2-webbrowser.zip</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="fu">cp</span> scripts/*.js /var/www/htdocs/scripts/</span></code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="at">-O</span> https://github.com/caltechlibrary/cl-js/releases/download/v0.1.2/cl-js-v0.1.2-webbrowser.zip</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unzip</span> cl-js-v0.1.2-webbrowser.zip</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> scripts/<span class="pp">*</span>.js /var/www/htdocs/scripts/</span></code></pre>
 </div>
 <p>
 From here I can include the JavaScript in the web pages that need it.
 </p>
 <div id="cb3" class="sourceCode">
-<pre class="sourceCode html"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
+<pre class="sourceCode html"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
 </div>
 </section>
 
