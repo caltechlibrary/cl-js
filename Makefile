@@ -4,7 +4,7 @@
 
 PROJECT = cl-js
 
-VERSION = $(shell jq .version codemeta.json)
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
 
 BRANCH = $(shell git branch | grep "* " | cut -d\   -f 2)
 
