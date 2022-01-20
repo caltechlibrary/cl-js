@@ -37,6 +37,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      */
     let ithKeyOf = function(o, i) { return Object.keys(o)[i]; }
     let ithValueOf = function(o, i) { return Object.values(o)[i]; }
+    let error_element_id = 'feed-error';
 
     /**
      * CL.BuilderWidget() creates a builder widget in the elements
