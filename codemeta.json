@@ -1,27 +1,40 @@
 {
-    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-    "@type": "SoftwareSourceCode",
-    "description": "Provides a common Caltech Library CL JavaScript object",
-    "name": "cl-js",
-    "codeRepository": "https://github.com/caltechlibrary/cl-js",
-    "issueTracker": "https://github.com/caltechlibrary/cl-js/issues",
-    "license": "https://github.com/caltechlibrary/cl-js/blob/main/LICENSE",
-    "version": "0.2.2",
-    "author": [
-        {
-            "@type": "Person",
-            "givenName": "Robert",
-            "familyName": "Doiel",
-            "affiliation": "California Institute of Technology Library",
-            "email": "rsdoiel@caltech.edu",
-            "@id": "https://orcid.org/0000-0003-0900-6903"
-        }
-    ],
-    "developmentStatus": "active",
-    "downloadUrl": "https://github.com/caltechlibrary/cl-js/releases/",
-    "keywords": [
-        "software",
-        "javascript"
-    ],
-    "maintainer": "https://orcid.org/0000-0003-0900-6903"
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "type": "SoftwareSourceCode",
+  "codeRepository": "https://github.com/caltechlibrary/cl-js",
+  "author": [
+    {
+      "id": "https://orcid.org/0000-0003-0900-6903",
+      "type": "Person",
+      "givenName": "Robert",
+      "familyName": "Doiel",
+      "affiliation": "California Institute of Technology Library",
+      "email": "rsdoiel@caltech.edu"
+    }
+  ],
+  "maintainer": [
+    {
+      "type": "Person",
+      "name": "https://orcid.org/0000-0003-0900-6903"
+    }
+  ],
+  "dateModified": "2025-04-21",
+  "description": "Provides a common Caltech Library CL JavaScript object",
+  "keywords": [
+    "software",
+    "javascript"
+  ],
+  "name": "cl-js",
+  "license": "https://github.com/caltechlibrary/cl-js/blob/main/LICENSE",
+  "softwareRequirements": [
+    "Deno >= 2",
+    "CMTools >= 0.0.24",
+    "GNU Make >= 3",
+    "Pandoc >= 3"
+  ],
+  "version": "1.0.0",
+  "developmentStatus": "active",
+  "issueTracker": "https://github.com/caltechlibrary/cl-js/issues",
+  "downloadUrl": "https://github.com/caltechlibrary/cl-js/releases/",
+  "releaseNotes": "v1 of CL-js is the first version written in TypeScript to support feeds.library.caltech.edu >= 1.6. The user interface components, e.g. BuilderWidget and CL-feeds-ui.js\nhave been migrated to web components and implemented as part of CL-web-component project. With v1 release of CL-js two platforms are targeted, ES6 friendly evergreen web browsers and Deno."
 }
