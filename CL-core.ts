@@ -23,9 +23,9 @@ import { version } from "./version.ts";
 
 // IPayload describes the input and output object for Pipeline functions.
 export interface IPayload {
-    ok: boolean,
-    error: string,
-    data: any
+  ok: boolean;
+  error: string;
+  data: any;
 }
 
 // IPiplineFunction is function that accepts a IPayLoad and returns an IPayLoad.
@@ -38,109 +38,132 @@ export interface CLInterface {
   _attributes?: Map<string, any>;
   BaseURL?: string;
 
-  pipeline(payload: IPayload, ...pipelineFns: IPipelineFunction[]): Promise<IPayload>;
+  pipeline(
+    payload: IPayload,
+    ...pipelineFns: IPipelineFunction[]
+  ): Promise<IPayload>;
   setAttribute(name: string, value: any): void;
   getAttribute(name: string): any;
   hasAttribute(name: string): boolean;
   httpGet(url: string | URL, contentType: string): Promise<IPayload>;
-  httpPost(url: string | URL, contentType: string, src: string): Promise<IPayload>;
+  httpPost(
+    url: string | URL,
+    contentType: string,
+    src: string,
+  ): Promise<IPayload>;
 }
 
 export const CL: CLInterface = {
   Version: `${version}`,
 
-  async pipeline(payload: IPayload, ...pipelineFns: IPipelineFunction[]): Promise<IPayload> {
-      const nextFunction = pipelineFns?.shift();
-      if (nextFunction === undefined) {
-        return payload;
-      }
-      const nextPayload = await nextFunction(payload);
-      if (!nextPayload.ok) {
-        console.error(nextPayload.error);
-        return nextPayload;
-      }
-      return await this.pipeline(nextPayload, ...pipelineFns);
+  async pipeline(
+    payload: IPayload,
+    ...pipelineFns: IPipelineFunction[]
+  ): Promise<IPayload> {
+    const nextFunction = pipelineFns?.shift();
+    if (nextFunction === undefined) {
+      return payload;
+    }
+    const nextPayload = await nextFunction(payload);
+    if (!nextPayload.ok) {
+      console.error(nextPayload.error);
+      return nextPayload;
+    }
+    return await this.pipeline(nextPayload, ...pipelineFns);
   },
 
   setAttribute(name: string, value: any) {
-      if (this._attributes === undefined) {
-          this._attributes = new Map();
-      }
-      this._attributes.set(name, value);
+    if (this._attributes === undefined) {
+      this._attributes = new Map();
+    }
+    this._attributes.set(name, value);
   },
 
   getAttribute(name: string): any {
-      if (this._attributes !== undefined && this._attributes.has(name)) {
-          return this._attributes.get(name);
-      }
+    if (this._attributes !== undefined && this._attributes.has(name)) {
+      return this._attributes.get(name);
+    }
   },
 
   hasAttribute(name: string): boolean {
     if (this._attributes !== undefined) {
-        return this._attributes.has(name);
+      return this._attributes.has(name);
     }
     return false;
   },
 
   async httpGet(url: string | URL, contentType: string): Promise<IPayload> {
     if (typeof url === "string") {
-        if (url.startsWith("/") && this.BaseURL !== undefined) {
-            url = new URL(this.BaseURL + url);
-        } else {
-            url = new URL(url);
-        }
-
+      if (url.startsWith("/") && this.BaseURL !== undefined) {
+        url = new URL(this.BaseURL + url);
+      } else {
+        url = new URL(url);
+      }
     }
 
     const response = await fetch(url instanceof URL ? url.toString() : url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': contentType,
-            ...(url instanceof URL && (url.pathname.includes(".json.gz") || url.pathname.includes(".js.gz")) ? { 'Content-Encoding': 'gzip' } : {})
-        }
+      method: "GET",
+      headers: {
+        "Content-Type": contentType,
+        ...(url instanceof URL &&
+            (url.pathname.includes(".json.gz") ||
+              url.pathname.includes(".js.gz"))
+          ? { "Content-Encoding": "gzip" }
+          : {}),
+      },
     });
     if (response.ok === undefined || !response.ok) {
-        if (response.body !== undefined && response.body !== null) await response.body.cancel();
-        return {ok: response.ok, error: response.statusText, data: null};
+      if (response.body !== undefined && response.body !== null) {
+        await response.body.cancel();
+      }
+      return {
+        ok: response.ok,
+        error: `${url} -> ${response.status} ${response.statusText}`,
+        data: null,
+      };
     }
     let data: any = null;
     let src = await response.text();
     if (contentType === "application/json" && src !== undefined && src !== "") {
-        try {
-            data = JSON.parse(src);
-        } catch (err) {
-            return {ok: false, error: `${err}`, data: src};
-        }
-        return {ok: true, error: '', data: data};
+      try {
+        data = JSON.parse(src);
+      } catch (err) {
+        return { ok: false, error: `${url} -> ${err}`, data: src };
+      }
+      return { ok: true, error: "", data: data };
     }
-    return {ok: true, error: '', data: src};
+    return { ok: true, error: "", data: src };
   },
 
-  async httpPost(url: string | URL, contentType: string, src: string): Promise<IPayload> {
+  async httpPost(
+    url: string | URL,
+    contentType: string,
+    src: string,
+  ): Promise<IPayload> {
     if (typeof url === "string") {
-        if (url.startsWith("/") && this.BaseURL !== undefined) {
-            url = new URL(this.BaseURL + url);
-        } else {
-            url = new URL(url);
-        }
+      if (url.startsWith("/") && this.BaseURL !== undefined) {
+        url = new URL(this.BaseURL + url);
+      } else {
+        url = new URL(url);
+      }
     }
 
     const response = await fetch(url instanceof URL ? url.toString() : url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': contentType
-        },
-        body: src
+      method: "POST",
+      headers: {
+        "Content-Type": contentType,
+      },
+      body: src,
     });
 
     if (!response.ok) {
-        return {ok: response.ok, error: response.statusText, data: undefined};
+      return { ok: response.ok, error: response.statusText, data: undefined };
     }
 
     let data = await response.text();
     if (contentType === "application/json" && data !== "") {
-        data = JSON.parse(data);
+      data = JSON.parse(data);
     }
-    return { ok: response.ok, error: '', data: data };
-  }
+    return { ok: response.ok, error: "", data: data };
+  },
 };

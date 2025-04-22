@@ -19,32 +19,77 @@ Deno.test("CL hasAttribute", () => {
 
 Deno.test("CL pipeline with successful functions", async () => {
   const payload: IPayload = { ok: true, error: "", data: "initial" };
-  const fn1 = async (p: IPayload): Promise<IPayload> => ({ ...p, data: p.data + " modified" });
+  const fn1 = async (p: IPayload): Promise<IPayload> => ({
+    ...p,
+    data: p.data + " modified",
+  });
   const result = await CL.pipeline(payload, fn1);
-  assertEquals(result.ok, true, `expected result.ok === true, got ${JSON.stringify(result)}`);
-  assertEquals(result.error, '', `expected result.error === '', got ${JSON.stringify(result)}`);
-  assertEquals(result.data, 'initial modified',  `expected result.data === 'initial modified', got ${JSON.stringify(result)}`);
+  assertEquals(
+    result.ok,
+    true,
+    `expected result.ok === true, got ${JSON.stringify(result)}`,
+  );
+  assertEquals(
+    result.error,
+    "",
+    `expected result.error === '', got ${JSON.stringify(result)}`,
+  );
+  assertEquals(
+    result.data,
+    "initial modified",
+    `expected result.data === 'initial modified', got ${
+      JSON.stringify(result)
+    }`,
+  );
 });
 
 Deno.test("CL pipeline with failing function", async () => {
   const payload: IPayload = { ok: true, error: "", data: "initial" };
-  const fn1 = async (p: IPayload): Promise<IPayload> => ({ ok: false, error: "Error occurred", data: null });
+  const fn1 = async (p: IPayload): Promise<IPayload> => ({
+    ok: false,
+    error: "Error occurred",
+    data: null,
+  });
   const result = await CL.pipeline(payload, fn1);
-  assertEquals(result.ok, false, `expected result.ok === false, got ${JSON.stringify(result)}`);
-  assertEquals(result.error, 'Error occurred', `expected result.error === 'Error occurred', got ${JSON.stringify(result)}`);
-  assertEquals(result.data, null, `expected result.data === 'initial modified', got ${JSON.stringify(result)}`);
+  assertEquals(
+    result.ok,
+    false,
+    `expected result.ok === false, got ${JSON.stringify(result)}`,
+  );
+  assertEquals(
+    result.error,
+    "Error occurred",
+    `expected result.error === 'Error occurred', got ${JSON.stringify(result)}`,
+  );
+  assertEquals(
+    result.data,
+    null,
+    `expected result.data === 'initial modified', got ${
+      JSON.stringify(result)
+    }`,
+  );
 });
 
 Deno.test("CL httpGet success", async () => {
   // Mock the fetch function if necessary
-  const payload = await CL.httpGet("https://feeds.library.caltech.edu/people/people_list.json", "application/json");
+  const payload = await CL.httpGet(
+    "https://feeds.library.caltech.edu/people/people_list.json",
+    "application/json",
+  );
   assertEquals(payload.ok, true);
   assert(payload.data);
 });
 
 Deno.test("CL httpGet failure", async () => {
-  const payload = await CL.httpGet("https://feeds.library.caltech.edu/invalid", "application/json");
-  assertEquals(payload.ok, false, `expected payload.ok === false, got payload -> ${JSON.stringify(payload)}`);
+  const payload = await CL.httpGet(
+    "https://feeds.library.caltech.edu/invalid",
+    "application/json",
+  );
+  assertEquals(
+    payload.ok,
+    false,
+    `expected payload.ok === false, got payload -> ${JSON.stringify(payload)}`,
+  );
 });
 
 /* FIXME: need to set up a service that processes this test.

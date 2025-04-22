@@ -58,30 +58,46 @@ export const CL = {
       }
     }
     const response = await fetch(url instanceof URL ? url.toString() : url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': contentType,
+        "Content-Type": contentType,
         ...url instanceof URL && (url.pathname.includes(".json.gz") || url.pathname.includes(".js.gz")) ? {
-          'Content-Encoding': 'gzip'
+          "Content-Encoding": "gzip"
         } : {}
       }
     });
     if (response.ok === undefined || !response.ok) {
-      if (response.body !== undefined && response.body !== null) await response.body.cancel();
+      if (response.body !== undefined && response.body !== null) {
+        await response.body.cancel();
+      }
       return {
         ok: response.ok,
-        error: response.statusText,
+        error: `${url} -> ${response.status} ${response.statusText}`,
         data: null
       };
     }
-    let data = await response.text();
-    if (contentType === "application/json" && data !== undefined && data !== "") {
-      data = JSON.parse(data);
+    let data = null;
+    let src = await response.text();
+    if (contentType === "application/json" && src !== undefined && src !== "") {
+      try {
+        data = JSON.parse(src);
+      } catch (err) {
+        return {
+          ok: false,
+          error: `${url} -> ${err}`,
+          data: src
+        };
+      }
+      return {
+        ok: true,
+        error: "",
+        data: data
+      };
     }
     return {
       ok: true,
-      error: '',
-      data: data
+      error: "",
+      data: src
     };
   },
   async httpPost (url, contentType, src) {
@@ -93,9 +109,9 @@ export const CL = {
       }
     }
     const response = await fetch(url instanceof URL ? url.toString() : url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': contentType
+        "Content-Type": contentType
       },
       body: src
     });
@@ -112,7 +128,7 @@ export const CL = {
     }
     return {
       ok: response.ok,
-      error: '',
+      error: "",
       data: data
     };
   }
