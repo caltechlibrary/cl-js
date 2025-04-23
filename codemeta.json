@@ -18,8 +18,9 @@
       "name": "https://orcid.org/0000-0003-0900-6903"
     }
   ],
-  "dateModified": "2025-04-21",
-  "description": "Provides a common Caltech Library CL JavaScript object",
+  "dateModified": "2025-04-23",
+  "datePublished": "2025-04-23",
+  "description": "CL-js provide TypeScript and JavaScript objects for working with metadata content provided by Caltech Library on <https://feeds.library.caltech.edu>.\n\nThe modules provided enable easy integration of bibliographic data for Caltech People and Groups on websites.",
   "keywords": [
     "software",
     "javascript"
@@ -36,5 +37,5 @@
   "developmentStatus": "active",
   "issueTracker": "https://github.com/caltechlibrary/cl-js/issues",
   "downloadUrl": "https://github.com/caltechlibrary/cl-js/releases/",
-  "releaseNotes": "v1 of CL-js is the first version written in TypeScript to support feeds.library.caltech.edu >= 1.6. The user interface components, e.g. BuilderWidget and CL-feeds-ui.js\nhave been migrated to web components and implemented as part of CL-web-component project. With v1 release of CL-js two platforms are targeted, ES6 friendly evergreen web browsers and Deno."
+  "releaseNotes": "v1 of CL-js is the first version written in TypeScript. The TypeScript is transpiled into JavaScripts and is available at <https://feeds.library.caltech.edu/modules/>.\n\nLegacy JavaScript, while still available in the \"scripts\" directory, is depricated. This includes the fomer \"ui\" JavaScript includes. Moving foward the UI elements are being developed in the [CL-web-components](https://caltechlibrary.github.io/CL-web-components) project. These will become available on <https://feeds.library.caltech.edu> at somepoint in the future.\n\nWith this release of CL-js both evergreen browsers and JavaScript/TypeScript runtimes are targeted. Development takes place using Deno 2 and testing is done using Firefox."
 }

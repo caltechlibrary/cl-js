@@ -1,8 +1,8 @@
 // cl-js version and license information.
 
 export const version = '1.0.0',
-releaseDate = '2025-04-21',
-releaseHash = 'b1d371b',
+releaseDate = '2025-04-23',
+releaseHash = 'e21799b',
 licenseText = `
 Copyright (c) 2019, Caltech
 All rights not granted herein are expressly reserved by Caltech.

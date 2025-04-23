@@ -23,7 +23,7 @@ DOCS = $(shell ls -1 *.?.md)
 
 PACKAGE = $(shell ls -1 *.ts)
 
-VERSION = $(shell grep '"version":' codemeta.json | cut -d"  -f 4)
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d  -f 2)
 
@@ -50,7 +50,7 @@ version.ts: .FORCE
 hash: .FORCE
 	git log --pretty=format:'%h' -n 1
 
-man: #$(MAN_PAGES_1) $(MAN_PAGES_3) $(MAN_PAGES_7)
+man: $(MAN_PAGES_7) #$(MAN_PAGES_1) $(MAN_PAGES_3)
 
 # $(MAN_PAGES_1): .FORCE
 # 	mkdir -p man/man1
@@ -142,12 +142,12 @@ distribute_docs:
 	@for DNAME in $(DOCS); do cp -vR $$DNAME dist/; done
 
 packaged_modules: .FORCE
-	@cp -v scripts dist/
-	@cp -v modules dist/
+	@cp -vR modules dist/
+	@cp -vR scripts dist/
 
 release_ready: .FORCE
-	@cd dist && zip -r $(PROJECT)-v$(VERSION).zip LICENSE codemeta.json CITATION.cff *.md man/* scripts/* modules/*
-	echo "Ready to run ./release.bash"
+	@cd dist && zip -r $(PROJECT)-v$(VERSION).zip LICENSE codemeta.json CITATION.cff *.md *.ts man/* scripts/* modules/*
+	echo "Version $(VERSION) is ready to run ./release.bash"
 
 release: build distribute_docs packaged_modules release_ready
 
