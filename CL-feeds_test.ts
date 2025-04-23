@@ -39,19 +39,19 @@ Deno.test(`CLFeeds getPeopleInfo method`, async () => {
     result.ok,
     true,
     `getPeopleInfo should return a successful payload, ${
-      JSON.stringify(result)
+      JSON.stringify(result, null, 2)
     }`,
   );
   assertEquals(
     result.data.clpid,
     peopleID,
-    `People info should match the requested ID, ${JSON.stringify(result)}`,
+    `People clpid "${result.data.clpid}" should match "${peopleID}"`,
   );
   // This test is for the transition period for cl_people_id being replaced with clpid.
   assertEquals(
     result.data.cl_people_id,
     peopleID,
-    `People info should match the requested ID, ${JSON.stringify(result)}`,
+    `People cl_group_id "${result.data.cl_people_id}" should match "${peopleID}"`,
   );
 });
 
@@ -122,9 +122,9 @@ Deno.test(`CLFeeds getPeopleList method`, async () => {
   assertEquals(
     result.ok,
     true,
-    `getPeopleList should return a successful payload`,
+    `getPeopleList should return a successful payload, ${JSON.stringify(result)}`,
   );
-  assertEquals(result.data.length > 0, true, `People keys should not be empty`);
+  assertEquals(result.data.length > 0, true, `People keys should not be empty, ${JSON.stringify(result)}`);
 });
 
 //NOTE: I would like to depreciate this but need to check with Cynthia and Katarina before I do just incase they used it. RSD 2025-04-22
@@ -225,8 +225,8 @@ Deno.test(`CLFeeds getGroupCustomJSON method`, async () => {
 
 Deno.test(`CLFeeds getGroupsList method`, async () => {
     const result = await CLFeeds.getGroupsList();
-    assertEquals(result.ok, true, `getGroupsList should return a successful payload`);
-    assertEquals(result.data.length > 0, true, `Groups list should not be empty`);
+    assertEquals(result.ok, true, `getGroupsList should return a successful payload, ${JSON.stringify(result)}`);
+    assertEquals(result.data.length > 0, true, `Groups list should not be empty, ${JSON.stringify(result)}`);
 });
 
 Deno.test(`CLFeeds getGroupInfo method`, async () => {
