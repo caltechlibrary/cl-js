@@ -15,7 +15,6 @@ Table of contents
 * [Usage](#usage)
 * [Known issues and limitations](#known-issues-and-limitations)
 * [Getting help](#getting-help)
-    * [Gallery](gallery/) examples 
 * [Contributing](#contributing)
 * [License](#license)
 * [Authors and history](#authors-and-history)
