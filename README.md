@@ -25,7 +25,7 @@ Table of contents
 Introduction
 ------------
 
-CL-js started as a vanilla JavaScript for integrating bioligraphic content for CaltechAUTHORS and CaltechTHESIS in Caltech Campus websites. Today CL-js provides TypeScript and JavaScript ESM continuing the original project. It includes support for metadata from CaltechAUTHORS, CaltechTHESIS and CaltechDATA via <feeds.library.caltech.edu>. The ESM modules are written in maintained in TypeScript then [transpiled](https://en.wikipedia.org/wiki/Source-to-source_compiler "source to source translation") to JavaScript using [Deno](https://deno.com)'s [emit](https://jsr.io/@deno/emit) package. TypeScript has been chosen because structured metadata benefits from type safety which JavaScript doesn't provide. The TypeScript modules can be used with Deno.
+CL-js started as a vanilla JavaScript for integrating bibliographic content for CaltechAUTHORS and CaltechTHESIS in Caltech Campus websites. Today CL-js provides TypeScript and JavaScript ESM continuing the original project. It includes support for metadata from CaltechAUTHORS, CaltechTHESIS and CaltechDATA via <https://feeds.library.caltech.edu>. The modules are written and maintained in TypeScript. The TypeScript is [transpiled](https://en.wikipedia.org/wiki/Source-to-source_compiler "source to source translation") to JavaScript using [Deno](https://deno.com)'s [emit](https://jsr.io/@deno/emit) package. TypeScript has been chosen because structured metadata benefits from type safety which JavaScript doesn't provide. The TypeScript modules can be used with Deno.
 
 This project is complementary to [CL-web-components](https://github.com/caltechlibrary/CL-web-components "web components shared between Caltech Library projects"). CL-web-components provides web components for integrating content from Caltech Library.
 
@@ -86,7 +86,7 @@ The recommended approach to using CL-js is to point your script elements at our 
     <script type="module" src="https://feeds.library.caltech.edu/modules/CL-v1.js"></script>
 ```
 
-If you want to work on a local copy (e.g. you're adapting, enhancing, debugging or customizing our JavaScript library) can also copy the JavaScript files into your local web document root.  The library is contained in a "scripts" folder in our GitHub repository for [CL-js](https://github.com/caltechlibrary/CL-js). Copy or symlink the "modules" to your web document root. Then you can easily include the content in your HTML pages.
+If you want to work on a local copy (e.g. you're adapting, enhancing, debugging or customizing our JavaScript library) can also copy the JavaScript files into your local web document root.  The library is contained in a "scripts" folder in our GitHub repository for [CL-js](https://github.com/caltechlibrary/CL-js). Copy or symbolically link the "modules" to your web document root. Then you can easily include the content in your HTML pages.
 
 You can create a new "CL-v1.js" by running Make in the repository root which will use Deno to convert the TypeScript to JavaScript before copying them into the modules directory.
 

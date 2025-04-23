@@ -11,9 +11,9 @@ RELEASE_DATE = $(shell date +%Y-%m-%d)
 
 RELEASE_HASH=$(shell git log --pretty=format:'%h' -n 1)
 
-MAN_PAGES_1 = $(shell ls -1 *.1.md | sed -E 's/.1.md/.1/g')
+#MAN_PAGES_1 = $(shell ls -1 *.1.md | sed -E 's/.1.md/.1/g')
 
-MAN_PAGES_3 = $(shell ls -1 *.3.md | sed -E 's/.3.md/.3/g')
+#MAN_PAGES_3 = $(shell ls -1 *.3.md | sed -E 's/.3.md/.3/g')
 
 MAN_PAGES_7 = $(shell ls -1 *.7.md | sed -E 's/.7.md/.7/g')
 
@@ -41,7 +41,7 @@ ifeq ($(OS), Windows)
 	EXT = .exe
 endif
 
-build: version.ts $(PROGRAMS) CITATION.cff about.md
+build: version.ts $(PROGRAMS) CITATION.cff about.md man
 	deno task build
 
 version.ts: .FORCE
@@ -52,13 +52,13 @@ hash: .FORCE
 
 man: #$(MAN_PAGES_1) $(MAN_PAGES_3) $(MAN_PAGES_7)
 
-$(MAN_PAGES_1): .FORCE
-	mkdir -p man/man1
-	pandoc $@.md --from markdown --to man -s >man/man1/$@
+# $(MAN_PAGES_1): .FORCE
+# 	mkdir -p man/man1
+# 	pandoc $@.md --from markdown --to man -s >man/man1/$@
 
-$(MAN_PAGES_3): .FORCE
-	mkdir -p man/man3
-	pandoc $@.md --from markdown --to man -s >man/man3/$@
+# $(MAN_PAGES_3): .FORCE
+# 	mkdir -p man/man3
+# 	pandoc $@.md --from markdown --to man -s >man/man3/$@
 
 $(MAN_PAGES_7): .FORCE
 	mkdir -p man/man7

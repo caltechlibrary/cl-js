@@ -1,272 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <title>CL-js</title>
     <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
-<header>
-<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
-</header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="./">README</a>
-</li>
-<li>
-<a href="license.html">LICENSE</a>
-</li>
-<li>
-<a href="install.html">INSTALL</a>
-</li>
-<li>
-<a href="gallery/">Gallery</a>
-</li>
-<li>
-<a href="scripts/testing.html">Tests</a>
-</li>
-<li>
-<a href="https://github.com/caltechlibrary/cl-js">Github</a>
-</li>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/cl-js">GitHub</a></li>
 </ul>
 </nav>
-
 <section>
-<h1>
-CL-js - A vanilla JavaScript library for Caltech Library projects
-</h1>
-<p>
-This repository provides a vanilla JavaScript library used across some
-of Caltech Library projects including <a
-href="https://feeds.library.caltech.edu">feeds.library.caltech.edu</a>.
-</p>
-<p>
-<a href="https://choosealicense.com/licenses/bsd-3-clause"><img
+<h1
+id="cl-js---vanilla-javascript-esm-for-caltech-library-metadata">CL-js -
+Vanilla JavaScript ESM for Caltech Library metadata</h1>
+<p>This repository provides a vanilla JavaScript ESM and TypeScript
+module for integrating Caltech Library metadata and public resources.
+The production deployment is hosted on Caltech Library’s <a
+href="https://feeds.library.caltech.edu">feeds.library.caltech.edu</a>
+website.</p>
+<p><a href="https://choosealicense.com/licenses/bsd-3-clause"><img
 src="https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square"
 alt="License" /></a> <a href="http://shields.io"><img
 src="https://img.shields.io/badge/Latest_release-0.1.2-b44e88.svg?style=flat-square"
-alt="Latest release" /></a>
-</p>
-<h2>
-Table of contents
-</h2>
+alt="Latest release" /></a></p>
+<h2 id="table-of-contents">Table of contents</h2>
 <ul>
-<li>
-<a href="#introduction">Introduction</a>
-</li>
-<li>
-<a href="#installation">Installation</a>
-</li>
-<li>
-<a href="#usage">Usage</a>
-</li>
-<li>
-<a href="#known-issues-and-limitations">Known issues and limitations</a>
-</li>
-<li>
-<a href="#getting-help">Getting help</a>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#known-issues-and-limitations">Known issues and
+limitations</a></li>
+<li><a href="#getting-help">Getting help</a>
 <ul>
-<li>
-<a href="gallery/">Gallery</a> examples
-</li>
+<li><a href="gallery/">Gallery</a> examples</li>
+</ul></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#license">License</a></li>
+<li><a href="#authors-and-history">Authors and history</a></li>
+<li><a href="#authors-and-acknowledgments">Acknowledgments</a></li>
 </ul>
-</li>
-<li>
-<a href="#contributing">Contributing</a>
-</li>
-<li>
-<a href="#license">License</a>
-</li>
-<li>
-<a href="#authors-and-history">Authors and history</a>
-</li>
-<li>
-<a href="#authors-and-acknowledgments">Acknowledgments</a>
-</li>
-</ul>
-<h2>
-Introduction
-</h2>
-<p>
-CL-js provides a lightweight JavaScript library used across several
-Caltech Library projects. All functionality is bound to a common CL
-object. This allows it to be used with 3rd party JavaScript libraries
-(e.g. handlebarjs, jQuery) without stepping on their toes. The core CL
-object is defined in <code>CL-core.js</code>. Additional features are
-provided in their own files <code>CL-us.js</code>,
-<code>CL-feeds.js</code>, <code>CL-feeds-ui.js</code>,
-<code>CL-fields.js</code> and <code>CL-doi-media.js</code>. If you want
-to used our JavaScript library you should references the concatenated
-version of <a href="https://feeds.library.caltech.edu/scripts/CL.js"
-title="Production version of CL.js">CL.js</a> hosted at
-<code>https://feeds.library.caltech.edu/scripts/CL.js</code>.
-</p>
-<h2>
-Installation
-</h2>
-<p>
-In your web page include the following script element to access the
-<strong>CL</strong> object.
-</p>
-<div id="cb1" class="sourceCode">
-<pre
-class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;https://feeds.library.caltech.edu/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
-</div>
-<p>
-If you want a local copy of our library
-</p>
+<h2 id="introduction">Introduction</h2>
+<p>CL-js started as a vanilla JavaScript for integrating bibliographic
+content for CaltechAUTHORS and CaltechTHESIS in Caltech Campus websites.
+Today CL-js provides TypeScript and JavaScript ESM continuing the
+original project. It includes support for metadata from CaltechAUTHORS,
+CaltechTHESIS and CaltechDATA via <a
+href="https://feeds.library.caltech.edu"
+class="uri">https://feeds.library.caltech.edu</a>. The modules are
+written and maintained in TypeScript. The TypeScript is <a
+href="https://en.wikipedia.org/wiki/Source-to-source_compiler"
+title="source to source translation">transpiled</a> to JavaScript using
+<a href="https://deno.com">Deno</a>’s <a
+href="https://jsr.io/@deno/emit">emit</a> package. TypeScript has been
+chosen because structured metadata benefits from type safety which
+JavaScript doesn’t provide. The TypeScript modules can be used with
+Deno.</p>
+<p>This project is complementary to <a
+href="https://github.com/caltechlibrary/CL-web-components"
+title="web components shared between Caltech Library projects">CL-web-components</a>.
+CL-web-components provides web components for integrating content from
+Caltech Library.</p>
+<p>As of v1 CL-js comes with two modules. <a
+href="CL-core.ts">CL-core.ts</a>/<a
+href="modules/CL-core.js">CL-core.js</a> and <a
+href="CL-feeds.ts">CL-feeds.ts</a>/<a
+href="modules/CL-feeds.js">CL-feeds.js</a>. CL-core provides the low
+level transport calls using ES6 promises. CL-feeds extends the object
+with specific feeds related methods.</p>
+<p>In prior versions of CL-js models like <a
+href="scripts/CL-doi-media.js">CL-doi-media.js</a> and <a
+href="scripts/CL-feeds-ui.js">CL-feeds-ui.js</a>, were provided. This
+functionality is migrating to the <a
+href="https://github.com/caltechlibrary/CL-web-components">CL-web-components</a>
+project.</p>
+<p>CL-js, can be use from a modern web browser that supports ES6 or
+better JavaScript or from JavaScript/TypeScript run times like Deno.</p>
+<p>Here’s an example of importing this package into you’re JavaScript
+project.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CL } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/modules/CL.js&quot;</span><span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CLFeeds } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/modules/CL-feeds.js&quot;</span><span class="op">;</span></span></code></pre></div>
+<p>Or in the web page with</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">&quot;module&quot;</span><span class="ot"> src</span><span class="op">=</span><span class="st">&quot;https://feeds.library.caltech.edu/modules/CL.js&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">&quot;module&quot;</span><span class="ot"> src</span><span class="op">=</span><span class="st">&quot;https://feeds.library.caltech.edu/modules/CL-feeds.js&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>The TypeScript modules can be imported similarly.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CL } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/modules/CL-core.ts&quot;</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CLFeeds } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/modules/CL-feeds.ts&quot;</span><span class="op">;</span><span class="vs">`.</span></span></code></pre></div>
+<h2 id="installation">Installation</h2>
+<p>If you want a local copy you can download the GitHub repository.</p>
 <ol type="1">
-<li>
-Clone the <strong>cl-js</strong> repository
-</li>
-<li>
-Change to the repository directory
-</li>
-<li>
-Copy <a href="scripts/CL.js">scripts/CL.js</a> to your website document
-tree where you store your JavaScript code
-</li>
+<li>Clone the <strong>CL-js</strong> repository</li>
+<li>Change to the repository directory</li>
+<li>Copy the desired modules into your website document tree where you
+store your JavaScript code</li>
 </ol>
-<p>
-Here is an example of installing <strong>cl-js</strong> in the
-<code>/var/www/htdocs/js</code> directory.
-</p>
-<div id="cb2" class="sourceCode">
-<pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> clone https://github.com/caltechlibrary/cl-js</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">cd</span> cl-js</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="at">-vR</span> cl-js/scripts/CL.js /var/www/htdocs/js/</span></code></pre>
-</div>
-<h2>
-Usage
-</h2>
-<p>
-The CL-js JavaScript library is targetting evergreen web browser without
-requiring build tools beyond simple concatentation and make. Non-UI
-elements may run in headless environments like NodeJS but they is not
-guaranteed. UI elements require a DOM so will only run in your web
-browser unless you are willing to jump some hurdles.
-</p>
-<p>
-The recommended approach to using CL-js is to point your script elements
-at our production version of <code>CL.js</code>.
-</p>
-<div id="cb3" class="sourceCode">
-<pre
-class="sourceCode html"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;https://feeds.library.caltech.edu/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
-</div>
-<p>
-If you want to work on a local copy (e.g. you’re adapting, enhancing,
+<p>Here is an example of installing <strong>CL-js</strong> in the
+<code>/var/www/htdocs/js</code> directory.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="fu">git</span> clone https://github.com/caltechlibrary/CL-js CL-js</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">cd</span> CL-js</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> <span class="at">-vR</span> modules/CL-<span class="pp">*</span>.js /var/www/htdocs/js/</span></code></pre></div>
+<p>The <code>CL-feeds.js</code> module imports <code>CL-core.js</code>
+using as a relative import</p>
+<h2 id="usage">Usage</h2>
+<p>The CL-js JavaScript modules target ES6 or better evergreen web
+browsers. The TypeScript non-UI modules target Deno. UI modules require
+a browser DOM so are not supported in Deno (other other headless
+runtime).</p>
+<p>The recommended approach to using CL-js is to point your script
+elements at our production version of <code>CL-v1.js</code>.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">&quot;module&quot;</span><span class="ot"> src</span><span class="op">=</span><span class="st">&quot;https://feeds.library.caltech.edu/modules/CL-v1.js&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>If you want to work on a local copy (e.g. you’re adapting, enhancing,
 debugging or customizing our JavaScript library) can also copy the
 JavaScript files into your local web document root. The library is
 contained in a “scripts” folder in our GitHub repository for <a
-href="https://github.com/caltechlibrary/cl-js">CL-js</a>. Copy or
-symlink the “scripts” to your web document root. Then you can easily
-include the content in your HTML pages.
-</p>
-<p>
-Using the concatenated version
-</p>
-<div id="cb4" class="sourceCode">
-<pre
-class="sourceCode html"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;script</span> <span class="er">src</span><span class="ot">=</span><span class="st">&quot;/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
-</div>
-<p>
-You can create <code>CL.js</code> by concatenating the following files
-<code>CL-core.js</code>, <code>CL-ui.js</code>,
-<code>CL-feeds.js</code>, <code>CL-feeds-ui.js</code> and
-<code>CL-doi-media.js</code>.
-</p>
-<h2>
-Known issues and limitations
-</h2>
-<p>
-The <code>CL.js</code> library is limited to web browser environment
-running on evergreen web browser. Because of DOM usage it is not
-intended to be used from server side environments like <a
-href="https://nodejs.org">NodeJS</a>.
-</p>
-<h2>
-Getting help
-</h2>
-<p>
-If you run into a problem use the <a
+href="https://github.com/caltechlibrary/CL-js">CL-js</a>. Copy or
+symbolically link the “modules” to your web document root. Then you can
+easily include the content in your HTML pages.</p>
+<p>You can create a new “CL-v1.js” by running Make in the repository
+root which will use Deno to convert the TypeScript to JavaScript before
+copying them into the modules directory.</p>
+<h2 id="known-issues-and-limitations">Known issues and limitations</h2>
+<p>CL-js is maintained in TypeScript and relies on Deno for conversion
+to JavaScript. I do not test with NodeJS or provide an NPM version of
+this library.</p>
+<p>If you are contributing a bug fix the fix needs to be implemented in
+the TypeScript since the JavaScript provided is rendered output from the
+TypeScript.</p>
+<p>Starting with release v1 the <a href="scripts/">scripts</a> directory
+content is provided as a legacy implementation of CL-js. It is included
+for historical reference.</p>
+<h2 id="getting-help">Getting help</h2>
+<p>If you run into a problems use the <a
 href="https://github.com/caltechlibrary/cl-js/issues">GitHub</a> issue
-tracker for reports and contact.
-</p>
-<h2>
-Contributing
-</h2>
-<p>
-For information about contributing see <a
+tracker for reports and contact.</p>
+<h2 id="contributing">Contributing</h2>
+<p>For information about contributing see <a
 href="contributing.html">CONTRIBUTING.md</a> and <a
-href="code-of-conduct.html">CODE_OF_CONDUCT.md</a> in this repository.
-</p>
-<h2>
-License
-</h2>
-<p>
-Software produced by the Caltech Library is Copyright (C) 2019, Caltech.
-This software is freely distributed under a BSD/MIT type license. Please
-see the <a href="LICENSE">LICENSE</a> file for more information.
-</p>
-<h2>
-Authors and history
-</h2>
-<p>
-The CL JavaScript object evolved out of our <a
+href="code-of-conduct.html">CODE_OF_CONDUCT.md</a> in this
+repository.</p>
+<h2 id="license">License</h2>
+<p>Software produced by the Caltech Library is Copyright (C) 2019,
+Caltech. This software is freely distributed under a BSD/MIT type
+license. Please see the <a href="LICENSE">LICENSE</a> file for more
+information.</p>
+<h2 id="authors-and-history">Authors and history</h2>
+<p>The CL JavaScript object evolved out of our <a
 href="https://feeds.library.caltech.edu">feeds.library.caltech.edu</a>
 aggregation project. It’s primary goal is to provide an easy to use
 vanilla JavaScript library for working with Caltech Library services and
 content. It was split from the feeds.library.caltech.edu repository into
-its own repository in the Summer of 2019.
-</p>
+its own repository in the Summer of 2019.</p>
 <ul>
-<li>
-R. S. Doiel, <a
-href="mailto:rsdoiel@library.caltech.edu">rsdoiel@library.caltech.edu</a>
-</li>
+<li>R. S. Doiel, <a href="mailto:rsdoiel@caltech.edu"
+class="email">rsdoiel@caltech.edu</a></li>
 </ul>
-<h2>
-Acknowledgments
-</h2>
-<p>
-This work was funded by the California Institute of Technology Library.
-</p>
-<p>
-(If this work was also supported by other organizations, acknowledge
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This work was funded by the California Institute of Technology
+Library.</p>
+<p>(If this work was also supported by other organizations, acknowledge
 them here. In addition, if your work relies on software libraries, or
 was inspired by looking at other work, it is appropriate to acknowledge
-this intellectual debt too.)
-</p>
+this intellectual debt too.)</p>
 <div data-align="center">
 <p><br> <a href="https://www.caltech.edu">
 <img width="100" height="100" src="assets/caltech-round.svg"> </a></p>
 </div>
 </section>
-
-<footer>
-<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2019 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
-<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
-<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
-<span><a href="mailto:library@caltech.edu">Email Us</a></span>
-<a class="cl-hide" href="sitemap.xml">Site Map</a>
-</footer>
-<!-- START: PrettyFi from https://github.com/google/code-prettify -->
-<script>
-/* We want to add the class "prettyprint" to all the pre elements */
-var pre_list = document.querySelectorAll("pre");
-
-pre_list.forEach(function(elem) {
-    elem.classList.add("prettyprint");
-    /* elem.classList.add("linenums:1");*/
-});
-</script>
-<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-<!--  END: PrettyFi from https://github.com/google/code-prettify -->
 </body>
 </html>

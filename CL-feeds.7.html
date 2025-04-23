@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>CL-js</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/cl-js">GitHub</a></li>
+</ul>
+</nav>
+<section>
+<h1 id="name">NAME</h1>
+<p>CL-feeds.ts, CL-feeds.js</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p>TypeScript</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CLFeeds } <span class="im">from</span> <span class="st">&quot;https://caltechlibrary.github.io/CL-feeds.ts&quot;</span><span class="op">;</span></span></code></pre></div>
+<p>JavaScript</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CLFeeds } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/models/CL-feeds.js&quot;</span><span class="op">;</span></span></code></pre></div>
+<h1 id="description">DESCRIPTION</h1>
+<p>This is a module written in TypeScript and also transpiled to
+JavaScript. It is targeting both evergreen web browsers that support ES6
+or better JavaScript run times as well as TypeScript runtime like Deno
+2.2. It provides a simple wrapper various feeds.library.caltech.edu end
+points that are useful for working with Bibliographic data from various
+Caltech Library repositories. It relies on <code>CL-core.js</code>
+library.</p>
+<p>From JavaScript <code>CL-core.js</code> and <code>CL-feeds.js</code>
+are not usually used directly. Instead you would usually use the bundled
+form, <a href="modules/CL-v1.js">CL-v1.js</a>. From TypeScript you can
+import the <code>CL.ts</code> module that exports both
+<code>CL-core.ts</code> and <code>CL-feeds.ts</code>.</p>
+<h1 id="example">EXAMPLE</h1>
+<p>This a JavaScript example shows how to use
+<code>CLFeeds.getPeopleList</code> to retrieve a list of CaltechPEOPLE
+that have bibliographic data available from <a
+href="https://authors.library.caltech.edu">CaltechAUTHORS</a>, <a
+href="https://thesis.library.caltech.edu">CaltechTHESIS</a> and <a
+href="https://data.caltech.edu">CaltechDATA</a>.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CLFeeds } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/models/CL-feeds.js&quot;</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> payload <span class="op">=</span> <span class="cf">await</span> CLFeeds<span class="op">.</span><span class="fu">getPeopleList</span>()<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (payload<span class="op">.</span><span class="at">ok</span>) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Display the object listing CaltechPEOPLE</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(payload<span class="op">.</span><span class="at">data</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// something when wrong</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(payload<span class="op">.</span><span class="at">error</span>)<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</section>
+</body>
+</html>
