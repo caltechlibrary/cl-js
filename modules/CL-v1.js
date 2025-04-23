@@ -1,5 +1,5 @@
 const version = '1.0.0', licenseText = `
-Copyright (c) 2019, Caltech
+Copyright (c) 2025, Caltech
 All rights not granted herein are expressly reserved by Caltech.
 
 Redistribution and use in source and binary forms, with or without
