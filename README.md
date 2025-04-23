@@ -4,7 +4,7 @@ CL-js - Vanilla JavaScript ESM for Caltech Library metadata
 This repository provides a vanilla JavaScript ESM and TypeScript module for integrating Caltech Library metadata and public resources. The production deployment is hosted on Caltech Library's [feeds.library.caltech.edu](https://feeds.library.caltech.edu) website.
 
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?style=flat-square)](https://choosealicense.com/licenses/bsd-3-clause)
-[![Latest release](https://img.shields.io/badge/Latest_release-0.1.2-b44e88.svg?style=flat-square)](http://shields.io)
+[![Latest release](https://img.shields.io/badge/Latest_release-1.0.0-b44e88.svg?style=flat-square)](http://shields.io)
 
 
 Table of contents
