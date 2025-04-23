@@ -20,12 +20,19 @@
 <section>
 <h1 id="about-this-software">About this software</h1>
 <h2 id="cl-js-1.0.0">cl-js 1.0.0</h2>
-<p>v1 of CL-js is the first version written in TypeScript to support
-feeds.library.caltech.edu &gt;= 1.6. The user interface components,
-e.g. BuilderWidget and CL-feeds-ui.js have been migrated to web
-components and implemented as part of CL-web-component project. With v1
-release of CL-js two platforms are targeted, ES6 friendly evergreen web
-browsers and Deno.</p>
+<p>v1 of CL-js is the first version written in TypeScript. The
+TypeScript is transpiled into JavaScripts and is available at
+&lt;https://feeds.library.caltech.edu/modules/&gt;.</p>
+<p>Legacy JavaScript, while still available in the "scripts" directory,
+is depricated. This includes the fomer "ui" JavaScript includes. Moving
+foward the UI elements are being developed in the <a
+href="https://caltechlibrary.github.io/CL-web-components">CL-web-components</a>
+project. These will become available on
+&lt;https://feeds.library.caltech.edu&gt; at somepoint in the
+future.</p>
+<p>With this release of CL-js both evergreen browsers and
+JavaScript/TypeScript runtimes are targeted. Development takes place
+using Deno 2 and testing is done using Firefox.</p>
 <h3 id="authors">Authors</h3>
 <ul>
 <li>Robert Doiel, <a href="https://orcid.org/0000-0003-0900-6903"
@@ -35,7 +42,11 @@ class="uri">https://orcid.org/0000-0003-0900-6903</a></li>
 <ul>
 <li>https://orcid.org/0000-0003-0900-6903</li>
 </ul>
-<p>Provides a common Caltech Library CL JavaScript object</p>
+<p>CL-js provide TypeScript and JavaScript objects for working with
+metadata content provided by Caltech Library on
+&lt;https://feeds.library.caltech.edu&gt;.</p>
+<p>The modules provided enable easy integration of bibliographic data
+for Caltech People and Groups on websites.</p>
 <ul>
 <li>License: <a
 href="https://github.com/caltechlibrary/cl-js/blob/main/LICENSE"
