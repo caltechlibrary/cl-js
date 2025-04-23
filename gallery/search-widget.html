@@ -35,19 +35,32 @@
 </nav>
 
 <section>
-<h1 id="introducing-the-search-widget">
+<h1>
 Introducing the Search Widget
 </h1>
 <p>
-The <a href="search-widget.html">Search Widget</a> is a tool for embedding a browser side search and result box based on feeds hosted at https://feeds.library.caltech.edu. The widget generates CSS, HTML and JavaScript for embedding in your own webpage. The embedded search is specific to a group or individual feed. It is most useful when the individual or group has published allot of content (e.g. hundreds of articles). The Search Widget lets you choose the source of data you want to include (group or person), the type of data you want to include in results (e.g. article, book, combined publication list or data collections) as well as the number of items and some layout options for displaying the listings. The generated JavaScript includes building indexes on page load based on settings choosen using the search widget.
+The <a href="search-widget.html">Search Widget</a> is a tool for
+embedding a browser side search and result box based on feeds hosted at
+https://feeds.library.caltech.edu. The widget generates CSS, HTML and
+JavaScript for embedding in your own webpage. The embedded search is
+specific to a group or individual feed. It is most useful when the
+individual or group has published allot of content (e.g. hundreds of
+articles). The Search Widget lets you choose the source of data you want
+to include (group or person), the type of data you want to include in
+results (e.g. article, book, combined publication list or data
+collections) as well as the number of items and some layout options for
+displaying the listings. The generated JavaScript includes building
+indexes on page load based on settings choosen using the search widget.
 </p>
 <!-- START: Search Widget -->
 <section id="search-widget" class="widget">
 <!-- This is where "the widget" should display -->
 </section>
+<p>
 <noscript>
 JavaScript is required to display and use the Search Widget
 </noscript>
+</p>
 <!-- Required: the LunrJS library is needed to run our search and indexing!!! -->
 <script src="https://unpkg.com/lunr/lunr.js"></script>
 <script src="../scripts/CL.js"></script>
@@ -66,7 +79,11 @@ JavaScript is required to display and use the Search Widget
 </script>
 <!--   END: Search Widget -->
 <p>
-The <a href="CL-SearchWidget.js" title="link to source code of Search Widget">Search Widget JavaScript</a> is an example of a JavaScript program based on <a href="../scripts/CL.js" title="link to source code for CL.js">CL.js</a>.
+The <a href="CL-SearchWidget.js"
+title="link to source code of Search Widget">Search Widget
+JavaScript</a> is an example of a JavaScript program based on <a
+href="../scripts/CL.js"
+title="link to source code for CL.js">CL.js</a>.
 </p>
 </section>
 

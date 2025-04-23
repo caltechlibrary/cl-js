@@ -24,7 +24,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     "use strict";
     /* CL is our root object */
     let CL = {},
-        Version = 'v0.2.1';
+        Version = 'v0.2.2';
 
 
     if (window.CL === undefined) {
@@ -1311,14 +1311,12 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 parent_element.appendChild(ul);
             }
             records.forEach(function(record) {
-                let view = {},
-                    current_year = "",
+                let current_year = "",
                     li = document.createElement("li"),
                     a,
                     span,
                     div,
                     creators,
-                    pub_year,
                     pub_date,
                     book_title,
                     title,
@@ -1418,7 +1416,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                    and they're not part of our currated metadata. */
                 [
                     "publisher", "publication", "series", "volume", "number",
-                    "page_range",
+                    "chapters", "page_range",
                     "issn", "isbn", "pmcid", 
                     "event_title", "event_dates", "event_location", 
                     "ispublished"
@@ -1434,7 +1432,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                 span.innerHTML = val;
                                 break;
                             case "publisher":
-                                span.innerHTML = val;
+                                if (show_publisher) {
+                                    span.innerHTML = val;
+                                }
                                 break;
                             case "publication":
                                 if (show_publication) {
@@ -1461,10 +1461,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                                 }
                                 break;
                             case "number":
-                                if (show_issue == true) {
+                                if (show_issue === true) {
                                     if (record.series === undefined || record.series === "") {
                                         span.innerHTML = "; No. " + val + "";
                                     }
+                                }
+                                break;
+                            case "chapters":
+                                if (show_chapters === true) {
+                                    span.innerHTML = "; ch. " + val;
                                 }
                                 break;
                             /* DR-135 remove page_range pages, */

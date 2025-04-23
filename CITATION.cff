@@ -1,0 +1,27 @@
+
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: cl-js
+abstract: "CL-js provide TypeScript and JavaScript objects for working with metadata content provided by Caltech Library on &lt;https://feeds.library.caltech.edu&gt;.
+
+The modules provided enable easy integration of bibliographic data for Caltech People and Groups on websites."
+authors:
+  - family-names: Doiel
+    given-names: Robert
+    orcid: https://orcid.org/0000-0003-0900-6903
+    email: rsdoiel@caltech.edu
+
+contacts:
+  - family-names: 
+    given-names: 
+
+repository-code: "https://github.com/caltechlibrary/cl-js"
+version: 1.0.0
+date-released: 2025-04-23
+
+license-url: "https://github.com/caltechlibrary/cl-js/blob/main/LICENSE"
+keywords:
+  - software
+  - javascript
+

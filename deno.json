@@ -1,0 +1,15 @@
+{
+  "tasks": {
+	"build": "deno task compile ; deno task bundle",
+    "compile": "deno run --allow-read --allow-write --allow-env build.ts",
+	"bundle": "deno run --allow-read --allow-write --allow-env bundle.ts",
+    "test": "deno task CL-core_test.ts ; deno task CL-feeds_test.ts",
+    "CL-core_test.ts": "deno test --allow-net CL-core_test.ts",
+    "CL-feeds_test.ts": "deno test --allow-net CL-feeds_test.ts"
+  },
+  "imports": {
+    "@deno/emit": "jsr:@deno/emit@^0.46.0",
+    "@std/assert": "jsr:@std/assert@^1.0.12",
+    "@std/path": "jsr:@std/path@^1.0.8"
+  }
+}

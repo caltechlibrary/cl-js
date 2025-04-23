@@ -1,121 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-    <title>Caltech Library's Digital Library Development Sandbox</title>
+    <title>CL-js</title>
     <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
-<header>
-<a href="http://library.caltech.edu"><img src="/assets/liblogo.gif" alt="Caltech Library logo"></a>
-</header>
 <nav>
 <ul>
-<li>
-<a href="/">Home</a>
-</li>
-<li>
-<a href="./">README</a>
-</li>
-<li>
-<a href="license.html">LICENSE</a>
-</li>
-<li>
-<a href="install.html">INSTALL</a>
-</li>
-<li>
-<a href="gallery/">Gallery</a>
-</li>
-<li>
-<a href="scripts/testing.html">Tests</a>
-</li>
-<li>
-<a href="https://github.com/caltechlibrary/cl-js">Github</a>
-</li>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/cl-js">GitHub</a></li>
 </ul>
 </nav>
-
 <section>
-<h1 id="installation">
-Installation
-</h1>
-<p>
-<em>cl-js</em> is a Javascript library for working with Caltech Library content. Installation is usually a matter of unzipping the lastest release and copying the <code>CL.js</code> into your web tree where you normally place you JavaScript files. Then you reference that location to include it in your web pages.
-</p>
-<h2 id="the-basic-recipe">
-The basic recipe
-</h2>
-<p>
-If you want to use the production version we use at Caltech Library you can use the following script element in your web page.
-</p>
-<div id="cb1" class="sourceCode">
-<pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;https://feeds.library.caltech.edu/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
-</div>
-<h2 id="the-not-so-basic-recipe">
-The not so basic recipe
-</h2>
-<p>
-The latest releases can always be found at
-</p>
+<h1 id="installation">Installation</h1>
+<p><strong>CL-js</strong> provides a Javascript ESM for working with
+Caltech Library content. It is implemented as a TypeScript module.
+Installation is usually a matter of unzipping the lastest release and
+copying the <code>CL-v1.js</code> or <code>CL-v1.ts</code> into your web
+tree or project directory where you normally place you JavaScript or
+TypeScript files. Then you reference that location to include it in your
+web pages.</p>
+<h2 id="the-basic-recipe">The basic recipe</h2>
+<p>If you want to use the production version we use at Caltech Library
+you can use the following script element in your web page.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">&quot;module&quot;</span><span class="ot"> src</span><span class="op">=</span><span class="st">&quot;https://feeds.library.caltech.edu/scripts/CL-v1.js&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
+<h2 id="the-not-so-basic-recipe">The not so basic recipe</h2>
+<p>The latest releases can always be found at</p>
 <blockquote>
-<p>
-https://github.com/caltechlibrary/dataset/releases/latest
-</p>
+<p>https://github.com/caltechlibrary/dataset/releases/latest</p>
 </blockquote>
-<p>
-In the following steps I’m assuming your web directory is located at <code>/var/www/htdocs</code> and that you store your JavaScript files in <code>/var/www/htdocs/scripts</code> and you have permission to read/write files in those directories.
-</p>
+<p>In the following steps I’m assuming you’re working in JavaScript and
+your web directory is located at <code>/var/www/htdocs</code>. I assume
+you are storing your JavaScript modules in
+<code>/var/www/htdocs/modules</code> and you have permission to
+read/write files in those directories.</p>
 <ol type="1">
-<li>
-Goto https://github.com/caltechlibrary/cl-js/releases/latest
-</li>
-<li>
-Download the cl-js-VERSION-webbrowser.zip file (VERSION is replaced with the current version number, e.g. v0.1.2)
-</li>
-<li>
-Unzip the cl-js-VERSION-webbrowser.zip file
-</li>
-<li>
-Copy scripts/CL.js to /var/www/htdocs/scripts/
-</li>
-<li>
-Update your web page and you’re done
-</li>
+<li>Goto https://github.com/caltechlibrary/cl-js/releases/latest</li>
+<li>Download the cl-js-VERSION.zip file (VERSION is replaced with the
+current version number, e.g. v1.0.0)</li>
+<li>Unzip the cl-js-VERSION.zip file</li>
+<li>Copy module/CL-v1.js to /var/www/htdocs/modules/</li>
+<li>Update your web page and you’re done</li>
 </ol>
-<p>
-Here are the command line steps I took for version v0.1.2.
-</p>
-<div id="cb2" class="sourceCode">
-<pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>    <span class="ex">curl</span> -O https://github.com/caltechlibrary/cl-js/releases/download/v0.1.2/cl-js-v0.1.2-webbrowser.zip</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="fu">unzip</span> cl-js-v0.1.2-webbrowser.zip</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="fu">cp</span> scripts/*.js /var/www/htdocs/scripts/</span></code></pre>
-</div>
-<p>
-From here I can include the JavaScript in the web pages that need it.
-</p>
-<div id="cb3" class="sourceCode">
-<pre class="sourceCode html"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>    <span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;/scripts/CL.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span></span></code></pre>
-</div>
+<p>Here are the command line steps I took for version v1.0.0.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="at">-O</span> https://github.com/caltechlibrary/cl-js/releases/download/v1.0.0/cl-js-v1.0.0.zip</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unzip</span> cl-js-v1.0.0.zip</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cp</span> modules/<span class="pp">*</span>.js /var/www/htdocs/modules/</span></code></pre></div>
+<p>From here I can include the JavaScript in the web pages that need
+it.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&lt;</span><span class="kw">script</span><span class="ot"> type=</span><span class="st">&quot;module&quot;</span><span class="ot"> src</span><span class="op">=</span><span class="st">&quot;/scripts/CL-v1.js&quot;</span><span class="dt">&gt;&lt;/</span><span class="kw">script</span><span class="dt">&gt;</span></span></code></pre></div>
 </section>
-
-<footer>
-<span><h1><A href="http://caltech.edu">Caltech</a></h1></span>
-<span>&copy; 2019 <a href="https://www.library.caltech.edu/copyright">Caltech library</a></span>
-<address>1200 E California Blvd, Mail Code 1-32, Pasadena, CA 91125-3200</address> 
-<span>Phone: <a href="tel:+1-626-395-3405">(626)395-3405</a></span>
-<span><a href="mailto:library@caltech.edu">Email Us</a></span>
-<a class="cl-hide" href="sitemap.xml">Site Map</a>
-</footer>
-<!-- START: PrettyFi from https://github.com/google/code-prettify -->
-<script>
-/* We want to add the class "prettyprint" to all the pre elements */
-var pre_list = document.querySelectorAll("pre");
-
-pre_list.forEach(function(elem) {
-    elem.classList.add("prettyprint");
-    /* elem.classList.add("linenums:1");*/
-});
-</script>
-<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-<!--  END: PrettyFi from https://github.com/google/code-prettify -->
 </body>
 </html>

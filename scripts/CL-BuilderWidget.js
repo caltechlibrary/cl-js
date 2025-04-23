@@ -37,6 +37,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      */
     let ithKeyOf = function(o, i) { return Object.keys(o)[i]; }
     let ithValueOf = function(o, i) { return Object.values(o)[i]; }
+    let error_element_id = 'feed-error';
 
     /**
      * CL.BuilderWidget() creates a builder widget in the elements
@@ -101,7 +102,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     }
                     people.forEach(function(profile, i) {
                         let option = document.createElement("option");
-                        option.value = profile.id;
+                        option.value = profile.cl_people_id;
                         if ("orcid" in profile) {
                             option.innerHTML = profile.sort_name + "(" + 
                                 profile.orcid + ")";
@@ -267,7 +268,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 }
             });
             ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", 
-            "title-link", "doi", "link", "publisher", "publication", "page-numbers", "chapters", "issue", 
+            "title-link", "doi", "link", "publisher", "publication", "chapters", "page-numbers", "issue", 
             "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;

@@ -90,3 +90,5 @@ node_modules
 scripts/handlebars.js
 dist
 doi-media-example.json
+TODO.html
+man/

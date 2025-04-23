@@ -1,6 +1,13 @@
 Change log for REPOSITORY
 =========================
 
+Version 1.0.0
+-------------
+
+This is a major reorginization of the code provide with CL-js. This project was rewritten in TypeScript and split into two modules, CL-core and CL-feeds. The old *-ui.js has be removed from this project.  There is a new project called [CL-web-components](https://caltechlibrary.github.io/CL-web-components) which will be providing the user interface functionality previously supplied by CL-js.
+
+The legacy JavaScript (pre-ES6) has been maintained in the "scripts" folder.
+
 Version 0.2.1
 -------------
 

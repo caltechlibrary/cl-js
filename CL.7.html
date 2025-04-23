@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>CL-js</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/cl-js">GitHub</a></li>
+</ul>
+</nav>
+<section>
+<h1 id="name">NAME</h1>
+<p>CL.ts, CL-v1.js</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p>TypeScript</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CL<span class="op">,</span> CLFeeds<span class="op">,</span> <span class="kw">type</span> CLInterface<span class="op">,</span> <span class="kw">type</span> IPayload } <span class="im">from</span> <span class="st">&quot;https://caltechlibrary.github.io/CL.ts&quot;</span><span class="op">;</span></span></code></pre></div>
+<p>JavaScript</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CL<span class="op">,</span> CLFeeds } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/models/CL-v1.js&quot;</span><span class="op">;</span></span></code></pre></div>
+<h1 id="description">DESCRIPTION</h1>
+<p>The modules provide a bundled JavaScript library for working with
+Caltech Library content and a single module package for TypeScript. The
+TypeScript module [CL.ts] is used to bundle <a
+href="CL-core.ts">CL-core.ts</a> and <a
+href="CL-feeds.ts">CL-feeds.ts</a> into JavaScript as <a
+href="modules/CL-v1.js">CL-v1.js</a>. The JavaScript implementation
+targets evergreen web browsers that support ES6 or better JavaScript
+runtime as well as TypeScript runtime like Deno 2.2. The module provides
+a means of access web content, particularly content on <a
+href="https://feeds.library.caltech.edu"
+class="uri">https://feeds.library.caltech.edu</a> in a convenient
+payload structure. The payload has three attributes, <code>ok</code>
+indicates success or failure of an action (e.g. <code>CL.httpGet</code>
+and <code>CLFeeds.getPeopleList</code>), <code>error</code> will contain
+an error message if one is provided and <code>data</code> that contains
+the retrieved. The CL-core module is used by CL-feeds to create the
+CLFeeds object that wraps the supported end points for working with
+content published on <a href="https://feeds.library.caltech.edu"
+class="uri">https://feeds.library.caltech.edu</a>.</p>
+<h1 id="example">EXAMPLE</h1>
+<p>This a JavaScript example is how shows how to use
+<code>CL.httpGet</code> to retrieve and display the RSS feed of recently
+published content in <a
+href="https://authors.library.caltech.edu">CaltechAUTHORS</a>
+repository.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CL } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/models/CL-core.js&quot;</span><span class="op">;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> payload <span class="op">=</span> <span class="cf">await</span> CL<span class="op">.</span><span class="fu">httpGet</span>(<span class="st">&quot;https://feeds.library.caltech.edu/recent/article.rss&quot;</span>)<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (payload<span class="op">.</span><span class="at">ok</span>) {</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Display the RSS feed</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(payload<span class="op">.</span><span class="at">data</span>)<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// something when wrong</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(payload<span class="op">.</span><span class="at">error</span>)<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>This a JavaScript example shows how to use
+<code>CLFeeds.getPeopleList</code> to retrieve a list of CaltechPEOPLE
+that have bibliographic data available from <a
+href="https://authors.library.caltech.edu">CaltechAUTHORS</a>, <a
+href="https://thesis.library.caltech.edu">CaltechTHESIS</a> and <a
+href="https://data.caltech.edu">CaltechDATA</a>.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { CLFeeds } <span class="im">from</span> <span class="st">&quot;https://feeds.library.caltech.edu/models/CL-feeds.js&quot;</span><span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> payload <span class="op">=</span> <span class="cf">await</span> CLFeeds<span class="op">.</span><span class="fu">getPeopleList</span>()<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (payload<span class="op">.</span><span class="at">ok</span>) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Display the object listing CaltechPEOPLE</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(payload<span class="op">.</span><span class="at">data</span><span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">// something when wrong</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(payload<span class="op">.</span><span class="at">error</span>)<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</section>
+</body>
+</html>
