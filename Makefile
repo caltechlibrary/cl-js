@@ -41,7 +41,7 @@ ifeq ($(OS), Windows)
 	EXT = .exe
 endif
 
-build: version.ts $(PROGRAMS) man CITATION.cff about.md
+build: version.ts $(PROGRAMS) CITATION.cff about.md
 	deno task build
 
 version.ts: .FORCE
@@ -50,7 +50,7 @@ version.ts: .FORCE
 hash: .FORCE
 	git log --pretty=format:'%h' -n 1
 
-man: $(MAN_PAGES_1) $(MAN_PAGES_3) $(MAN_PAGES_7)
+man: #$(MAN_PAGES_1) $(MAN_PAGES_3) $(MAN_PAGES_7)
 
 $(MAN_PAGES_1): .FORCE
 	mkdir -p man/man1
