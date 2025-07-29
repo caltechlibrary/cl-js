@@ -144,7 +144,12 @@ const CL = {
         };
     }
 };
-const isWindows = globalThis.Deno?.build.os === "windows" || globalThis.navigator?.platform?.startsWith("Win") || globalThis.process?.platform?.startsWith("win") || false;
+function checkWindows() {
+    const global = globalThis;
+    const os = global.Deno?.build?.os;
+    return typeof os === "string" ? os === "windows" : global.navigator?.platform?.startsWith("Win") ?? global.process?.platform?.startsWith("win") ?? false;
+}
+const isWindows = checkWindows();
 function assertPath(path) {
     if (typeof path !== "string") {
         throw new TypeError(`Path must be a string, received "${JSON.stringify(path)}"`);
@@ -185,6 +190,17 @@ function assertArgs(path, suffix) {
         throw new TypeError(`Suffix must be a string, received "${JSON.stringify(suffix)}"`);
     }
 }
+function assertArg(url) {
+    url = url instanceof URL ? url : new URL(url);
+    if (url.protocol !== "file:") {
+        throw new TypeError(`URL must be a file URL: received "${url.protocol}"`);
+    }
+    return url;
+}
+function fromFileUrl(url) {
+    url = assertArg(url);
+    return decodeURIComponent(url.pathname.replace(/%(?![0-9A-Fa-f]{2})/g, "%25"));
+}
 function stripTrailingSeparators(segment, isSep) {
     if (segment.length <= 1) {
         return segment;
@@ -203,6 +219,9 @@ function isPosixPathSeparator(code) {
     return code === 47;
 }
 function basename(path, suffix = "") {
+    if (path instanceof URL) {
+        path = fromFileUrl(path);
+    }
     assertArgs(path, suffix);
     const lastSegment = lastPathSegment(path, isPosixPathSeparator);
     const strippedSegment = stripTrailingSeparators(lastSegment, isPosixPathSeparator);
@@ -214,7 +233,18 @@ function isPathSeparator(code) {
 function isWindowsDeviceRoot(code) {
     return code >= 97 && code <= 122 || code >= 65 && code <= 90;
 }
+function fromFileUrl1(url) {
+    url = assertArg(url);
+    let path = decodeURIComponent(url.pathname.replace(/\//g, "\\").replace(/%(?![0-9A-Fa-f]{2})/g, "%25")).replace(/^\\*([A-Za-z]:)(\\|$)/, "$1\\");
+    if (url.hostname !== "") {
+        path = `\\\\${url.hostname}${path}`;
+    }
+    return path;
+}
 function basename1(path, suffix = "") {
+    if (path instanceof URL) {
+        path = fromFileUrl1(path);
+    }
     assertArgs(path, suffix);
     let start = 0;
     if (path.length >= 2) {
@@ -231,6 +261,9 @@ function basename2(path, suffix = "") {
     return isWindows ? basename1(path, suffix) : basename(path, suffix);
 }
 function extname(path) {
+    if (path instanceof URL) {
+        path = fromFileUrl(path);
+    }
     assertPath(path);
     let startDot = -1;
     let startPart = 0;
@@ -263,6 +296,9 @@ function extname(path) {
     return path.slice(startDot, end);
 }
 function extname1(path) {
+    if (path instanceof URL) {
+        path = fromFileUrl1(path);
+    }
     assertPath(path);
     let start = 0;
     let startDot = -1;
