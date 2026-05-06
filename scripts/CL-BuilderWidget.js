@@ -618,14 +618,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         let fieldset = document.createElement("fieldset");
         fieldset.setAttribute("title",  "Step 2. pick the fields to display");
         let legend = document.createElement("legend");
-        legend.innerHTML = "Set number of items to include";
+        legend.innerHTML = "Restrict item count to recent items";
         fieldset.appendChild(legend);
 
         div = self.createCompositElement("div", ["label", "input", "label", "input"], [ "label-use-recent", "use-recent", "label-recent-n", "recent-n"]);
         fieldset.appendChild(div);
         label = div.querySelector("#label-use-recent");
         label.setAttribute("for", "use-recent");
-        label.innerHTML = "Recent only?"; /* recent (N) */
+        label.innerHTML = "Recent only:"; /* recent (N) */
         input = div.querySelector("#use-recent");
         input.setAttribute("type", "checkbox");
         input.setAttribute("id", "use-recent");
@@ -651,7 +651,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         fieldset = document.createElement("fieldset");
         fieldset.setAttribute("title",  "Step 4. pick the fields to display");
         legend = document.createElement("legend");
-        legend.innerHTML = "Pick fields to display";
+        legend.innerHTML = "Pick item fields to display";
         fieldset.appendChild(legend);
         div = document.createElement("div");
         fieldset.appendChild(div);
