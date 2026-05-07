@@ -28,10 +28,10 @@
   "name": "cl-js",
   "license": "https://github.com/caltechlibrary/cl-js/blob/main/LICENSE",
   "softwareRequirements": [
-    "Deno >= 2",
-    "CMTools >= 0.0.24",
+    "Deno >= 2.7",
+    "CMTools >= 0.0.43",
     "GNU Make >= 3",
-    "Pandoc >= 3"
+    "Pandoc >= 3.9"
   ],
   "version": "1.0.0",
   "developmentStatus": "active",

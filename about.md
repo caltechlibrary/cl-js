@@ -29,20 +29,20 @@ About this software
 
 ## cl-js 1.0.0
 
-v1 of CL-js is the first version written in TypeScript. The TypeScript is transpiled into JavaScripts and is available at &lt;https://feeds.library.caltech.edu/modules/&gt;.
+v1 of CL-js is the first version written in TypeScript. The TypeScript is transpiled into JavaScripts and is available at <https://feeds.library.caltech.edu/modules/>.
 
-Legacy JavaScript, while still available in the &quot;scripts&quot; directory, is depricated. This includes the fomer &quot;ui&quot; JavaScript includes. Moving foward the UI elements are being developed in the [CL-web-components](https://caltechlibrary.github.io/CL-web-components) project. These will become available on &lt;https://feeds.library.caltech.edu&gt; at somepoint in the future.
+Legacy JavaScript, while still available in the "scripts" directory, is depricated. This includes the fomer "ui" JavaScript includes. Moving foward the UI elements are being developed in the [CL-web-components](https://caltechlibrary.github.io/CL-web-components) project. These will become available on <https://feeds.library.caltech.edu> at somepoint in the future.
 
 With this release of CL-js both evergreen browsers and JavaScript/TypeScript runtimes are targeted. Development takes place using Deno 2 and testing is done using Firefox.
 
-### Authors
+## Authors
 
-- Robert Doiel, <https://orcid.org/0000-0003-0900-6903>
-
-
+- [Robert Doiel](https://orcid.org/0000-0003-0900-6903)
 
 
-### Maintainers
+
+
+## Maintainers
 
 - https://orcid.org/0000-0003-0900-6903
 
@@ -51,18 +51,21 @@ CL-js provide TypeScript and JavaScript objects for working with metadata conten
 
 The modules provided enable easy integration of bibliographic data for Caltech People and Groups on websites.
 
-- License: <https://github.com/caltechlibrary/cl-js/blob/main/LICENSE>
-- GitHub: <https://github.com/caltechlibrary/cl-js>
-- Issues: <https://github.com/caltechlibrary/cl-js/issues>
+- [License](https://github.com/caltechlibrary/cl-js/blob/main/LICENSE)
+- [Code Repository](https://github.com/caltechlibrary/cl-js)
+  - [Issue Tracker](https://github.com/caltechlibrary/cl-js/issues)
 
 
 
 
 
-### Software Requirements
+## Software Requirements
 
-- Deno &gt;&#x3D; 2
-- CMTools &gt;&#x3D; 0.0.24
-- GNU Make &gt;&#x3D; 3
-- Pandoc &gt;&#x3D; 3
+- Deno >= 2.7
+- CMTools >= 0.0.43
+- GNU Make >= 3
+- Pandoc >= 3.9
+
+
+
 

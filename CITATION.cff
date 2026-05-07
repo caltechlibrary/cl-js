@@ -3,7 +3,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 title: cl-js
-abstract: "CL-js provide TypeScript and JavaScript objects for working with metadata content provided by Caltech Library on &lt;https://feeds.library.caltech.edu&gt;.
+abstract: "CL-js provide TypeScript and JavaScript objects for working with metadata content provided by Caltech Library on <https://feeds.library.caltech.edu>.
 
 The modules provided enable easy integration of bibliographic data for Caltech People and Groups on websites."
 authors:
