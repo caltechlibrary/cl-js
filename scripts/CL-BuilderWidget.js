@@ -4,7 +4,7 @@
  * CL.BuilderWidget() creates a feed builder widget embedded at element id.
  * @params element id to embed the builder widget.
  *
- * CL.js provides browser side JavaScript access to 
+ * CL.js provides browser side JavaScript access to
  * feeds.library.caltech.edu and other Caltech Library resources.
  *
  * @author R. S. Doiel
@@ -43,7 +43,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
      * CL.BuilderWidget() creates a builder widget in the elements
      * indicated by element id and error_element_id.
      *
-     * @param parent_element_selector the DOM element selector 
+     * @param parent_element_selector the DOM element selector
      *                                which wild the widget.
      */
     CL.BuilderWidget = function(parent_element) {
@@ -80,6 +80,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             option = document.createElement("option");
             option.innerHTML = "Step 2. pick a feed";
             select_feed_id.appendChild(option);
+			/* FIXME: Need to swap this for an autocomplete list after debugging currenting implementation */
             option = document.createElement("option");
             option.innerHTML = "Step 3. pick the feed type (e.g. recent/article, combined)";
             select_feed_path = document.getElementById("feed-path");
@@ -102,9 +103,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     }
                     people.forEach(function(profile, i) {
                         let option = document.createElement("option");
-                        option.value = profile.cl_people_id;
-                        if ("orcid" in profile) {
-                            option.innerHTML = profile.sort_name + "(" + 
+			if (profile.cl_people_id === undefined) {
+				option.value = profile.clpid;
+			} else {
+                        	option.value = profile.cl_people_id;
+			}
+                        if (("orcid" in profile) && (profile["orcid"] != "")) {
+                            option.innerHTML = profile.sort_name + "(" +
                                 profile.orcid + ")";
                         } else {
                             option.innerHTML = profile.sort_name;
@@ -165,16 +170,24 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         return;
                     }
                     if ("CaltechTHESIS" in profile) {
+						let label_cnt = 0;
                         for (let feed_label in profile.CaltechTHESIS) {
                             let option = document.createElement("option");
                             //NOTE: People don't have combined thesis, only
                             // Groups.
-                            if (feed_label !== "combined") {
-                                option.innerHTML = "CaltechTHESIS: " + feed_label;
-                                option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
-                                select_feed_path.appendChild(option);
-                            }
+                            option.innerHTML = "CaltechTHESIS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
+                            select_feed_path.appendChild(option);
+							label_cnt++;
                         }
+						if (label_cnt > 1) {
+			    			// NOTE: if we've include more than one feed label we need to add a "CaltechTHESIS:combined"
+                            let option = document.createElement("option"),
+						        feed_label = "combined_thesis";
+                            option.innerHTML = "CaltechTHESIS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
+                            select_feed_path.appendChild(option);
+						}
                     }
                     if ("CaltechTHESIS_advisor" in profile) {
                         if ("combined" in profile.CaltechTHESIS_advisor) {
@@ -186,14 +199,25 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         }
                     }
                     if ("CaltechAUTHORS" in profile) {
+						let label_cnt = 0;
                         for (let feed_label in profile.CaltechAUTHORS) {
                             let option = document.createElement("option");
                             option.innerHTML = "CaltechAUTHORS: " + feed_label;
                             option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechauthors";
                             select_feed_path.appendChild(option);
+			    			label_cnt++;
                         }
+						if (label_cnt > 1) {
+			    			// NOTE: if we've include more than one feed label we need to add a "CaltechAUTHORS:combined"
+                            let option = document.createElement("option"),
+								feed_label = "combined";
+                            option.innerHTML = "CaltechAUTHORS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechauthors";
+                            select_feed_path.appendChild(option);
+						}
                     }
                     if ("CaltechDATA" in profile) {
+						let label_cnt = 0;
                         for (let feed_label in profile.CaltechDATA) {
                             let option = document.createElement("option"),
                                 feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
@@ -205,7 +229,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                             option.innerHTML = "CaltechDATA: " + feed_label;
                             option.value = feed_type + ":caltechdata";
                             select_feed_path.appendChild(option);
+			    			label_cnt++;
                         }
+						if (label_cnt > 1) {
+                            let option = document.createElement("option"),
+                                feed_type = "combined";
+                            option.innerHTML = "CaltechDATA: " + feed_label;
+                            option.value = feed_type + ":caltechdata";
+                            select_feed_path.appendChild(option);
+						}
                     }
                 });
             } else if (aggregation === "groups") {
@@ -220,34 +252,61 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                         return;
                     }
                     if ("CaltechTHESIS" in group) {
+						let label_cnt = 0;
                         for (let feed_label in group.CaltechTHESIS) {
                             let option = document.createElement("option");
                             option.innerHTML = "CaltechTHESIS: " + feed_label;
                             option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
                             select_feed_path.appendChild(option);
+							label_cnt++;
                         }
+						if (label_cnt > 1) {
+                            let option = document.createElement("option"),
+								feed_label = "combined_thesis";
+                            option.innerHTML = "CaltechTHESIS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechthesis";
+                            select_feed_path.appendChild(option);
+						}
                     }
                     if ("CaltechAUTHORS" in group) {
+						let label_cnt = 0;
                         for (let feed_label in group.CaltechAUTHORS) {
                             let option = document.createElement("option");
                             option.innerHTML = "CaltechAUTHORS: " + feed_label;
                             option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechauthors";
                             select_feed_path.appendChild(option);
+							label_cnt++;
                         }
+						if (label_cnt > 1) {
+                            let option = document.createElement("option"),
+								feed_label = "combined";
+                            option.innerHTML = "CaltechAUTHORS: " + feed_label;
+                            option.value = feed_label.toLocaleLowerCase().replace(/ /g, "_") + ":caltechauthors";
+                            select_feed_path.appendChild(option);
+						}
                     }
                     if ("CaltechDATA" in group) {
+						let label_cnt = 0;
                         for (let feed_label in group.CaltechDATA) {
                             let option = document.createElement("option"),
                                 feed_type = feed_label.toLocaleLowerCase().replace(/ /g, "_");
                             if (feed_type === "combined") {
-                                feed_type = "data";
+                                feed_type = "combined_data";
                             } else if (feed_type === "interactive_resource") {
                                 feed_type = "interactiveresource";
                             }
                             option.innerHTML = "CaltechDATA: " + feed_label;
                             option.value = feed_type + ":caltechauthors";
                             select_feed_path.appendChild(option);
+							label_cnt++;
                         }
+						if (label_cnt > 1) {
+                            let option = document.createElement("option"),
+                                feed_type = "combined_data";
+                            option.innerHTML = "CaltechDATA: " + feed_label;
+                            option.value = feed_type + ":caltechauthors";
+                            select_feed_path.appendChild(option);
+						}
                     }
                 });
             }
@@ -267,8 +326,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                     config[key] = elem.value;
                 }
             });
-            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date", 
-            "title-link", "doi", "link", "publisher", "publication", "chapters", "page-numbers", "issue", 
+            ["use-recent", "feed-count", "show-year-headings", "creators", "pub-date",
+            "title-link", "doi", "link", "publisher", "publication", "chapters", "page-numbers", "issue",
             "volume", "issn-or-isbn", "pmcid", "description", "primary-object"].forEach(function(id) {
                 let elem = document.getElementById(id),
                     key;
@@ -282,7 +341,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             return config;
         }
 
-        // code_render take the contents of the form and render the 
+        // code_render take the contents of the form and render the
         // resulting source code.
         function code_render(config) {
             let text = [],
@@ -302,7 +361,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             }
 
 
-            config.repository = css_classname.substr(1);
+            config.repository = css_classname.substring(1);
             config.css_classname = css_classname;
             if (config.feed_id !== undefined && config.feed_id !== "") {
                 elem_id = config.feed_id;
@@ -360,9 +419,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("<div id=\"" + elem_id + "\" class=\"" + css_classname.substr(1) + "\"></div>\n");
 
 
-            // Generate JavaScript CL.js include 
+            // Generate JavaScript CL.js include
             if (include_CL == true) {
                 if (developer_mode === true) {
+                    text.push("<script src=\"/scripts/CL-config.js\"></script>");
                     text.push("<script src=\"/scripts/CL-core.js\"></script>");
                     text.push("<script src=\"/scripts/CL-ui.js\"></script>");
                 } else {
@@ -405,7 +465,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
             text.push("  });");
             text.push("}(document, window));");
             text.push("</script>");
-            // Generate JavaScript code block 
+            // Generate JavaScript code block
             return text.join("\n");
         }
 
@@ -551,33 +611,50 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         }, true);
         form.appendChild(div);
 
-        heading = document.createElement("h2");
-        heading.innerHTML = "Filter Data";
+        heading = document.createElement('h2')
+        heading.innerHTML = 'Filter Data';
         form.appendChild(heading);
 
-        div = self.createCompositElement("div", ["input", "label", "input"], [ "use-recent", "label-recent-n", "recent-n"]);
-        label = div.querySelector("#label-recent-n");
+        let fieldset = document.createElement("fieldset");
+        fieldset.setAttribute("title",  "Step 2. pick the fields to display");
+        let legend = document.createElement("legend");
+        legend.innerHTML = "Restrict item count to recent items";
+        fieldset.appendChild(legend);
+
+        div = self.createCompositElement("div", ["label", "input", "label", "input"], [ "label-use-recent", "use-recent", "label-recent-n", "recent-n"]);
+        fieldset.appendChild(div);
+        label = div.querySelector("#label-use-recent");
         label.setAttribute("for", "use-recent");
-        label.innerHTML = "Recent records only, maximum displayed"; /* recent (N) */
+        label.innerHTML = "Recent only:"; /* recent (N) */
         input = div.querySelector("#use-recent");
         input.setAttribute("type", "checkbox");
         input.setAttribute("id", "use-recent");
+        input.setAttribute("aria-label", "Restrict to recent records only");
         input.setAttribute("title", "Restrict to recent records only, you can then set the maximun number of records to display.");
 
+        label = div.querySelector("#label-recent-n");
+        label.setAttribute("for", "recent-in");
+        label.innerHTML = "Count:";
         input = div.querySelector("#recent-n");
         input.setAttribute("type", "number");
         input.setAttribute("value", 25);
         input.setAttribute("id", "recent-n");
+        input.setAttribute("aria-label", "Maximum number of recent records to display");
         input.setAttribute("title", "set the maxium count of recent records to display");
-        form.appendChild(div);
-
-        heading = document.createElement("h2");
-        heading.innerHTML = "Display Options";
-        heading.setAttribute("title", "Step 4. pick the fields to display");
-        form.appendChild(heading);
+        form.appendChild(fieldset);
 
         /* Step 4. Pick listing layout format */
+        heading = document.createElement('h2')
+        heading.innerHTML = 'Display Options';
+        form.appendChild(heading);
+
+        fieldset = document.createElement("fieldset");
+        fieldset.setAttribute("title",  "Step 4. pick the fields to display");
+        legend = document.createElement("legend");
+        legend.innerHTML = "Pick item fields to display";
+        fieldset.appendChild(legend);
         div = document.createElement("div");
+        fieldset.appendChild(div);
         div.classList.add("checkbox-control");
 
         /* Process the list of element id and labels */
@@ -616,10 +693,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
                 input.setAttribute("checked", true);
             }
             label = control.querySelector("label");
+            label.setAttribute('for', elem_id);
             label.innerHTML = label_text + ":";
             div.append(control);
         });
-        form.appendChild(div);
+        form.appendChild(fieldset);
 
         /* Step 5. preview and generate the code */
         div = self.createCompositElement("div", ["input", "input"], ["preview", "generate"]);
@@ -634,7 +712,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
         preview_button = input;
 
         input = div.querySelector("#generate");
-        /* NOTE: this input should become enabled 
+        /* NOTE: this input should become enabled
          * when the data sources
          * have been defined. */
         input.disabled = true;
