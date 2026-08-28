@@ -41,7 +41,7 @@ ifeq ($(OS), Windows)
 	EXT = .exe
 endif
 
-build: version.ts $(PROGRAMS) CITATION.cff about.md man
+build: version.ts $(PROGRAMS) CITATION.cff man
 	deno task build
 
 version.ts: .FORCE
@@ -70,9 +70,6 @@ $(PROGRAMS): $(PACKAGE)
 
 CITATION.cff: codemeta.json
 	cmt codemeta.json CITATION.cff
-
-about.md: codemeta.json $(PROGRAMS)
-	cmt codemeta.json about.md
 
 test: $(PACKAGE)
 	deno test
