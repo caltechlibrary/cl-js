@@ -8,7 +8,7 @@ CL-feeds.ts, CL-feeds.js
 TypeScript
 
 ~~~TypeScript
-import { CLFeeds } from "https://caltechlibrary.github.io/CL-feeds.ts";
+import { CLFeeds } from "https://software.library.caltech.edu/CL-feeds.ts";
 ~~~
 
 JavaScript

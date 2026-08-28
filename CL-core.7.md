@@ -8,7 +8,7 @@ CL-core.ts, CL-core.js
 TypeScript
 
 ~~~TypeScript
-import { CL, type CLInterface, type IPayload } from "https://caltechlibrary.github.io/CL-core.ts";
+import { CL, type CLInterface, type IPayload } from "https://software.library.caltech.edu/CL-core.ts";
 ~~~
 
 JavaScript

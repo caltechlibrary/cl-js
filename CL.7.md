@@ -8,7 +8,7 @@ CL.ts, CL-v1.js
 TypeScript
 
 ~~~TypeScript
-import { CL, CLFeeds, type CLInterface, type IPayload } from "https://caltechlibrary.github.io/CL.ts";
+import { CL, CLFeeds, type CLInterface, type IPayload } from "https://software.library.caltech.edu/CL.ts";
 ~~~
 
 JavaScript
