@@ -1,4 +1,7 @@
 {
+  "fmt": {
+    "indentWidth": 2
+  },
   "tasks": {
 	"build": "deno task compile ; deno task bundle",
     "compile": "deno run --allow-read --allow-write --allow-env build.ts",
